@@ -1,0 +1,35 @@
+{
+  "name": "hale",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ministryofjustice/hale-dash.git"
+  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cross-env NODE_ENV=development webpack --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "cross-env NODE_ENV=development webpack --watch --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "production": "cross-env NODE_ENV=production webpack --progress --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "govuk-frontend": "^4.6.0",
+    "grunt": "^1.4.1",
+    "nunjucks": "^3.2.3"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "cssnano": "^5.0.7",
+    "laravel-mix": "^6.0.25",
+    "laravel-mix-imagemin": "^1.0.3",
+    "node-normalize-scss": "^8.1.2",
+    "postcss-cli": "^8.3.1",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.35.2",
+    "sass-loader": "^12.1.0",
+    "vue-template-compiler": "^2.6.14"
+  }
+}

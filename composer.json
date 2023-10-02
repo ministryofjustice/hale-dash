@@ -1,0 +1,6 @@
+{
+    "name": "ministryofjustice/hale-dash",
+    "description": "Hale Dash theme",
+    "type": "wordpress-theme",
+    "require": {}
+}
