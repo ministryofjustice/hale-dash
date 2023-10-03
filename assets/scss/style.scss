@@ -16,4 +16,23 @@ body {
 	&__heading {
 		width: 50%;
 	}
+
+	&__environment {
+		position: relative;
+
+		&.marc .marcTracker {
+			display: block;
+		}
+	}
+}
+
+.marcTracker {
+	display: none;
+	position: absolute;
+	width: 25;
+	height: 25px;
+	left: -27px;
+	top:-3px;
+	background-size: contain;
+	border-radius: 25px;
 }

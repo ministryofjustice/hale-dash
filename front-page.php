@@ -25,6 +25,8 @@ function ping($host, $port, $timeout) {
     return '<span><strong class="govuk-tag govuk-tag--yellow">Up '.$wait.' ms</strong></span>';
 }
 
+$marc = false;
+
 $environments = [
     'prod',
     'staging',
@@ -48,7 +50,10 @@ foreach ( $sites as $site ) {
             $env_url = "https://hale-platform-" . $env . ".apps.live.cloud-platform.service.justice.gov.uk/";
 
             ?>
-            <a href="<?php echo $env_url; ?>" class="website__link website__link--<?php echo $env;?> govuk-link"><?php echo ucfirst($env);?></a>
+            <div class="website__environment <?php if ($marc) echo "marc"; ?>">
+                <div class="marcTracker" style="background-image:url(https://hale.docker/wp-content/themes/hale-dash/assets/images/marc.png);"></div>
+                <a href="<?php echo $env_url; ?>" class="website__environment__link website__environment__link--<?php echo $env;?> govuk-link"><?php echo ucfirst($env);?></a>
+            </div>
             <?php if ($env == "prod") $status = ping($env_url, 80, 10); ?>
         <?php
 
