@@ -49,7 +49,7 @@ foreach ( $sites as $site ) {
 
             ?>
             <a href="<?php echo $env_url; ?>" class="website__link website__link--<?php echo $env;?> govuk-link"><?php echo ucfirst($env);?></a>
-            <?php if ($env == "prod") $status = ping("www.google.com", 80, 10); ?>
+            <?php if ($env == "prod") $status = ping($env_url, 80, 10); ?>
         <?php
 
         }
