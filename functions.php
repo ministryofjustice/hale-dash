@@ -45,3 +45,48 @@ function hale_dash_mix_asset($filename)
 
     return get_theme_file_uri() . '/dist' . $manifest[$filename];
 }
+
+function ping($host, $port, $timeout) {
+    // Copied from https://stackoverflow.com/questions/1239068/ping-site-and-return-result-in-php
+    $tB = microtime(true);
+    $fP = fSockOpen($host, $port, $errno, $errstr, $timeout);
+    if (!$fP) {
+        return '<span class="website__up-down"><strong class="govuk-tag govuk-tag--red">Down</strong></span>';
+    }
+
+    $tA = microtime(true);
+    $wait = round((($tA - $tB) * 1000), 0);
+    if ($wait < 50) {
+        return '<span class="website__up-down"><strong class="govuk-tag govuk-tag--green">Good</strong></span>';
+    }
+    return '<span class="website__up-down"><strong class="govuk-tag govuk-tag--yellow">Okay</strong></span>';
+    // below will shew time taken in MS
+    return '<span class="website__up-down"><strong class="govuk-tag govuk-tag--blue">Up '.$wait.' ms</strong></span>';
+}
+
+function get_live_urls() {
+    $url["Criminal Cases Review Commission"] = "ccrc.gov.uk";
+    $url["Magistrates Recruitment"] = "magistrates.judiciary.uk";
+    $url["Hawlfraint, Recriwtio Ynadon"] = "magistrates.judiciary.uk/cymraeg";
+    $url["Victims Commissioner"] = "victimscommissioner.org.uk";
+    $url["Independent Monitoring Boards"] = "imb.org.uk";
+    $url["Independent Commission for Reconciliation & Information Recovery"] = "icrir.independent-inquiry.uk";
+    $url["Public Defender Service"] = "publicdefenderservice.org.uk";
+    $url["Prison and Probation Jobs"] = "prisonandprobationjobs.gov.uk";
+
+    return $url;
+}
+
+function fav_icon($image) {
+    // From https://stackoverflow.com/questions/5701593/how-to-get-a-websites-favicon-with-php
+    // Read image path, convert to base64 encoding
+    $imageData = base64_encode(file_get_contents($image));
+
+    if (empty($imageData)) return;
+
+    // Format the image SRC:  data:{mime};base64,{data};
+    $src = 'data: '.mime_content_type($image).';base64,'.$imageData;
+
+    // Echo out a sample image
+    return '<img src="' . $src . '">';
+}

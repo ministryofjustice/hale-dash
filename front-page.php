@@ -9,23 +9,9 @@
 
 get_header();
 
-function ping($host, $port, $timeout) { 
-    // Copied from https://stackoverflow.com/questions/1239068/ping-site-and-return-result-in-php
-    $tB = microtime(true); 
-    $fP = fSockOpen($host, $port, $errno, $errstr, $timeout); 
-    if (!$fP) {
-        return '<span><strong class="govuk-tag govuk-tag--red">Down</strong></span>';
-    }
-    
-    $tA = microtime(true); 
-    $wait = round((($tA - $tB) * 1000), 0);
-    if ($wait < 50) {
-        return '<span><strong class="govuk-tag govuk-tag--green">Up '.$wait.' ms</strong></span>';
-    }
-    return '<span><strong class="govuk-tag govuk-tag--yellow">Up '.$wait.' ms</strong></span>';
-}
-
 $marc = false;
+
+$live_urls = get_live_urls();
 
 $environments = [
     'prod',
@@ -42,7 +28,12 @@ $sites = get_sites();
 foreach ( $sites as $site ) {
     switch_to_blog( $site->blog_id ); ?>
     <div class="website">
-        <h2 class="website__heading govuk-heading-s"><?php echo get_bloginfo('name'); ?></h2>
+        <div class="website__heading">
+            <?php
+                if (isset($live_urls[get_bloginfo('name')])) echo fav_icon("http://www.google.com/s2/favicons?domain=".$live_urls[get_bloginfo('name')]);
+            ?>
+            <h2 class="website__heading__text govuk-heading-s"><?php echo get_bloginfo('name'); ?></h2>
+        </div>
 
         <?php
         foreach ($environments as $env) { 
@@ -52,9 +43,15 @@ foreach ( $sites as $site ) {
             ?>
             <div class="website__environment <?php if ($marc) echo "marc"; ?>">
                 <div class="marcTracker" style="background-image:url(https://hale.docker/wp-content/themes/hale-dash/assets/images/marc.png);"></div>
-                <a href="<?php echo $env_url; ?>" class="website__environment__link website__environment__link--<?php echo $env;?> govuk-link"><?php echo ucfirst($env);?></a>
+            <?php
+                if ($env == "prod") {
+                    if (isset($live_urls[get_bloginfo('name')])) $env_url = $live_urls[get_bloginfo('name')];
+                    $status = ping($env_url, 80, 10);
+                    $env_url = "https://".$env_url;
+                }
+                echo "<a href='$env_url' class='website__environment__link website__environment__link--$env govuk-link'>".ucfirst($env)."</a>";
+            ?>
             </div>
-            <?php if ($env == "prod") $status = ping($env_url, 80, 10); ?>
         <?php
 
         }

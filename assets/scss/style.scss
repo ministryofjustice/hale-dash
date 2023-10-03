@@ -11,10 +11,19 @@ body {
 	display: flex;
     justify-content: space-between;
 	border-bottom: 1px solid #b1b4b6;
+	padding-bottom: 1rem;
 	margin-bottom: 1rem;
+
+	&__up-down {
+		width:120px;
+	}
 
 	&__heading {
 		width: 50%;
+
+		.website__heading__text {
+			display: inline;
+		}
 	}
 
 	&__environment {
