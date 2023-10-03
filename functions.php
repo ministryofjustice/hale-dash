@@ -24,16 +24,6 @@ function hale_dash_setup()
 
 add_action('after_setup_theme', 'hale_dash_setup');
 
-// function hale_dash_enqueue_styles()
-// {
-//     wp_enqueue_style('hale-dash-style', hale_dash_mix_asset('/css/hale-dash-style.min.css'));
-// }
-
-// add_action('wp_enqueue_scripts', 'hale_dash_enqueue_styles');
-
-
-
-add_action( 'wp_enqueue_scripts', 'hale_dash_enqueue_styles' );
 
 
 function hale_dash_enqueue_styles() {
@@ -43,6 +33,8 @@ function hale_dash_enqueue_styles() {
 		wp_get_theme()->get( 'Version' ) // This only works if you have Version defined in the style header.
 	);
 }
+
+add_action( 'wp_enqueue_scripts', 'hale_dash_enqueue_styles' );
 
 
 /**
