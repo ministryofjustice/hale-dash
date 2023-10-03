@@ -1,5 +1,19 @@
 @charset "UTF-8";
+.govuk-main-wrapper .govuk-grid-column-full {
+	padding: 0 15px;
+}
 
 body {
     background-color: aqua;
+}
+
+.website {
+	display: flex;
+    justify-content: space-between;
+	border-bottom: 1px solid #b1b4b6;
+	margin-bottom: 1rem;
+
+	&__heading {
+		width: 50%;
+	}
 }

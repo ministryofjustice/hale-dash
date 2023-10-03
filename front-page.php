@@ -9,6 +9,19 @@
 
 get_header();
 
+function ping($host, $port, $timeout) { 
+    // Copied from https://stackoverflow.com/questions/1239068/ping-site-and-return-result-in-php
+    $tB = microtime(true); 
+    $fP = fSockOpen($host, $port, $errno, $errstr, $timeout); 
+    if (!$fP) {
+        return '<span><strong class="govuk-tag govuk-tag--red">Down</strong></span>';
+    }
+    
+    $tA = microtime(true); 
+    return '<span><strong class="govuk-tag govuk-tag--green">Up '.round((($tA - $tB) * 1000), 0).' ms</strong></span>';
+    return round((($tA - $tB) * 1000), 0)." ms"; 
+}
+
 $environments = [
     'prod',
     'staging',
@@ -17,30 +30,35 @@ $environments = [
 ];
 
 $sites = get_sites();
+?>
+<h1 class="govuk-heading-l govuk-grid-column-full govuk-!-margin-top-6">Hale site dashboards</h1>
+<div class="govuk-grid-column-full">
+<?php
 foreach ( $sites as $site ) {
     switch_to_blog( $site->blog_id ); ?>
-
-    <div>
-        <?php echo get_bloginfo('name'); ?>
+    <div class="website">
+        <h2 class="website__heading govuk-heading-s"><?php echo get_bloginfo('name'); ?></h2>
 
         <?php
         foreach ($environments as $env) { 
             
-            $env_url = "https://hale-platform-" . $env . ".apps.live.cloud-platform.service.justice.gov.uk/"
-            
+            $env_url = "https://hale-platform-" . $env . ".apps.live.cloud-platform.service.justice.gov.uk/";
+
             ?>
-            <a href="<?php echo $env_url; ?>" class="govuk-button"><?php echo ucfirst($env);?></a>
+            <a href="<?php echo $env_url; ?>" class="website__link website__link--<?php echo $env;?> govuk-link"><?php echo ucfirst($env);?></a>
+            <?php if ($env == "prod") $status = ping("www.google.com", 80, 10); ?>
         <?php
 
         }
-
+            echo $status;
         ?>
     </div>
     <?php
     restore_current_blog();
 }
-
-
+?>
+</div>
+<?php
 get_footer();
 
 
