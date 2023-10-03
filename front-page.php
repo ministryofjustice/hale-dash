@@ -18,8 +18,11 @@ function ping($host, $port, $timeout) {
     }
     
     $tA = microtime(true); 
-    return '<span><strong class="govuk-tag govuk-tag--green">Up '.round((($tA - $tB) * 1000), 0).' ms</strong></span>';
-    return round((($tA - $tB) * 1000), 0)." ms"; 
+    $wait = round((($tA - $tB) * 1000), 0);
+    if ($wait < 50) {
+        return '<span><strong class="govuk-tag govuk-tag--green">Up '.$wait.' ms</strong></span>';
+    }
+    return '<span><strong class="govuk-tag govuk-tag--yellow">Up '.$wait.' ms</strong></span>';
 }
 
 $environments = [
