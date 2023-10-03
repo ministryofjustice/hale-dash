@@ -1,5 +1,9 @@
 <?php
 
+// Enable error reporting and display errors
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 /**
  * Hale Dash theme functions and definitions
  *
@@ -20,13 +24,42 @@ function hale_dash_setup()
 
 add_action('after_setup_theme', 'hale_dash_setup');
 
-function hale_dash_enqueue_styles()
-{
-    wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
-    wp_enqueue_style('child-style', get_stylesheet_directory_uri() . '/style.css', array('parent-style'));
+// function hale_dash_enqueue_styles()
+// {
+//     wp_enqueue_style('hale-dash-style', hale_dash_mix_asset('/css/hale-dash-style.min.css'));
+// }
 
-    // Add your custom CSS styles here
-    wp_enqueue_style('custom-style', get_stylesheet_directory_uri() . '/custom.css', array('child-style'));
+// add_action('wp_enqueue_scripts', 'hale_dash_enqueue_styles');
+
+
+
+add_action( 'wp_enqueue_scripts', 'hale_dash_enqueue_styles' );
+
+
+function hale_dash_enqueue_styles() {
+	wp_enqueue_style( 'hale-dash-style',
+        hale_dash_mix_asset('/css/hale-dash-style.min.css'),
+		array( 'hale-style' ),
+		wp_get_theme()->get( 'Version' ) // This only works if you have Version defined in the style header.
+	);
 }
 
-add_action('wp_enqueue_scripts', 'hale_dash_enqueue_styles');
+
+/**
+ * @param $filename
+ * @return string
+ */
+function hale_dash_mix_asset($filename)
+{
+    $manifest = file_get_contents(get_stylesheet_directory_uri() . '/dist/mix-manifest.json');
+
+    $manifest = json_decode($manifest, true);
+
+    if (!isset($manifest[$filename])) {
+        error_log("Mix asset '$filename' does not exist in manifest.");
+    }
+
+    $x = $manifest;
+
+    return get_stylesheet_uri() . '/dist' . $x;
+}

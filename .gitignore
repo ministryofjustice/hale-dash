@@ -44,6 +44,7 @@ wp-config.php
 # NPM
 node_modules/
 package-lock.json
+dist/
 
 # All plugins
 #
