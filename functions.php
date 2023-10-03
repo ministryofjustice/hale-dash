@@ -1,9 +1,5 @@
 <?php
 
-// Enable error reporting and display errors
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 /**
  * Hale Dash theme functions and definitions
  *
@@ -18,40 +14,34 @@ ini_set('display_errors', 1);
  * runs before the init hook. The init hook is too late for some features, such
  * as indicating support for post thumbnails.
  */
-function hale_dash_setup()
-{
-}
+function hale_dash_setup() {}
 
 add_action('after_setup_theme', 'hale_dash_setup');
-
-
 
 function hale_dash_enqueue_styles() {
 	wp_enqueue_style( 'hale-dash-style',
         hale_dash_mix_asset('/css/hale-dash-style.min.css'),
 		array( 'hale-style' ),
-		wp_get_theme()->get( 'Version' ) // This only works if you have Version defined in the style header.
+		wp_get_theme()->get( 'Version' )
 	);
 }
 
 add_action( 'wp_enqueue_scripts', 'hale_dash_enqueue_styles' );
 
-
 /**
+ * Gett asset path function
+ * 
  * @param $filename
  * @return string
  */
 function hale_dash_mix_asset($filename)
 {
-    $manifest = file_get_contents(get_stylesheet_directory_uri() . '/dist/mix-manifest.json');
-
+    $manifest = file_get_contents(get_theme_file_path() . '/dist/mix-manifest.json');   
     $manifest = json_decode($manifest, true);
 
     if (!isset($manifest[$filename])) {
         error_log("Mix asset '$filename' does not exist in manifest.");
     }
 
-    $x = $manifest;
-
-    return get_stylesheet_uri() . '/dist' . $x;
+    return get_theme_file_uri() . '/dist' . $manifest[$filename];
 }
