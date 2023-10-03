@@ -16,7 +16,17 @@
  */
 function hale_dash_setup()
 {
-  
 }
 
 add_action('after_setup_theme', 'hale_dash_setup');
+
+function hale_dash_enqueue_styles()
+{
+    wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
+    wp_enqueue_style('child-style', get_stylesheet_directory_uri() . '/style.css', array('parent-style'));
+
+    // Add your custom CSS styles here
+    wp_enqueue_style('custom-style', get_stylesheet_directory_uri() . '/custom.css', array('child-style'));
+}
+
+add_action('wp_enqueue_scripts', 'hale_dash_enqueue_styles');
