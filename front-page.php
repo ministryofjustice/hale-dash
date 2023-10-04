@@ -21,6 +21,8 @@ $environments = [
 ];
 
 $sites = get_sites();
+
+echo festiveGreeting(time());
 ?>
 <h1 class="govuk-heading-l govuk-grid-column-full govuk-!-margin-top-6">Hale site dashboards</h1>
 <div class="govuk-grid-column-full">
