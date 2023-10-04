@@ -45,7 +45,7 @@ foreach ( $sites as $site ) {
                 <div class="marcTracker" style="background-image:url(https://hale.docker/wp-content/themes/hale-dash/assets/images/marc.png);"></div>
             <?php
                 if ($env == "prod") {
-                    if (isset($live_urls[trim(get_bloginfo('name'))])) $env_url = $live_urls[get_bloginfo('name')];
+                    if (isset($live_urls[trim(get_bloginfo('name'))])) $env_url = $live_urls[trim(get_bloginfo('name'))];
                     $status = ping($env_url, 80, 10);
                     if (strpos($env_url, "http") === false) $env_url = "https://".$env_url;
                 }
