@@ -67,12 +67,13 @@ function ping($host, $port, $timeout) {
 function get_live_urls() {
     $url["Criminal Cases Review Commission"] = "ccrc.gov.uk";
     $url["Magistrates Recruitment"] = "magistrates.judiciary.uk";
-    $url["Hawlfraint, Recriwtio Ynadon"] = "magistrates.judiciary.uk";
+    $url["Recriwtio Ynadon"] = "magistrates.judiciary.uk";
     $url["Victims Commissioner"] = "victimscommissioner.org.uk";
     $url["Independent Monitoring Boards"] = "imb.org.uk";
     $url["Independent Commission for Reconciliation & Information Recovery"] = "icrir.independent-inquiry.uk";
     $url["Public Defender Service"] = "publicdefenderservice.org.uk";
     $url["Prison and Probation Jobs"] = "prisonandprobationjobs.gov.uk";
+    $url["Brook House Inquiry"] = "brookhouseinquiry.org.uk";
 
     return $url;
 }
