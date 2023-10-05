@@ -20,6 +20,8 @@ $environments = [
     'demo'
 ];
 
+$this_url = get_bloginfo('url');
+
 $sites = get_sites();
 
 echo festiveGreeting(time());
@@ -36,11 +38,14 @@ foreach ( $sites as $site ) {
             ?>
             <h2 class="website__heading__text govuk-heading-s"><?php echo get_bloginfo('name'); ?></h2>
         </div>
+        <?php
+            $short_name = getShortName(get_bloginfo('url'),$this_url)
+        ?>
 
         <?php
         foreach ($environments as $env) { 
             
-            $env_url = "https://hale-platform-" . $env . ".apps.live.cloud-platform.service.justice.gov.uk/";
+            $env_url = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/$short_name";
 
             ?>
             <div class="website__environment <?php if ($marc) echo "marc"; ?>">

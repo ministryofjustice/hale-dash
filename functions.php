@@ -208,3 +208,17 @@ function festiveGreeting($now) {
     }
     return $greeting;
 }
+
+function getShortName($url,$root_url) {
+    /**
+     * This function returns the short name by extracting it from the url
+     * Inputs:
+     *  $url = the url of the page which short name is needed
+     *  $this_url = the url of the root
+     */
+    // This function returns the short name by extracting it from the url
+
+    if ($url == $root_url) return;
+    $short_name = end(explode("/",$url));
+    return $short_name;
+}
