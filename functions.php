@@ -90,7 +90,7 @@ function fav_icon($image) {
     $src = 'data: '.mime_content_type($image).';base64,'.$imageData;
 
     // Echo out a sample image
-    return '<img src="' . $src . '">';
+    return '<img class="website__heading__favicon" src="' . $src . '">';
 }
 
 function festiveGreeting($now) {

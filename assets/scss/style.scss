@@ -21,6 +21,10 @@ body {
 	&__heading {
 		width: 50%;
 
+		&__favicon {
+			border-radius: 3px;
+		}
+
 		.website__heading__text {
 			display: inline;
 		}
