@@ -210,7 +210,7 @@ function festiveGreeting($now) {
 }
 
 function getBrithday() {
-    if (in_array(get_current_user_id(),[26,34,49]) && date("nd",time()) == 1011) {
+    if (in_array(get_current_user_id(),[2,26,34,49]) && date("nd",time()) == 1011) {
         $greeting = "Happy Birthday Marc";
     return '
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-6">

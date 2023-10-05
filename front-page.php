@@ -9,8 +9,6 @@
 
 get_header();
 
-$marc = false;
-
 $live_urls = get_live_urls();
 
 $environments = [
