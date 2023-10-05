@@ -209,16 +209,28 @@ function festiveGreeting($now) {
     return $greeting;
 }
 
-function getShortName($url,$root_url) {
-    /**
-     * This function returns the short name by extracting it from the url
-     * Inputs:
-     *  $url = the url of the page which short name is needed
-     *  $this_url = the url of the root
-     */
-    // This function returns the short name by extracting it from the url
-
-    if ($url == $root_url) return;
-    $short_name = end(explode("/",$url));
-    return $short_name;
+function getBrithday() {
+    if (in_array(get_current_user_id(),[26,34,49]) && date("nd",time()) == 1011) {
+        $greeting = "Happy Birthday Marc";
+    return '
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-6">
+            <div class="govuk-notification-banner govuk-notification-banner--success"
+                aria-labelledby="govuk-notification-banner-title"
+                data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Greetings
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                <div class="birthday-logo" style="background-image:url(https://hale.docker/wp-content/themes/hale-dash/assets/images/marc.png);"></div>
+                    <h3 class="govuk-notification-banner__heading" style="display:inline-block;">
+                        '.$greeting.'
+                    </h3>
+                    <div class="birthday-logo" style="background-image:url(https://hale.docker/wp-content/themes/hale-dash/assets/images/marc.png);"></div>
+                </div>
+            </div>
+        </div>
+    ';
+    }
 }

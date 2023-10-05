@@ -29,23 +29,14 @@ body {
 			display: inline;
 		}
 	}
-
-	&__environment {
-		position: relative;
-
-		&.marc .marcTracker {
-			display: block;
-		}
-	}
 }
 
-.marcTracker {
-	display: none;
-	position: absolute;
+.birthday-logo {
+	display: inline-block;
 	width: 25px;
 	height: 25px;
-	left: -27px;
-	top:-3px;
+	position: relative;
+	top: 4px;
 	background-size: contain;
 	border-radius: 25px;
 }
