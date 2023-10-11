@@ -226,3 +226,8 @@ function getBrithday() {
     ';
     }
 }
+
+/**
+ * Key computed metrics to display on the dashboard
+ */
+require get_stylesheet_directory() . '/inc/dashboard-metrics.php';

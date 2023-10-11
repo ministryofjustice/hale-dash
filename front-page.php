@@ -25,7 +25,19 @@ $sites = get_sites();
 echo festiveGreeting(time());
 echo getBrithday();
 ?>
-<h1 class="govuk-heading-l govuk-grid-column-full govuk-!-margin-top-6">Hale site dashboards</h1>
+<h1 class="govuk-heading-l govuk-grid-column-full govuk-!-margin-top-6">Platform metrics</h1>
+
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+      <h2 class="gem-c-heading gem-c-heading--font-size-27">Sites hosted on the platform</h2>
+        <span class="govuk-heading-xl"><?php echo get_site_count(); ?></span>
+      </div>
+    </div>
+  </main>
+</div>
+
 <div class="govuk-grid-column-full">
 <?php
 foreach ( $sites as $site ) {
