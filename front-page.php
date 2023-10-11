@@ -40,7 +40,13 @@ foreach ( $sites as $site ) {
         <?php
         foreach ($environments as $env) { 
             
-            $env_url = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/$short_name";
+            $site_path_slug = "";
+            
+            if ( get_option( 'site_path_slug' ) ) {
+                $site_path_slug = get_option('site_path_slug');
+            }
+
+            $env_url = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
 
             ?>
             <div class="website__environment">
