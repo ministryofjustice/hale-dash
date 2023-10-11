@@ -48,20 +48,11 @@ function hale_dash_mix_asset($filename)
 
 function ping($host, $port, $timeout) {
     // Copied from https://stackoverflow.com/questions/1239068/ping-site-and-return-result-in-php
-    $tB = microtime(true);
     $fP = fSockOpen($host, $port, $errno, $errstr, $timeout);
     if (!$fP) {
-        return '<span class="website__up-down"><strong class="govuk-tag govuk-tag--red">Down</strong></span>';
+        return '<span class="website__up-down"><strong class="govuk-tag govuk-tag--grey">Private</strong></span>';
     }
-
-    $tA = microtime(true);
-    $wait = round((($tA - $tB) * 1000), 0);
-    if ($wait < 50) {
-        return '<span class="website__up-down"><strong class="govuk-tag govuk-tag--green">Good</strong></span>';
-    }
-    return '<span class="website__up-down"><strong class="govuk-tag govuk-tag--yellow">Okay</strong></span>';
-    // below will shew time taken in MS
-    return '<span class="website__up-down"><strong class="govuk-tag govuk-tag--blue">Up '.$wait.' ms</strong></span>';
+    return '<span class="website__up-down"><strong class="govuk-tag">Public</strong></span>';
 }
 
 function get_live_urls() {
