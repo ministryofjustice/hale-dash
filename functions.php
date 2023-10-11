@@ -71,6 +71,7 @@ function get_live_urls() {
     $url["Recriwtio Ynadon"] = "magistrates.judiciary.uk";
     $url["Victims Commissioner"] = "victimscommissioner.org.uk";
     $url["Independent Monitoring Boards"] = "imb.org.uk";
+    $url["National Preventive Mechanism"] = "nationalpreventivemechanism.org.uk";
     $url["Independent Commission for Reconciliation &amp; Information Recovery"] = "icrir.independent-inquiry.uk";
     $url["Public Defender Service"] = "publicdefenderservice.org.uk";
     $url["Prison and Probation Jobs"] = "prisonandprobationjobs.gov.uk";
