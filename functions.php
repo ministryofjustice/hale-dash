@@ -71,18 +71,21 @@ function get_live_urls() {
     return $url;
 }
 
-function fav_icon($image) {
-    // From https://stackoverflow.com/questions/5701593/how-to-get-a-websites-favicon-with-php
-    // Read image path, convert to base64 encoding
-    $imageData = base64_encode(file_get_contents($image));
+function fav_icon($image, $google = false) {
+    $src = $image;
 
-    if (empty($imageData)) return;
+    if ($google) {
+        // From https://stackoverflow.com/questions/5701593/how-to-get-a-websites-favicon-with-php
+        // Read image path, convert to base64 encoding
+        $imageData = base64_encode(file_get_contents($image));
 
-    // Format the image SRC:  data:{mime};base64,{data};
-    $src = 'data: '.mime_content_type($image).';base64,'.$imageData;
+        if (empty($imageData)) return;
 
-    // Echo out a sample image
-    return '<img class="website__heading__favicon" src="' . $src . '">';
+        // Format the image SRC:  data:{mime};base64,{data};
+        $src = 'data: '.mime_content_type($image).';base64,'.$imageData;
+    }
+
+    return '<img class="website__favicon" src="' . $src . '" alt=""/>';
 }
 
 function festiveGreeting($now) {

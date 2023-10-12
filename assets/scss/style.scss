@@ -3,27 +3,26 @@
 	padding: 0 15px;
 }
 
-body {
-    background-color: aqua;
-}
-
 .website {
 	display: flex;
     justify-content: space-between;
 	border-bottom: 1px solid #b1b4b6;
 	padding-bottom: 1rem;
 	margin-bottom: 1rem;
+	align-items: center;
 
 	&__up-down {
 		width:120px;
 	}
 
+	&__favicon {
+		border-radius: 3px;
+		width: 16px;
+		margin-right: 6px;
+	}
+
 	&__heading {
 		width: 50%;
-
-		&__favicon {
-			border-radius: 3px;
-		}
 
 		.website__heading__text {
 			display: inline;
