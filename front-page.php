@@ -44,7 +44,7 @@ foreach ( $sites as $site ) {
             echo $icon;
             if ($site->blog_id == "1") {
                 echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
-                echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0'>This site</p>";
+                echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This site</p>";
             } else {
                 echo "<h2 class='website__heading__text govuk-heading-s'>$site_name</h2>";
             }

@@ -23,10 +23,15 @@
 
 	&__heading {
 		width: 50%;
+		text-indent: -22px;
+		margin-left: 22px;
 
 		.website__heading__text {
 			display: inline;
 		}
+	}
+	&__explanation {
+		margin-left: 22px;
 	}
 }
 
