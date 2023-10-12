@@ -30,7 +30,7 @@ echo getBrithday();
 <?php
 foreach ( $sites as $site ) {
     switch_to_blog( $site->blog_id );
-    $site_name = get_bloginfo('name');
+    $site_name = trim(get_bloginfo('name'));
     ?>
     <div class="website">
         <div class="website__heading">
