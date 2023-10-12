@@ -31,13 +31,17 @@ echo getBrithday();
 foreach ( $sites as $site ) {
     switch_to_blog( $site->blog_id );
     $site_name = trim(get_bloginfo('name'));
+    $iconSrc = get_site_icon_url();
+    if (!empty($iconSrc)) {
+        $icon = fav_icon($iconSrc);
+    } else {
+        $icon = fav_icon("http://www.google.com/s2/favicons?domain=".$live_urls[$site_name], true);
+    }
     ?>
     <div class="website">
         <div class="website__heading">
             <?php
-                if (isset($live_urls[$site_name])) echo fav_icon("http://www.google.com/s2/favicons?domain=".$live_urls[$site_name]);
-            ?>
-            <?php
+            echo $icon;
             if ($site_name == "Hale Platform" || $site_name == "Root site") {
                 echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
                 echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0'>This site</p>";

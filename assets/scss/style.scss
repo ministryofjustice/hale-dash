@@ -15,12 +15,14 @@
 		width:120px;
 	}
 
+	&__favicon {
+		border-radius: 3px;
+		width: 16px;
+		margin-right: 6px;
+	}
+
 	&__heading {
 		width: 50%;
-
-		&__favicon {
-			border-radius: 3px;
-		}
 
 		.website__heading__text {
 			display: inline;
