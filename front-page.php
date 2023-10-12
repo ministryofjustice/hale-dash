@@ -25,6 +25,7 @@ $sites = get_sites();
 echo festiveGreeting(time());
 echo getBrithday();
 ?>
+
 <h1 class="govuk-heading-l govuk-grid-column-full govuk-!-margin-top-6">Platform metrics</h1>
 <main class="govuk-main-wrapper">
 <div class="govuk-width-container">
@@ -62,13 +63,28 @@ echo getBrithday();
 <div class="govuk-grid-column-full">
 <?php
 foreach ( $sites as $site ) {
-    switch_to_blog( $site->blog_id ); ?>
+    switch_to_blog( $site->blog_id );
+    $site_name = trim(get_bloginfo('name'));
+    $iconSrc = get_site_icon_url();
+    if (!empty($iconSrc)) {
+        $icon = fav_icon($iconSrc);
+    } else {
+        $icon = fav_icon("http://www.google.com/s2/favicons?domain=".$live_urls[$site_name], true);
+    }
+    ?>
     <div class="website">
         <div class="website__heading">
             <?php
-                if (isset($live_urls[get_bloginfo('name')])) echo fav_icon("http://www.google.com/s2/favicons?domain=".$live_urls[get_bloginfo('name')]);
+            echo $icon;
+            if ($site_name == "Hale Platform" || $site_name == "Root site") {
+                echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
+                echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0'>This site</p>";
+            } else {
+                echo "<h2 class='website__heading__text govuk-heading-s'>$site_name</h2>";
+            }
             ?>
-            <h2 class="website__heading__text govuk-heading-s"><?php echo get_bloginfo('name'); ?></h2>
+            
+            </h2>
         </div>
         <?php
         foreach ($environments as $env) { 
@@ -85,7 +101,7 @@ foreach ( $sites as $site ) {
             <div class="website__environment">
             <?php
                 if ($env == "prod") {
-                    if (isset($live_urls[trim(get_bloginfo('name'))])) $env_url = $live_urls[trim(get_bloginfo('name'))];
+                    if (isset($live_urls[trim($site_name)])) $env_url = $live_urls[trim($site_name)];
                     $status = ping($env_url, 80, 10);
                     if (strpos($env_url, "http") === false) $env_url = "https://".$env_url;
                 }
