@@ -19,7 +19,6 @@ $environments = [
 ];
 
 $this_url = get_bloginfo('url');
-
 $sites = get_sites();
 
 echo festiveGreeting(time());
@@ -28,7 +27,7 @@ echo getBrithday();
 <h1 class="govuk-heading-l govuk-grid-column-full govuk-!-margin-top-6">Platform metrics</h1>
 <main class="govuk-main-wrapper">
 <div class="govuk-width-container">
-
+    
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-third">
       <h2 class="gem-c-heading gem-c-heading--font-size-27">Sites hosted on the platform</h2>
@@ -86,7 +85,15 @@ foreach ( $sites as $site ) {
             <?php
                 if ($env == "prod") {
                     if (isset($live_urls[trim(get_bloginfo('name'))])) $env_url = $live_urls[trim(get_bloginfo('name'))];
-                    $status = ping($env_url, 80, 10);
+                    
+                        if (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site->blog_id)) {
+                            // Plugin is active on the specified site.
+                            $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--grey">Private</strong></span>';
+                        } else {
+                            // Plugin is inactive on the specified site.
+                            $status = '<span class="website__up-down"><strong class="govuk-tag">Public</strong></span>';
+                        }
+
                     if (strpos($env_url, "http") === false) $env_url = "https://".$env_url;
                 }
                 echo "<a href='$env_url' class='website__environment__link website__environment__link--$env govuk-link'>".ucfirst($env)."</a>";
