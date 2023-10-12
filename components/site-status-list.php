@@ -29,14 +29,20 @@ $this_url = get_bloginfo('url');
 
 foreach ($sites as $site) {
     switch_to_blog($site->blog_id);
+    $site_name = get_bloginfo('name');
     $icon = get_fav_icon(get_site_icon_url());
     ?>
     <div class="website">
         <div class="website__heading">
             <?php
                 echo $icon;
+                if ($site->blog_id == "1") {
+                    echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
+                    echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
+                } else {
+                    echo "<h2 class='website__heading__text govuk-heading-s'>$site_name</h2>";
+                }
             ?>
-            <h2 class="website__heading__text govuk-heading-s"><?php echo get_bloginfo('name'); ?></h2>
         </div>
         <?php
         foreach ($environments as $env) {
