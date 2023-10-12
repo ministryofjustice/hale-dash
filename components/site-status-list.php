@@ -29,13 +29,12 @@ $this_url = get_bloginfo('url');
 
 foreach ($sites as $site) {
     switch_to_blog($site->blog_id);
+    $icon = get_fav_icon(get_site_icon_url());
     ?>
     <div class="website">
         <div class="website__heading">
             <?php
-            if (isset($live_urls[get_bloginfo('name')])) {
-                //echo fav_icon("http://www.google.com/s2/favicons?domain=" . $live_urls[get_bloginfo('name')]);
-            }
+                echo $icon;
             ?>
             <h2 class="website__heading__text govuk-heading-s"><?php echo get_bloginfo('name'); ?></h2>
         </div>
