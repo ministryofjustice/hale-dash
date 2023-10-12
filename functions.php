@@ -46,36 +46,20 @@ function hale_dash_mix_asset($filename)
     return get_theme_file_uri() . '/dist' . $manifest[$filename];
 }
 
+// function fav_icon($image) {
+    
+//     // From https://stackoverflow.com/questions/5701593/how-to-get-a-websites-favicon-with-php
+//     // Read image path, convert to base64 encoding
+//     $imageData = base64_encode(file_get_contents($image));
 
-function get_live_urls() {
-    $url["Criminal Cases Review Commission"] = "ccrc.gov.uk";
-    $url["Magistrates Recruitment"] = "magistrates.judiciary.uk";
-    $url["Hawlfraint, Recriwtio Ynadon"] = "magistrates.judiciary.uk";
-    $url["Recriwtio Ynadon"] = "magistrates.judiciary.uk";
-    $url["Victims Commissioner"] = "victimscommissioner.org.uk";
-    $url["Independent Monitoring Boards"] = "imb.org.uk";
-    $url["National Preventive Mechanism"] = "nationalpreventivemechanism.org.uk";
-    $url["Independent Commission for Reconciliation &amp; Information Recovery"] = "icrir.independent-inquiry.uk";
-    $url["Public Defender Service"] = "publicdefenderservice.org.uk";
-    $url["Prison and Probation Jobs"] = "prisonandprobationjobs.gov.uk";
-    $url["Brook House Inquiry"] = "brookhouseinquiry.org.uk";
+//     if (empty($imageData)) return;
 
-    return $url;
-}
+//     // Format the image SRC:  data:{mime};base64,{data};
+//     $src = 'data: '.mime_content_type($image).';base64,'.$imageData;
 
-function fav_icon($image) {
-    // From https://stackoverflow.com/questions/5701593/how-to-get-a-websites-favicon-with-php
-    // Read image path, convert to base64 encoding
-    $imageData = base64_encode(file_get_contents($image));
-
-    if (empty($imageData)) return;
-
-    // Format the image SRC:  data:{mime};base64,{data};
-    $src = 'data: '.mime_content_type($image).';base64,'.$imageData;
-
-    // Echo out a sample image
-    return '<img class="website__heading__favicon" src="' . $src . '">';
-}
+//     // Echo out a sample image
+//     return '<img class="website__heading__favicon" src="' . $src . '">';
+// }
 
 /**
  * Check if plugin is active or not
