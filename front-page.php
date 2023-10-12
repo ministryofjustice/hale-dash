@@ -26,3 +26,4 @@ echo getBrithday();
 
 <?php
 get_footer();
+
