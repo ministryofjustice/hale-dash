@@ -42,7 +42,7 @@ foreach ( $sites as $site ) {
         <div class="website__heading">
             <?php
             echo $icon;
-            if ($site_name == "Hale Platform" || $site_name == "Root site") {
+            if ($site->blog_id == "1") {
                 echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
                 echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0'>This site</p>";
             } else {
