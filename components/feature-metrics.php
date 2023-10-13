@@ -1,15 +1,20 @@
+<?php
+    // Next site to go live details
+    $next_site_name = "Prisons and Probation Ombudsman (PPO)";
+    $next_site_url = "https://www.ppo.gov.uk/";
+?>
 <div class="govuk-width-container">
-    <div class="govuk-grid-row">
+    <div class="govuk-grid-row govuk-!-margin-bottom-9">
         <div class="govuk-grid-column-one-third">
-            <h2 class="gem-c-heading gem-c-heading--font-size-27">Sites hosted on the platform</h2>
+            <h2 class="govuk-heading-m">Sites hosted</h2>
             <span class="govuk-heading-xl"><?php echo get_site_count(); ?></span>
         </div>
         <div class="govuk-grid-column-one-third">
-            <h2 class="gem-c-heading gem-c-heading--font-size-27">Site monitoring and performance</h2>
+            <h2 class="govuk-heading-m">Site monitoring and performance</h2>
             <a href="https://github.com/ministryofjustice/hale-platform/actions/workflows/cd.yaml">
                 <img src="https://github.com/ministryofjustice/hale-platform/actions/workflows/cd.yaml/badge.svg?branch=main" alt="Hale Platform Deployment">
             </a>
-            <ul class="govuk-list govuk-!-margin-bottom-9">
+            <ul class="govuk-list">
                 <li>
                     <a href="https://github.com/ministryofjustice/hale-platform">Hale Platform GitHub repository</a>
                 </li>
@@ -22,8 +27,9 @@
             </ul>    
         </div>
         <div class="govuk-grid-column-one-third">
-            <h2 class="gem-c-heading gem-c-heading--font-size-27">Next site to go live:</h2>
-            <p> Prisons and Probation Ombudsman (PPO) - <a href="https://www.ppo.gov.uk/">https://www.ppo.gov.uk/</a></p>
+            <h2 class="govuk-heading-m">Next site to go live</h2>
+            <p><?php echo $next_site_name;?></p>
+            <p><a href="<?php echo $next_site_url;?>"><?php echo $next_site_url;?></a></p>
         </div>
     </div>
 </div>
