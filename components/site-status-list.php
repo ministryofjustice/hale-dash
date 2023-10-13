@@ -11,8 +11,7 @@ $environments = [
 function get_live_urls() {
     $url["Criminal Cases Review Commission"] = "ccrc.gov.uk";
     $url["Magistrates Recruitment"] = "magistrates.judiciary.uk";
-    $url["Hawlfraint, Recriwtio Ynadon"] = "magistrates.judiciary.uk";
-    $url["Recriwtio Ynadon"] = "magistrates.judiciary.uk";
+    $url["Recriwtio Ynadon"] = "https://magistrates.judiciary.uk/cymraeg/";
     $url["Victims Commissioner"] = "victimscommissioner.org.uk";
     $url["Independent Monitoring Boards"] = "imb.org.uk";
     $url["National Preventive Mechanism"] = "nationalpreventivemechanism.org.uk";
