@@ -30,6 +30,7 @@ foreach ($sites as $site) {
     switch_to_blog($site->blog_id);
     $site_name = get_bloginfo('name');
     $icon = get_fav_icon(get_site_icon_url());
+    $lang = get_option('WPLANG');
     ?>
     <div class="website">
         <div class="website__heading">
@@ -40,7 +41,7 @@ foreach ($sites as $site) {
                     echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
                 } else {
                     echo "<h2 class='website__heading__text govuk-heading-s'>$site_name</h2>";
-                    echo get_language(get_bloginfo("language"));
+                    echo get_language($lang);
                 }
             ?>
         </div>
