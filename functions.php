@@ -87,11 +87,9 @@ require get_stylesheet_directory() . '/inc/notification-banner.php';
 
 function get_language($code) {
     if ($code == "cy" || $code == "cy_GB") {
-        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Welsh Site 🏴󠁧󠁢󠁷󠁬󠁳󠁿</p>";
-    } elseif ($code == "en_US") {
+        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Welsh site 🏴󠁧󠁢󠁷󠁬󠁳󠁿</p>";
+    } elseif ($code == "en_US" || empty($code)) { //WP uses "" to denote en-US
         return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>US English 🇺🇸</p>";
-    } elseif (empty($code)) {
-        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>No language set</p>";
     } elseif ($code != "en_GB" && $code != "en") {
         return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Language: $code</p>";
     }

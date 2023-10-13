@@ -31,6 +31,10 @@ foreach ($sites as $site) {
     $site_name = get_bloginfo('name');
     $icon = get_fav_icon(get_site_icon_url());
     $lang = get_option('WPLANG');
+    $main_lang = get_locale();
+    $site_lang_attribute = "";
+    if ($lang != $main_lang) $site_lang_attribute = "lang='$lang'";
+    if ($lang == "") $site_lang_attribute = "lang=en-US"; //WP uses "" to denote en-US
     ?>
     <div class="website">
         <div class="website__heading">
@@ -40,7 +44,7 @@ foreach ($sites as $site) {
                     echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
                     echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
                 } else {
-                    echo "<h2 class='website__heading__text govuk-heading-s'>$site_name</h2>";
+                    echo "<h2 $site_lang_attribute class='website__heading__text govuk-heading-s'>$site_name</h2>";
                     echo get_language($lang);
                 }
             ?>
