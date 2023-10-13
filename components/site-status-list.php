@@ -59,7 +59,6 @@ foreach ($sites as $site) {
             }
 
             $env_url = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
-            $prod_login = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/hale-wpms-2020";
             
             ?>
             <div class="website__environment">
