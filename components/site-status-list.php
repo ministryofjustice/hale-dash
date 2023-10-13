@@ -67,7 +67,10 @@ foreach ($sites as $site) {
                         $env_url = $live_urls[trim(get_bloginfo('name'))];
                     }
                     
-                    if (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site->blog_id)) {
+                    if ($site_name == $next_site_name) {
+                        // Plugin matches next site name.
+                        $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--turquoise">Next</strong></span>';
+                    } elseif (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site->blog_id)) {
                         // Plugin is active on the specified site.
                         $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--grey">Private</strong></span>';
                     } else {

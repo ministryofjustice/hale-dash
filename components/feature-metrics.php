@@ -1,6 +1,7 @@
 <?php
     // Next site to go live details
-    $next_site_name = "Prisons and Probation Ombudsman (PPO)";
+    $next_site_name = "Prisons and Probation Ombudsman"; // match site name on Hale
+    $next_site_abbr = "(PPO)";
     $next_site_url = "https://www.ppo.gov.uk/";
 ?>
 <div class="govuk-width-container">
@@ -39,8 +40,15 @@
         </div>
         <div class="govuk-grid-column-one-half">
             <h2 class="govuk-heading-m">Next site to go live</h2>
-            <p><?php echo $next_site_name;?></p>
-            <p><a href="<?php echo $next_site_url;?>"><?php echo $next_site_url;?></a></p>
+            <p class="govuk-body">
+                <?php echo $next_site_name;?>
+                <?php echo $next_site_abbr;?>
+            </p>
+            <p class="govuk-body">
+                <a href="<?php echo $next_site_url;?>">
+                    <?php echo $next_site_url;?>
+                </a>
+            </p>
         </div>
     </div>
 </div>
