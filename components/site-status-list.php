@@ -89,6 +89,12 @@ foreach ($sites as $site) {
         }
         echo $status;
         ?>
+        <div class="website__users">
+            <?php
+                $user_count = count_users()['total_users'];
+                if ($user_count) echo $user_count." users";
+            ?>
+        </div>
     </div>
     <?php
     restore_current_blog();
