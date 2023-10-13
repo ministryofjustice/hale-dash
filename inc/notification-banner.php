@@ -1,6 +1,8 @@
 <?php
 
 function festiveGreeting($now) {
+    if (date('D d', $now) == "Fri 13")
+        $friday_13th = "🙂 Happy Friday 13<sup>th</sup> 🙂";
     $date = date('nd', $now);
     $greeting = "";
     switch ($date) {
@@ -92,6 +94,13 @@ function festiveGreeting($now) {
         case 1226:
             $greeting = "📦 Happy Boxing Day 📦";
             break;
+    }
+    if (isset($friday_13th)) {
+        if (!empty($greeting)) {
+            $greeting.="<br />".$friday_13th;
+        } else {
+            $greeting=$friday_13th;
+        }
     }
     if ($greeting !="") {
         $greeting = '
