@@ -86,11 +86,13 @@ require get_stylesheet_directory() . '/inc/dashboard-metrics.php';
 require get_stylesheet_directory() . '/inc/notification-banner.php';
 
 function get_language($code) {
-    if ($code == "cy" || $code == "cy-GB") {
+    if ($code == "cy" || $code == "cy_GB") {
         return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Welsh Site 🏴󠁧󠁢󠁷󠁬󠁳󠁿</p>";
-    } elseif ($code == "en-US") {
+    } elseif ($code == "en_US") {
         return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>US English 🇺🇸</p>";
-    } elseif ($code != "en-GB" && $code != "en") {
+    } elseif (empty($code)) {
+        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>No language set</p>";
+    } elseif ($code != "en_GB" && $code != "en") {
         return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Language: $code</p>";
     }
 }
