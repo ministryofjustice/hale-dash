@@ -40,6 +40,7 @@ foreach ($sites as $site) {
                     echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
                 } else {
                     echo "<h2 class='website__heading__text govuk-heading-s'>$site_name</h2>";
+                    echo get_language(get_bloginfo("language"));
                 }
             ?>
         </div>

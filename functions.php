@@ -84,3 +84,13 @@ require get_stylesheet_directory() . '/inc/dashboard-metrics.php';
  * All functions needed for the various notification banners we add ie birthday, events etc
  */
 require get_stylesheet_directory() . '/inc/notification-banner.php';
+
+function get_language($code) {
+    if ($code == "cy" || $code == "cy-GB") {
+        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Welsh Site 🏴󠁧󠁢󠁷󠁬󠁳󠁿</p>";
+    } elseif ($code == "en-US") {
+        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>US English 🇺🇸</p>";
+    } elseif ($code != "en-GB" && $code != "en") {
+        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Language: $code</p>";
+    }
+}
