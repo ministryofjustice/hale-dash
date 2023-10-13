@@ -59,6 +59,8 @@ foreach ($sites as $site) {
             }
 
             $env_url = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
+            $prod_login = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/hale-wpms-2020";
+            
             ?>
             <div class="website__environment">
                 <?php
@@ -82,7 +84,20 @@ foreach ($sites as $site) {
                         $env_url = "https://" . $env_url;
                     }
                 }
-                echo "<a href='$env_url' class='website__environment__link website__environment__link--$env govuk-link'>" . ucfirst($env) . "</a>";
+
+                // Add in the "login" link to prod
+                $linkIteration = false;
+
+                if ($env == 'prod') {
+                   $envLink = ucfirst($env) . ' | ' . '<a href="' . $env_url . '/hale-wpms-2020' . '">login</a>';
+                   $linkIteration = true;
+                }
+
+                if (!$linkIteration) {
+                    $envLink = ucfirst($env);
+                }
+
+                echo "<a href='$env_url' class='website__environment__link website__environment__link--$env govuk-link'>" . $envLink . "</a>";
                 ?>
             </div>
             <?php
