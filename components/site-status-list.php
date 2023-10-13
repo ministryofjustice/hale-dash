@@ -88,7 +88,7 @@ foreach ($sites as $site) {
                 $linkIteration = false;
 
                 if ($env == 'prod') {
-                   $envLink = ucfirst($env) . ' | ' . '<a href="' . $env_url . '/hale-wpms-2020' . '">login</a>';
+                   $envLink = ucfirst($env) . '</a> | ' . '<a href="' . $env_url . '/hale-wpms-2020' . '">login</a>';
                    $linkIteration = true;
                 }
 
