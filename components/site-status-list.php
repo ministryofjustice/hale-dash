@@ -89,7 +89,7 @@ foreach ($sites as $site) {
                 $login_link = "";
 
                 if ($env == 'prod') {
-                   $login_link = " | <a href='$env_url'/hale-wpms-2020'>Login</a>";
+                   $login_link = " | <a href='$env_url/hale-wpms-2020'>Login</a>";
                 }
 
                 echo $env_link . $login_link;
