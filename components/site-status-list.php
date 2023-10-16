@@ -85,15 +85,14 @@ foreach ($sites as $site) {
                 }
 
                 // Add in the "login" link to prod
-                $envLink = ucfirst($env);
+                $env_link = "<a href='$env_url' class='website__environment__link website__environment__link--$env govuk-link'>" . ucfirst($env) . "</a>";
                 $login_link = "";
 
                 if ($env == 'prod') {
-                   $envLink = ucfirst($env) . '</a> | ' . '<a href="' . $env_url . '/hale-wpms-2020' . '">login</a>';
-                   $linkIteration = true;
+                   $login_link = " | <a href='$env_url'/hale-wpms-2020'>Login</a>";
                 }
 
-                echo "<a href='$env_url' class='website__environment__link website__environment__link--$env govuk-link'>" . $envLink . "</a>" . $login_link;
+                echo $env_link . $login_link;
                 ?>
             </div>
             <?php
