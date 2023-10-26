@@ -19,6 +19,7 @@ function get_live_urls() {
     $url["Public Defender Service"] = "publicdefenderservice.org.uk";
     $url["Prison and Probation Jobs"] = "prisonandprobationjobs.gov.uk";
     $url["Brook House Inquiry"] = "brookhouseinquiry.org.uk";
+    $url["Law Commission"] = "lawcom.gov.uk";
 
     return $url;
 }
