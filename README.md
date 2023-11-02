@@ -6,4 +6,4 @@ A WordPress child theme to the [Hale theme](https://github.com/ministryofjustice
 
 ## Installation
 
-Add this repo to the /themes directory in a WordPress installation that is running the Hale theme. Activate the theme
+Add this repo to the /themes directory in a WordPress installation that is running the Hale theme. Activate the theme.
