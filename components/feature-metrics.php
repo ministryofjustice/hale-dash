@@ -34,7 +34,7 @@
                     <a href="https://logs.cloud-platform.service.justice.gov.uk/_dashboards/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:b95d8900-dd15-11ed-87c8-170407f57c9c,interval:auto,query:(language:kuery,query:''),sort:!())">Ingress logs</a>
                 </li>
                 <li>
-                    <a href="https://cloud-platform-e218f50a4812967ba1215eaecede923f.s3.amazonaws.com/feed-parser/feeds.json">Job Feed JSON</a>
+                    <a href="https://cloud-platform-e218f50a4812967ba1215eaecede923f.s3.amazonaws.com/feed-parser/feeds.json">Job Feed Parser JSON</a>
                 </li>
             </ul>    
         </div>
