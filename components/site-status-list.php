@@ -20,6 +20,8 @@ function get_live_urls() {
     $url["Prison and Probation Jobs"] = "prisonandprobationjobs.gov.uk";
     $url["Brook House Inquiry"] = "brookhouseinquiry.org.uk";
     $url["Law Commission"] = "lawcom.gov.uk";
+    $url["Justice Jobs"] = "jobs.justice.gov.uk";
+    $url["Prisons &amp; Probation Ombudsman"] = "ppo.gov.uk";
 
     return $url;
 }
