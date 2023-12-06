@@ -24,6 +24,7 @@ function get_live_urls() {
     $url["Prisons &amp; Probation Ombudsman"] = "ppo.gov.uk";
     $url["Lay Observers"] = "layobservers.org";
     $url["Standing International Forum of Commercial Courts"] = "sifocc.org";
+    $url["Victim and Witness Information"] = "victimandwitnessinformation.org.uk";
 
     return $url;
 }
