@@ -25,6 +25,9 @@ function get_live_urls() {
     $url["Lay Observers"] = "layobservers.org";
     $url["Standing International Forum of Commercial Courts"] = "sifocc.org";
     $url["Victim and Witness Information"] = "victimandwitnessinformation.org.uk";
+    $url["New Futures Network"] = "newfuturesnetwork.gov.uk";
+    $url["Omagh Bombing Inquiry"] = "https://omagh.independent-inquiry.uk/";
+    $url["Gwybodaeth i Ddioddefwyr a Thystion"] = "https://cym.victimandwitnessinformation.org.uk/";
 
     return $url;
 }
