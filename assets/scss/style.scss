@@ -3,6 +3,10 @@
 	padding: 0 15px;
 }
 
+.gds-version::before {
+	content: var(--govuk-frontend-version);
+}
+
 .website {
 	display: flex;
     justify-content: space-between;
@@ -23,8 +27,10 @@
 	}
 
 	&__users {
-		width:70px;
-		text-align: right;
+		width:100px;
+		text-align: center;
+		margin-right:0.3rem;
+		line-height: 1.55;
 	}
 
 	&__favicon {
@@ -44,6 +50,27 @@
 	}
 	&__explanation {
 		margin-left: 22px;
+	}
+
+	&__technical {
+		width: 180px;
+		font-size: 16px;
+		color: #505a5f;
+	}
+	&__slug {
+		color: #d13118;
+		background-color: #f3f2f1;
+		padding: 0 0.2rem;
+		font-size: 14px;
+		white-space: nowrap;
+	}
+	&__warning {
+		background: #fff;
+		padding: 0 22px 22px;
+		font-size: 19px;
+		margin: -30px 0 22px;
+		line-height: 1.6;
+		border-bottom: 1px solid #b1b4b6;
 	}
 }
 

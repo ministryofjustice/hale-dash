@@ -6,15 +6,19 @@
 ?>
 <div class="govuk-width-container">
     <div class="govuk-grid-row govuk-!-margin-bottom-9">
-        <div class="govuk-grid-column-one-third">
+        <div class="govuk-grid-column-one-half">
             <h2 class="govuk-heading-m">Sites hosted</h2>
             <span class="govuk-heading-xl"><?php echo get_site_count(); ?></span>
         </div>
-        <div class="govuk-grid-column-one-third">
+        <div class="govuk-grid-column-one-half">
             <h2 class="govuk-heading-m">WordPress version</h2>
             <span class="govuk-heading-xl"><?php echo get_bloginfo("version"); ?></span>
         </div>
-        <div class="govuk-grid-column-one-third">
+        <div class="govuk-grid-column-one-half">
+            <h2 class="govuk-heading-m">GDS Design System version</h2>
+            <span class="govuk-heading-xl gds-version"></span>
+        </div>
+        <div class="govuk-grid-column-one-half">
             <h2 class="govuk-heading-m">PHP version</h2>
             <span class="govuk-heading-xl"><?php echo phpversion(); ?></span>
         </div>

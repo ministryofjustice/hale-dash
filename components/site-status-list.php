@@ -36,12 +36,15 @@ $live_urls = get_live_urls();
 $this_url = get_bloginfo('url');
 
 foreach ($sites as $site) {
-    switch_to_blog($site->blog_id);
+    $site_id = $site->blog_id;
+    $site_url = get_site_url($site_id);
+    switch_to_blog($site_id);
     $site_name = get_bloginfo('name');
     $icon = get_fav_icon(get_site_icon_url());
     $lang = get_option('WPLANG');
     $main_lang = get_locale();
     $site_lang_attribute = "";
+    $warning = "";
     if ($lang != $main_lang) $site_lang_attribute = "lang='$lang'";
     if ($lang == "") $site_lang_attribute = "lang=en-US"; //WP uses "" to denote en-US
     ?>
@@ -49,7 +52,7 @@ foreach ($sites as $site) {
         <div class="website__heading">
             <?php
                 echo $icon;
-                if ($site->blog_id == "1") {
+                if ($site_id == "1") {
                     echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
                     echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
                 } else {
@@ -57,6 +60,7 @@ foreach ($sites as $site) {
                     echo get_language($lang);
                 }
             ?>
+
         </div>
         <?php
         foreach ($environments as $env) {
@@ -73,14 +77,17 @@ foreach ($sites as $site) {
             <div class="website__environment">
                 <?php
                 if ($env == "prod") {
-                    if (isset($live_urls[trim(get_bloginfo('name'))])) {
-                        $env_url = $live_urls[trim(get_bloginfo('name'))];
+
+                    if ($this_url != "https://hale-platform-prod.apps.live.cloud-platform.service.justice.gov.uk" && isset($live_urls[trim($site_name)])) {
+                        $env_url = $live_urls[trim($site_name)];
+                    } else {
+                        $env_url = $site_url;
                     }
                     
                     if ($site_name == $next_site_name) {
                         // Plugin matches next site name.
                         $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--turquoise">Next</strong></span>';
-                    } elseif (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site->blog_id)) {
+                    } elseif (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
                         // Plugin is active on the specified site.
                         $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--grey">Private</strong></span>';
                     } else {
@@ -90,6 +97,11 @@ foreach ($sites as $site) {
 
                     if (strpos($env_url, "http") === false) {
                         $env_url = "https://" . $env_url;
+                    }
+                } else {
+                    if (!is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
+                        // Plugin is inactive on the specified site.
+                        $warning .= ucfirst("$env environment is not password protected! <br />");
                     }
                 }
 
@@ -106,15 +118,27 @@ foreach ($sites as $site) {
             </div>
             <?php
         }
-        echo $status;
         ?>
         <div class="website__users">
             <?php
+                echo $status;
                 $user_count = count_users()['total_users'];
-                if ($user_count) echo $user_count." users";
+                if ($user_count) echo "<br />$user_count users";
+            ?>
+        </div>
+        <div class='website__technical'>
+            <?php
+                if ($site_path_slug != "") echo "Slug: <code class='website__slug'>$site_path_slug</code> <br /> ";
+                echo "ID: $site_id";
             ?>
         </div>
     </div>
+    <?php
+        if ($warning) {
+            echo "<div class='website__warning'>$warning</div>";
+        }
+    ?>
+
     <?php
     restore_current_blog();
 }
