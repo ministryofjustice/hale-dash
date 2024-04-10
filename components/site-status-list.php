@@ -8,6 +8,7 @@ $environments = [
     'demo'
 ];
 
+// Backup urls for non-production incarnations of the dashboard
 function get_live_urls() {
     $url["Criminal Cases Review Commission"] = "ccrc.gov.uk";
     $url["Magistrates Recruitment"] = "magistrates.judiciary.uk";
@@ -23,7 +24,7 @@ function get_live_urls() {
     $url["Justice Jobs"] = "jobs.justice.gov.uk";
     $url["Prisons &amp; Probation Ombudsman"] = "ppo.gov.uk";
     $url["Lay Observers"] = "layobservers.org";
-    $url["Standing International Forum of Commercial Courts"] = "sifocc.org";
+    $url["SIFoCC"] = "sifocc.org";
     $url["Victim and Witness Information"] = "victimandwitnessinformation.org.uk";
     $url["New Futures Network"] = "newfuturesnetwork.gov.uk";
     $url["Omagh Bombing Inquiry"] = "https://omagh.independent-inquiry.uk/";
