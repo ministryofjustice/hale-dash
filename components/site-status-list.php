@@ -111,9 +111,15 @@ foreach ($sites as $site) {
 
                 if ($env == 'prod') {
                    $login_link = " | <a href='$env_url/hale-wpms-2020'>Login</a>";
+                   echo $env_link . $login_link;
+                } elseif ($site_path_slug == "" && $site_id != 1) {
+                    // No slug, so no useful link
+                    // Just write env name to keep alignment
+                    echo ucfirst($env) . "<!-- No slug, no link -->";
+                } else {
+                    echo $env_link;
                 }
 
-                echo $env_link . $login_link;
                 ?>
             </div>
             <?php
