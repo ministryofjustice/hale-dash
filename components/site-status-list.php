@@ -102,7 +102,7 @@ foreach ($sites as $site) {
                 } else {
                     if (!is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
                         // Plugin is inactive on the specified site.
-                        $warning .= ucfirst("$env environment is not password protected! <br />");
+                        // $warning .= ucfirst("$env environment is not password protected! <br />"); // This didn't work!
                     }
                 }
 
