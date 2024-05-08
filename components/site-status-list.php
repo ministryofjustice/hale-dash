@@ -130,7 +130,12 @@ foreach ($sites as $site) {
             <?php
                 echo $status;
                 $user_count = count_users()['total_users'];
-                if ($user_count) echo "<br />$user_count users";
+                if ($user_count && $user_count <= 1000) echo "<br />$user_count users";
+                if ($user_count && $user_count > 1000) {
+                    $user_count_text = number_format((float)($user_count/1000), 1, '.', '').'k';
+                    echo "<br />$user_count_text users";
+                }
+
             ?>
         </div>
         <div class='website__technical'>
