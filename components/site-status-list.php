@@ -65,69 +65,71 @@ foreach ($sites as $site) {
             ?>
 
         </div>
-        <?php
-        foreach ($environments as $env) {
+        <div class="website__links">
+            <?php
+            foreach ($environments as $env) {
 
-            $site_path_slug = "";
+                $site_path_slug = "";
 
-            if (get_option('site_path_slug')) {
-                $site_path_slug = get_option('site_path_slug');
-            }
-
-            $env_url = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
-            
-            ?>
-            <div class="website__environment">
-                <?php
-                if ($env == "prod") {
-
-                    if ($this_url != "https://hale-platform-prod.apps.live.cloud-platform.service.justice.gov.uk" && isset($live_urls[trim($site_name)])) {
-                        $env_url = $live_urls[trim($site_name)];
-                    } else {
-                        $env_url = $site_url;
-                    }
-                    
-                    if ($site_name == $next_site_name) {
-                        // Plugin matches next site name.
-                        $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--turquoise">Next</strong></span>';
-                    } elseif (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
-                        // Plugin is active on the specified site.
-                        $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--grey">Private</strong></span>';
-                    } else {
-                        // Plugin is inactive on the specified site.
-                        $status = '<span class="website__up-down"><strong class="govuk-tag">Public</strong></span>';
-                    }
-
-                    if (strpos($env_url, "http") === false) {
-                        $env_url = "https://" . $env_url;
-                    }
-                } else {
-                    if (!is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
-                        // Plugin is inactive on the specified site.
-                        // $warning .= ucfirst("$env environment is not password protected! <br />"); // This didn't work!
-                    }
+                if (get_option('site_path_slug')) {
+                    $site_path_slug = get_option('site_path_slug');
                 }
 
-                // Add in the "login" link to prod
-                $env_link = "<a href='$env_url' class='website__environment__link website__environment__link--$env govuk-link'>" . ucfirst($env) . "</a>";
-                $login_link = "";
-
-                if ($env == 'prod') {
-                   $login_link = " | <a href='$env_url/hale-wpms-2020'>Login</a>";
-                   echo $env_link . $login_link;
-                } elseif ($site_path_slug == "" && $site_id != 1) {
-                    // No slug, so no useful link
-                    // Just write env name to keep alignment
-                    echo ucfirst($env) . "<!-- No slug, no link -->";
-                } else {
-                    echo $env_link;
-                }
+                $env_url = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
 
                 ?>
-            </div>
-            <?php
-        }
-        ?>
+                <div class="website__environment">
+                    <?php
+                    if ($env == "prod") {
+
+                        if ($this_url != "https://hale-platform-prod.apps.live.cloud-platform.service.justice.gov.uk" && isset($live_urls[trim($site_name)])) {
+                            $env_url = $live_urls[trim($site_name)];
+                        } else {
+                            $env_url = $site_url;
+                        }
+
+                        if ($site_name == $next_site_name) {
+                            // Plugin matches next site name.
+                            $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--turquoise">Next</strong></span>';
+                        } elseif (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
+                            // Plugin is active on the specified site.
+                            $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--grey">Private</strong></span>';
+                        } else {
+                            // Plugin is inactive on the specified site.
+                            $status = '<span class="website__up-down"><strong class="govuk-tag">Public</strong></span>';
+                        }
+
+                        if (strpos($env_url, "http") === false) {
+                            $env_url = "https://" . $env_url;
+                        }
+                    } else {
+                        if (!is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
+                            // Plugin is inactive on the specified site.
+                            // $warning .= ucfirst("$env environment is not password protected! <br />"); // This didn't work!
+                        }
+                    }
+
+                    // Add in the "login" link to prod
+                    $env_link = "<a href='$env_url' class='website__environment__link website__environment__link--$env govuk-link'>" . ucfirst($env) . "</a>";
+                    $login_link = "";
+
+                    if ($env == 'prod') {
+                    $login_link = " | <a href='$env_url/hale-wpms-2020'>Login</a>";
+                    echo $env_link . $login_link;
+                    } elseif ($site_path_slug == "" && $site_id != 1) {
+                        // No slug, so no useful link
+                        // Just write env name to keep alignment
+                        echo ucfirst($env) . "<!-- No slug, no link -->";
+                    } else {
+                        echo $env_link;
+                    }
+
+                    ?>
+                </div>
+                <?php
+            }
+            ?>
+        </div>
         <div class="website__users">
             <?php
                 echo $status;
@@ -142,8 +144,8 @@ foreach ($sites as $site) {
         </div>
         <div class='website__technical'>
             <?php
-                if ($site_path_slug != "") echo "Slug: <code class='website__slug'>$site_path_slug</code> <br /> ";
-                echo "ID: $site_id";
+                if ($site_path_slug != "") echo "<h2 class='website__slug-title'>Slug</h2> <code class='website__slug'>$site_path_slug</code> <br /> ";
+                echo "<h2 class='website__id-title'>ID</h2> <span class='website_id'>$site_id</span>";
             ?>
         </div>
     </div>
