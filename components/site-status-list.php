@@ -43,6 +43,7 @@ foreach ($sites as $site) {
     $site_name = get_bloginfo('name');
     $icon = get_fav_icon(get_site_icon_url());
     $lang = get_option('WPLANG');
+    $timezone = wp_timezone_string();
     $main_lang = get_locale();
     $site_lang_attribute = "";
     $warning = "";
@@ -59,6 +60,7 @@ foreach ($sites as $site) {
                 } else {
                     echo "<h2 $site_lang_attribute class='website__heading__text govuk-heading-s'>$site_name</h2>";
                     echo get_language($lang);
+                    echo get_timezone($timezone);
                 }
             ?>
 

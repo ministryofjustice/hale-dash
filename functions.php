@@ -94,3 +94,12 @@ function get_language($code) {
         return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Language: $code</p>";
     }
 }
+
+function get_timezone($zone) {
+    if ($zone == "Europe/London") return;
+    if ($zone == "+00:00") {
+        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Timezone: GMT</p>";
+    } else {
+        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Timezone: $zone</p>";
+    }
+}
