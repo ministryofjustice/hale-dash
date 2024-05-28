@@ -47,6 +47,8 @@ foreach ($sites as $site) {
     $main_lang = get_locale();
     $site_lang_attribute = "";
     $warning = "";
+    $theme = get_option( 'stylesheet' );
+    $deprecated = get_theme_mod( 'deprecated_paragraph_widths' );
     if ($lang != $main_lang) $site_lang_attribute = "lang='$lang'";
     if ($lang == "") $site_lang_attribute = "lang=en-US"; //WP uses "" to denote en-US
     ?>
@@ -59,8 +61,10 @@ foreach ($sites as $site) {
                     echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
                 } else {
                     echo "<h2 $site_lang_attribute class='website__heading__text govuk-heading-s'>$site_name</h2>";
-                    echo get_language($lang);
-                    echo get_timezone($timezone);
+                    $warning .= language_warning($lang);
+                    $warning .= timezone_warning($timezone);
+                    $warning .= theme_warning($theme);
+                    $warning .= deprecated_warning($deprecated);
                 }
             ?>
 
@@ -139,7 +143,6 @@ foreach ($sites as $site) {
                     $user_count_text = number_format((float)($user_count/1000), 1, '.', '').'k';
                     echo "<br />$user_count_text users";
                 }
-
             ?>
         </div>
         <div class='website__technical'>

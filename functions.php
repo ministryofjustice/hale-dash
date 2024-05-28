@@ -85,21 +85,41 @@ require get_stylesheet_directory() . '/inc/dashboard-metrics.php';
  */
 require get_stylesheet_directory() . '/inc/notification-banner.php';
 
-function get_language($code) {
+function language_warning($code) {
     if ($code == "cy" || $code == "cy_GB") {
-        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Welsh site 🏴󠁧󠁢󠁷󠁬󠁳󠁿</p>";
+        return "<p><span><strong class='govuk-tag govuk-tag--green'>Welsh</strong></span> This website is in <strong>Welsh</strong> 🏴󠁧󠁢󠁷󠁬󠁳󠁿</p>";
     } elseif ($code == "en_US" || empty($code)) { //WP uses "" to denote en-US
-        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>US English 🇺🇸</p>";
-    } elseif ($code != "en_GB" && $code != "en") {
-        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Language: $code</p>";
+        return "<p><span><strong class='govuk-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>US English</strong> 🇺🇸</p>";
+    } elseif ($code == "en_CA") {
+        return "<p><span><strong class='govuk-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>Canadian English</strong> 🇨🇦</p>";
+    } elseif ($code == "en_NZ") {
+        return "<p><span><strong class='govuk-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>New Zealand English</strong> 🇳🇿</p>";
+    } elseif ($code == "en_AU") {
+        return "<p><span><strong class='govuk-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>Australian English</strong> 🇦🇺</p>";
+    } elseif (!str_starts_with($code, "en")) {
+        return "<p><span><strong class='govuk-tag govuk-tag--red'>Language</strong></span> This website is set to <strong>$code</strong>.</p>";
+    } elseif ($code != "en_GB") {
+        return "<p><span><strong class='govuk-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>$code</strong>.</p>";
     }
 }
 
-function get_timezone($zone) {
+function timezone_warning($zone) {
     if ($zone == "Europe/London") return;
     if ($zone == "+00:00") {
-        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Timezone: GMT</p>";
+        return "<p><span><strong class='govuk-tag govuk-tag--orange'>Timezone</strong></span> This website is set to <strong>Greenwich Mean Time</strong>.</p>";
+    } elseif ($zone == "Europe/Dublin") {
+        return "<p><strong class='govuk-tag govuk-tag--orange'>Timezone</strong></span> This website is set to the <strong>$zone</strong> timezone.</p>";
     } else {
-        return "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>Timezone: $zone</p>";
+        return "<p><strong class='govuk-tag govuk-tag--red'>Timezone</strong></span> This website is set to the <strong>$zone</strong> timezone.</p>";
     }
+}
+
+function theme_warning($theme) {
+    if ($theme == "hale")  return "";
+    return "<p><strong class='govuk-tag govuk-tag--yellow'>Non-Hale</strong></span> This website is using the <strong>$theme</strong> theme.</p>";
+}
+
+function deprecated_warning($deprecated) {
+    if ($deprecated === "yes") return "<p><strong class='govuk-tag govuk-tag--red'>Deprecated</strong></span> This website has <strong>deprecated controls enabled</strong>.</p>";
+    return "";
 }
