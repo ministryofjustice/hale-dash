@@ -106,11 +106,21 @@ function language_warning($code) {
 function timezone_warning($zone) {
     if ($zone == "Europe/London") return;
     if ($zone == "+00:00") {
-        return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Timezone</strong></span> This website is set to <strong>Greenwich Mean Time</strong>.</p>";
+        return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Timezone</strong></span> This website is set to <strong>Greenwich Mean Time</strong>. <br />(Scheduling will be one hour out during the 7 months of BST.)</p>";
+    } elseif ($zone == "Europe/Jersey") {
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--green'>Timezone</strong></span> This website is set to the <strong>Jersey</strong> timezone.</p>";
+    } elseif ($zone == "Europe/Isle_of_Man") {
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--green'>Timezone</strong></span> This website is set to the <strong>Manx</strong> timezone.</p>";
+    } elseif ($zone == "Europe/Guernsey") {
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--green'>Timezone</strong></span> This website is set to the <strong>Guernsey</strong> timezone.</p>";
     } elseif ($zone == "Europe/Dublin") {
-        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Timezone</strong></span> This website is set to the <strong>$zone</strong> timezone.</p>";
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--green'>Timezone</strong></span> This website is set to the <strong>Irish</strong> timezone.</p>";
+    } elseif ($zone == "Europe/Dublin") {
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--green'>Timezone</strong></span> This website is set to the <strong>Irish</strong> timezone.</p>";
+    } elseif ($zone == "Europe/Lisbon") {
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--green'>Timezone</strong></span> This website is set to the <strong>Portuguese</strong> timezone.</p>";
     } else {
-        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--red'>Timezone</strong></span> This website is set to the <strong>$zone</strong> timezone.</p>";
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--red'>Timezone</strong></span> This website is set to the <strong>$zone</strong> timezone. <br />(Scheduling accuracy might be adversely affected.)</p>";
     }
 }
 
