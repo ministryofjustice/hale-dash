@@ -100,7 +100,7 @@ foreach ($sites as $site) {
                             $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--grey">Private</strong></span>';
                         } else {
                             // Plugin is inactive on the specified site.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag">Public</strong></span>';
+                            $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--blue">Public</strong></span>';
                         }
 
                         if (strpos($env_url, "http") === false) {

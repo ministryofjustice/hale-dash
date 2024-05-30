@@ -22,7 +22,7 @@
             <h2 class="govuk-heading-m">PHP version</h2>
             <span class="govuk-heading-xl"><?php echo phpversion(); ?></span>
         </div>
-        <div class="govuk-grid-column-one-half">
+        <div class="govuk-grid-column-one-half-from-desktop">
             <h2 class="govuk-heading-m">Site monitoring and performance</h2>
             <a href="https://github.com/ministryofjustice/hale-platform/actions/workflows/cd.yaml">
                 <img src="https://github.com/ministryofjustice/hale-platform/actions/workflows/cd.yaml/badge.svg?branch=main" alt="Hale Platform Deployment">
@@ -42,7 +42,7 @@
                 </li>
             </ul>    
         </div>
-        <div class="govuk-grid-column-one-half">
+        <div class="govuk-grid-column-one-half-from-desktop">
             <h2 class="govuk-heading-m">Next site to go live</h2>
             <p class="govuk-body">
                 <?php echo $next_site_name;?>

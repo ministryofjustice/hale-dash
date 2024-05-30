@@ -3,6 +3,13 @@
 	padding: 0 15px;
 }
 
+@media (min-width: 769px) {
+	.hale-page .govuk-width-container {
+		max-width: 1400px;
+		width: calc(100% - 60px);
+	}
+}
+
 .gds-version::before {
 	content: var(--govuk-frontend-version);
 }
