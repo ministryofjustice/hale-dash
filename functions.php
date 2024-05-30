@@ -118,7 +118,11 @@ function timezone_warning($zone) {
     } elseif ($zone == "Europe/Dublin") {
         return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--green'>Timezone</strong></span> This website is set to the <strong>Irish</strong> timezone.</p>";
     } elseif ($zone == "Europe/Lisbon") {
-        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--green'>Timezone</strong></span> This website is set to the <strong>Portuguese</strong> timezone.</p>";
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--yellow'>Timezone</strong></span> This website is set to the <strong>Portuguese</strong> timezone.</p>";
+    } elseif ($zone == "Atlantic/Faroe") {
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--yellow'>Timezone</strong></span> This website is set to the <strong>Færoese</strong> timezone.</p>";
+    } elseif ($zone == "Atlantic/Canary") {
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--yellow'>Timezone</strong></span> This website is set to the <strong>Canarian</strong> timezone.</p>";
     } else {
         return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--red'>Timezone</strong></span> This website is set to the <strong>$zone</strong> timezone. <br />(Scheduling accuracy might be adversely affected.)</p>";
     }
