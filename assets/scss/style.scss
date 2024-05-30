@@ -134,3 +134,16 @@
 	background-size: contain;
 	border-radius: 25px;
 }
+
+.govuk-tag.hale-dash-better-tag {
+	font-weight: 700;
+
+	&.hale-dash-better-tag--blue {
+		background-color: #1d70b8;
+		color:white;
+	}
+	&.hale-dash-better-tag--red {
+		background-color: #d4351c;
+		color:white;
+	}
+}

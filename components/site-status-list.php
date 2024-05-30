@@ -94,13 +94,13 @@ foreach ($sites as $site) {
 
                         if ($site_name == $next_site_name) {
                             // Plugin matches next site name.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--turquoise">Next</strong></span>';
+                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--turquoise">Next</strong></span>';
                         } elseif (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
                             // Plugin is active on the specified site.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--grey">Private</strong></span>';
+                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--grey">Private</strong></span>';
                         } else {
                             // Plugin is inactive on the specified site.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag govuk-tag--blue">Public</strong></span>';
+                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--blue hale-dash-better-tag--blue">Public</strong></span>';
                         }
 
                         if (strpos($env_url, "http") === false) {
