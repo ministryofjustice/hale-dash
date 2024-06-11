@@ -12,7 +12,7 @@
         </div>
         <div class="govuk-grid-column-one-half">
             <h2 class="govuk-heading-m">WordPress version</h2>
-            <span class="govuk-heading-xl"><?php echo get_bloginfo("version"); ?></span>
+            <span class="govuk-heading-xl"><?php echo $wp_version; // get_bloginfo("version")?></span>
         </div>
         <div class="govuk-grid-column-one-half">
             <h2 class="govuk-heading-m">GDS Design System version</h2>
