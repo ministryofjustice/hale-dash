@@ -14,7 +14,7 @@ echo festiveGreeting(time());
 echo getBrithday();
 ?>
 
-<h1 class="govuk-heading-l govuk-grid-column-full govuk-!-margin-top-6">Platform metrics</h1>
+<h1 class="govuk-heading-l govuk-grid-column-full govuk-!-margin-top-6 is-style-wide">Platform metrics</h1>
 
 <main class="govuk-main-wrapper">
     <?php include get_stylesheet_directory() . '/components/feature-metrics.php'; ?>
