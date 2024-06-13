@@ -6,20 +6,20 @@
 ?>
 <div class="govuk-width-container">
     <div class="govuk-grid-row govuk-!-margin-bottom-9">
-        <div class="govuk-grid-column-one-half">
+        <div class="govuk-grid-column-one-half govuk-grid-column-one-quarter-from-desktop">
             <h2 class="govuk-heading-m">Sites hosted</h2>
             <span class="govuk-heading-xl"><?php echo get_site_count(); ?></span>
         </div>
-        <div class="govuk-grid-column-one-half">
-            <h2 class="govuk-heading-m">WordPress version</h2>
+        <div class="govuk-grid-column-one-half govuk-grid-column-one-quarter-from-desktop">
+            <h2 class="govuk-heading-m">WordPress</h2>
             <span class="govuk-heading-xl"><?php echo $wp_version; // get_bloginfo("version")?></span>
         </div>
-        <div class="govuk-grid-column-one-half">
-            <h2 class="govuk-heading-m">GDS Design System version</h2>
+        <div class="govuk-grid-column-one-half govuk-grid-column-one-quarter-from-desktop">
+            <h2 class="govuk-heading-m">GDS</h2>
             <span class="govuk-heading-xl gds-version"></span>
         </div>
-        <div class="govuk-grid-column-one-half">
-            <h2 class="govuk-heading-m">PHP version</h2>
+        <div class="govuk-grid-column-one-half govuk-grid-column-one-quarter-from-desktop">
+            <h2 class="govuk-heading-m">PHP</h2>
             <span class="govuk-heading-xl"><?php echo phpversion(); ?></span>
         </div>
         <div class="govuk-grid-column-one-half-from-desktop">
