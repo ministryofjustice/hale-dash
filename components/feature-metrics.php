@@ -40,6 +40,9 @@
                 <li>
                     <a href="https://cloud-platform-e218f50a4812967ba1215eaecede923f.s3.amazonaws.com/feed-parser/feeds.json">Job Feed Parser JSON</a>
                 </li>
+                <li>
+                    Avature Job Feed Status: <strong class='govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red'>Failing</strong>
+                </li>
             </ul>    
         </div>
         <div class="govuk-grid-column-one-half-from-desktop">

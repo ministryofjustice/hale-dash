@@ -134,6 +134,6 @@ function theme_warning($theme) {
 }
 
 function deprecated_warning($deprecated) {
-    if ($deprecated === "yes") return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red'>Deprecated</strong></span> This website has <strong>deprecated controls enabled</strong>.</p>";
+    if ($deprecated === "yes") return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red'>Deprecated</strong> This website has <strong>deprecated controls enabled</strong>.</p>";
     return "";
 }
