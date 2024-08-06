@@ -33,7 +33,7 @@
     // How many live sites
     $live_site_count = 0;
     foreach ($sites as $site) {
-        if (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site->blog_id)) $live_site_count++;
+        if (!is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site->blog_id)) $live_site_count++;
     }
 ?>
 <div class="govuk-width-container">
