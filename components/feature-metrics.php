@@ -1,24 +1,64 @@
 <?php
     // Next site to go live details
     $next_site_name = "Law Commission"; // match site name on Hale
-    $next_site_abbr = "(LawComm)";
+    $next_site_abbr = "(Lawcom)";
     $next_site_url = "https://lawcom.gov.uk/";
+
+    // Current environment
+    $this_url = get_bloginfo('url');
+
+    switch ($this_url) {
+        case "https://hale.docker":
+            $this_env = "Local";
+            break;
+        case "https://staging.websitebuilder.service.justice.gov.uk":
+        case "https://hale-platform-staging.apps.live.cloud-platform.service.justice.gov.uk":
+            $this_env = "Staging";
+            break;
+        case "https://demo.websitebuilder.service.justice.gov.uk":
+        case "https://hale-platform-staging.apps.live.cloud-platform.service.justice.gov.uk":
+            $this_env = "Demo";
+            break;
+        case "https://dev.websitebuilder.service.justice.gov.uk":
+        case "https://hale-platform-staging.apps.live.cloud-platform.service.justice.gov.uk":
+            $this_env = "Dev";
+            break;
+        case "https://websitebuilder.service.justice.gov.uk":
+        case "https://hale-platform-staging.apps.live.cloud-platform.service.justice.gov.uk":
+            $this_env = "Prod";
+        default:
+            $this_env = "-";
+    }
+
+    // How many live sites
+    $live_site_count = 0;
+    foreach ($sites as $site) {
+        if (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site->blog_id)) $live_site_count++;
+    }
 ?>
 <div class="govuk-width-container">
     <div class="govuk-grid-row govuk-!-margin-bottom-9">
-        <div class="govuk-grid-column-one-half govuk-grid-column-one-quarter-from-desktop">
+        <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
+            <h2 class="govuk-heading-m">Current Environment</h2>
+            <span class="govuk-heading-xl"><?php echo $this_env; ?></span>
+        </div>
+        <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
             <h2 class="govuk-heading-m">Sites hosted</h2>
             <span class="govuk-heading-xl"><?php echo get_site_count(); ?></span>
         </div>
-        <div class="govuk-grid-column-one-half govuk-grid-column-one-quarter-from-desktop">
+        <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
+            <h2 class="govuk-heading-m">Public sites</h2>
+            <span class="govuk-heading-xl"><?php echo $live_site_count; ?></span>
+        </div>
+        <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
             <h2 class="govuk-heading-m">WordPress</h2>
             <span class="govuk-heading-xl"><?php echo $wp_version; // get_bloginfo("version")?></span>
         </div>
-        <div class="govuk-grid-column-one-half govuk-grid-column-one-quarter-from-desktop">
+        <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
             <h2 class="govuk-heading-m">GDS</h2>
             <span class="govuk-heading-xl gds-version"></span>
         </div>
-        <div class="govuk-grid-column-one-half govuk-grid-column-one-quarter-from-desktop">
+        <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
             <h2 class="govuk-heading-m">PHP</h2>
             <span class="govuk-heading-xl"><?php echo phpversion(); ?></span>
         </div>
@@ -39,9 +79,6 @@
                 </li>
                 <li>
                     <a href="https://cloud-platform-e218f50a4812967ba1215eaecede923f.s3.amazonaws.com/feed-parser/feeds.json">Job Feed Parser JSON</a>
-                </li>
-                <li>
-                    Avature Job Feed Status: <strong class='govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red'>Failing</strong>
                 </li>
             </ul>    
         </div>

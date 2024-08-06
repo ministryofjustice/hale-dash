@@ -1,12 +1,15 @@
 <?php
-$sites = get_sites();
-
 $environments = [
     'prod',
     'staging',
     'dev',
     'demo'
 ];
+
+if ($this_env == "Local") {
+    // set in feature-metrics.php
+    $environments[] = "local";
+}
 
 // Backup urls for non-production incarnations of the dashboard
 function get_live_urls() {
@@ -79,7 +82,19 @@ foreach ($sites as $site) {
                     $site_path_slug = get_option('site_path_slug');
                 }
 
-                $env_url = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
+                switch ($env) {
+                    case "prod":
+                        $env_url = "https://websitebuilder.service.justice.gov.uk/$site_path_slug";
+                        $env_url = "https://hale-platform-prod.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
+                        break;
+                    case "local":
+                        $env_url = "https://hale.docker/$site_path_slug";
+                        break;
+                    default:
+                      $env_url = "https://$env.websitebuilder.service.justice.gov.uk/$site_path_slug";
+                      $env_url = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
+                }
+
 
                 ?>
                 <div class="website__environment">
@@ -89,18 +104,22 @@ foreach ($sites as $site) {
                         if ($this_url != "https://hale-platform-prod.apps.live.cloud-platform.service.justice.gov.uk" && isset($live_urls[trim($site_name)])) {
                             $env_url = $live_urls[trim($site_name)];
                         } else {
-                            $env_url = $site_url;
+                            $env_url = "https://websitebuilder.service.justice.gov.uk/$site_path_slug";
+                            $env_url = "https://hale-platform-prod.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
                         }
 
-                        if ($site_name == $next_site_name) {
+                        if ($site_name == $next_site_name && ($this_env=="Prod" || $this_env=="Local")) {
                             // Plugin matches next site name.
                             $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--turquoise">Next</strong></span>';
                         } elseif (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
                             // Plugin is active on the specified site.
                             $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--grey">Private</strong></span>';
-                        } else {
-                            // Plugin is inactive on the specified site.
+                        } elseif ($this_env=="Prod" || $this_env=="Local") {
+                            // Plugin is inactive on the specified site & site is prod or local.
                             $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--blue hale-dash-better-tag--blue">Public</strong></span>';
+                        } else {
+                            // Plugin is inactive on the specified site & site is NOT prod or local.
+                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red">Public</strong></span>';
                         }
 
                         if (strpos($env_url, "http") === false) {

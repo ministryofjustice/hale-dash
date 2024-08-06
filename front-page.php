@@ -12,6 +12,7 @@ get_header();
 
 echo festiveGreeting(time());
 echo getBrithday();
+$sites = get_sites();
 ?>
 
 <div class="govuk-grid-column-full govuk-!-margin-top-6">
