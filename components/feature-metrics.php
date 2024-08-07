@@ -40,7 +40,14 @@
     <div class="govuk-grid-row govuk-!-margin-bottom-9">
         <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
             <h2 class="govuk-heading-m">Current Environment</h2>
-            <span class="govuk-heading-xl"><?php echo $this_env; ?></span>
+            <span class="govuk-heading-xl">
+                <?php
+                    echo $this_env;
+                    if ($this_env == "-") {
+                        echo "<span class='govuk-visually-hidden'>$this_url</span>";
+                    }
+                ?>
+            </span>
         </div>
         <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
             <h2 class="govuk-heading-m">Sites hosted</h2>
