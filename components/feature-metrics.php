@@ -16,15 +16,15 @@
             $this_env = "Staging";
             break;
         case "https://demo.websitebuilder.service.justice.gov.uk":
-        case "https://hale-platform-staging.apps.live.cloud-platform.service.justice.gov.uk":
+        case "https://hale-platform-demo.apps.live.cloud-platform.service.justice.gov.uk":
             $this_env = "Demo";
             break;
         case "https://dev.websitebuilder.service.justice.gov.uk":
-        case "https://hale-platform-staging.apps.live.cloud-platform.service.justice.gov.uk":
+        case "https://hale-platform-dev.apps.live.cloud-platform.service.justice.gov.uk":
             $this_env = "Dev";
             break;
         case "https://websitebuilder.service.justice.gov.uk":
-        case "https://hale-platform-staging.apps.live.cloud-platform.service.justice.gov.uk":
+        case "https://hale-platform-prod.apps.live.cloud-platform.service.justice.gov.uk":
             $this_env = "Prod";
         default:
             $this_env = "-";
