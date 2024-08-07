@@ -101,13 +101,11 @@ foreach ($sites as $site) {
                     <?php
                     if ($env == "prod") {
 
-                        if ($this_url != "https://hale-platform-prod.apps.live.cloud-platform.service.justice.gov.uk" && isset($live_urls[trim($site_name)])) {
-                            $env_url = $live_urls[trim($site_name)];
-                        } elseif ($this_env == "Prod") {
+                        if ($this_env == "Prod") {
                             $env_url = $site_url;
-                        } else {
-                            $env_url = "https://websitebuilder.service.justice.gov.uk/$site_path_slug";
-                            $env_url = "https://hale-platform-prod.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
+                        } elseif (isset($live_urls[trim($site_name)])) {
+                            // checks hard-coded list of URLs
+                            $env_url = $live_urls[trim($site_name)];
                         }
 
                         if ($site_name == $next_site_name && ($this_env=="Prod" || $this_env=="Local")) {
