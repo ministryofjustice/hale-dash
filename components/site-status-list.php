@@ -85,7 +85,6 @@ foreach ($sites as $site) {
                 switch ($env) {
                     case "prod":
                         $env_url = "https://websitebuilder.service.justice.gov.uk/$site_path_slug";
-                        $env_url = "https://hale-platform-prod.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
                         break;
                     case "local":
                         $env_url = "https://hale.docker/$site_path_slug";

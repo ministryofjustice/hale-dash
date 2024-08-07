@@ -43,7 +43,7 @@
             <span class="govuk-heading-xl">
                 <?php
                     echo $this_env;
-                    if ($this_env == "Local") {
+                    if ($this_env == "-") {
                         echo "<span style='display:none;'>$this_url</span>";
                     }
                 ?>
