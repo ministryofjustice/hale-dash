@@ -6,29 +6,7 @@
 
     // Current environment
     $this_url = get_bloginfo('url');
-
-    switch ($this_url) {
-        case "https://hale.docker":
-            $this_env = "Local";
-            break;
-        case "https://staging.websitebuilder.service.justice.gov.uk":
-        case "https://hale-platform-staging.apps.live.cloud-platform.service.justice.gov.uk":
-            $this_env = "Staging";
-            break;
-        case "https://demo.websitebuilder.service.justice.gov.uk":
-        case "https://hale-platform-demo.apps.live.cloud-platform.service.justice.gov.uk":
-            $this_env = "Demo";
-            break;
-        case "https://dev.websitebuilder.service.justice.gov.uk":
-        case "https://hale-platform-dev.apps.live.cloud-platform.service.justice.gov.uk":
-            $this_env = "Dev";
-            break;
-        case "https://websitebuilder.service.justice.gov.uk":
-        case "https://hale-platform-prod.apps.live.cloud-platform.service.justice.gov.uk":
-            $this_env = "Prod";
-        default:
-            $this_env = "-";
-    }
+    $this_env = ucfirst(getenv('WP_ENVIRONMENT_TYPE'));
 
     // How many live sites
     $live_site_count = 0;
@@ -43,9 +21,6 @@
             <span class="govuk-heading-xl">
                 <?php
                     echo $this_env;
-                    if ($this_env == "-") {
-                        echo "<span style='display:none;'>$this_url</span>";
-                    }
                 ?>
             </span>
         </div>
