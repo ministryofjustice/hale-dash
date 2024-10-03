@@ -91,7 +91,6 @@ foreach ($sites as $site) {
                         break;
                     default:
                       $env_url = "https://$env.websitebuilder.service.justice.gov.uk/$site_path_slug";
-                      $env_url = "https://hale-platform-$env.apps.live.cloud-platform.service.justice.gov.uk/$site_path_slug";
                 }
 
 
