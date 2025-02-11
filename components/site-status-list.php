@@ -6,6 +6,8 @@ $environments = [
     'demo'
 ];
 
+$dashboard_ID = "59";
+
 if ($this_env == "Local") {
     // set in feature-metrics.php
     $environments[] = "local";
@@ -59,7 +61,7 @@ foreach ($sites as $site) {
         <div class="website__heading">
             <?php
                 echo $icon;
-                if ($site_id == "1") {
+                if ($site_id == $dashboard_ID) {
                     echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
                     echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
                 } else {
