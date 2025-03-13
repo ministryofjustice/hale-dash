@@ -6,6 +6,8 @@ $environments = [
     'demo'
 ];
 
+$dashboard_ID = "59";
+
 if ($this_env == "Local") {
     // set in feature-metrics.php
     $environments[] = "local";
@@ -59,7 +61,7 @@ foreach ($sites as $site) {
         <div class="website__heading">
             <?php
                 echo $icon;
-                if ($site_id == "1") {
+                if ($site_id == $dashboard_ID) {
                     echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
                     echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
                 } else {
@@ -72,7 +74,7 @@ foreach ($sites as $site) {
             ?>
 
         </div>
-        <div class="website__links">
+        <div class="website__links govuk-body-s govuk-!-margin-bottom-0">
             <?php
             foreach ($environments as $env) {
 
@@ -151,7 +153,7 @@ foreach ($sites as $site) {
             }
             ?>
         </div>
-        <div class="website__users">
+        <div class="website__users govuk-body-s govuk-!-margin-bottom-0">
             <?php
                 echo $status;
                 $user_count = count_users()['total_users'];
@@ -162,7 +164,7 @@ foreach ($sites as $site) {
                 }
             ?>
         </div>
-        <div class='website__technical'>
+        <div class='website__technical govuk-body-s govuk-!-margin-bottom-0'>
             <?php
                 if ($site_path_slug != "") echo "<h2 class='website__slug-title'>Slug</h2> <code class='website__slug'>$site_path_slug</code> <br /> ";
                 echo "<h2 class='website__id-title'>ID</h2> <span class='website_id'>$site_id</span>";
