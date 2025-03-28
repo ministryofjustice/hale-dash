@@ -84,6 +84,9 @@ function festiveGreeting($now) {
         case 1105:
             $greeting = "🔥 Happy Bonfire Night 🔥";
             break;
+	case 1110;
+	    $greeting = "🚢 Edmund Fitzgerald day 🚢";
+	    break;
         case 1130:
             $greeting = "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Happy St Andrew’s Day 🏴󠁧󠁢󠁳󠁣󠁴󠁿";
             break;
