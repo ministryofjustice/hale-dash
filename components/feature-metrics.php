@@ -1,8 +1,8 @@
 <?php
     // Next site to go live details
-    $next_site_name = "Law Commission"; // match site name on Hale
-    $next_site_abbr = "(Lawcom)";
-    $next_site_url = "https://lawcom.gov.uk/";
+    $next_site_name = ""; // match site name on Hale
+    $next_site_abbr = "";
+    $next_site_url = "";
 
     // Current environment
     $this_url = get_bloginfo('url');
