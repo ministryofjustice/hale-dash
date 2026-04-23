@@ -26,6 +26,10 @@ wp-config.php
 # database
 *.sql
 
+# AI
+claude/
+.claude
+
 # htaccess
 /.htaccess
 

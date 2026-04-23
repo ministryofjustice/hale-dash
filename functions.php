@@ -24,9 +24,52 @@ function hale_dash_enqueue_styles() {
 		array( 'hale-style' ),
 		wp_get_theme()->get( 'Version' )
 	);
+
+	wp_enqueue_script( 'hale-dash-dark-mode',
+		get_theme_file_uri() . '/dist/js/dark-mode.js',
+		array(),
+		wp_get_theme()->get( 'Version' ),
+		false
+	);
+
+	wp_enqueue_script( 'hale-dash-search',
+		get_theme_file_uri() . '/dist/js/search.js',
+		array(),
+		wp_get_theme()->get( 'Version' ),
+		true
+	);
 }
 
 add_action( 'wp_enqueue_scripts', 'hale_dash_enqueue_styles' );
+
+/**
+ * Inline script in <head> to set theme before first paint (avoids FOUC).
+ */
+function hale_dash_dark_mode_inline() {
+	?>
+	<script>
+	(function(){try{var s=localStorage.getItem('hd-theme');var d=s==='dark'||(!s&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();
+	</script>
+	<?php
+}
+add_action( 'wp_head', 'hale_dash_dark_mode_inline', 1 );
+
+/**
+ * Render dark mode toggle at the bottom of every page.
+ */
+function hale_dash_dark_mode_toggle() {
+	?>
+	<div class="hd-theme-toggle-wrap govuk-width-container">
+		<button type="button" class="hd-theme-toggle" aria-pressed="false">
+			<svg class="hd-theme-toggle__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+				<path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"/>
+			</svg>
+			<span class="hd-theme-toggle__label">Switch to dark mode</span>
+		</button>
+	</div>
+	<?php
+}
+add_action( 'wp_footer', 'hale_dash_dark_mode_toggle' );
 
 /**
  * Gett asset path function

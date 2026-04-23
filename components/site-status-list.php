@@ -1,6 +1,5 @@
 <?php
 $environments = [
-    'prod',
     'staging',
     'dev',
     'demo'
@@ -56,8 +55,37 @@ foreach ($sites as $site) {
     $deprecated = get_theme_mod( 'deprecated_paragraph_widths' );
     if ($lang != $main_lang) $site_lang_attribute = "lang='$lang'";
     if ($lang == "") $site_lang_attribute = "lang=en-US"; //WP uses "" to denote en-US
+
+    // Resolve the production URL / domain shown under the site title.
+    $site_path_slug = get_option('site_path_slug') ?: "";
+    if ($this_env == "Prod") {
+        $prod_url = $site_url;
+    } elseif (isset($live_urls[trim($site_name)])) {
+        $prod_url = $live_urls[trim($site_name)];
+    } else {
+        $prod_url = "https://websitebuilder.service.justice.gov.uk/$site_path_slug";
+    }
+    if (strpos($prod_url, "http") === false) {
+        $prod_url = "https://" . $prod_url;
+    }
+    $prod_domain = parse_url($prod_url, PHP_URL_HOST);
+    if ($path = parse_url($prod_url, PHP_URL_PATH)) {
+        $prod_domain .= rtrim($path, '/');
+    }
+
+    // Production status tag (was previously set inside the env loop).
+    if ($site_name == $next_site_name && ($this_env == "Prod" || $this_env == "Local")) {
+        $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--turquoise">Next</strong></span>';
+    } elseif (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
+        $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--grey">Private</strong></span>';
+    } elseif ($this_env == "Prod" || $this_env == "Local") {
+        $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--blue hale-dash-better-tag--blue">Public</strong></span>';
+    } else {
+        $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red">Public</strong></span>';
+    }
     ?>
-    <div class="website">
+    <div class="hale-dash-site-item" data-site-name="<?php echo esc_attr(strtolower($site_name)); ?>" data-site-id="<?php echo esc_attr($site_id); ?>">
+    <article class="website">
         <div class="website__heading">
             <?php
                 echo $icon;
@@ -72,87 +100,10 @@ foreach ($sites as $site) {
                     $warning .= deprecated_warning($deprecated);
                 }
             ?>
-
         </div>
-        <div class="website__links govuk-body-s govuk-!-margin-bottom-0">
-            <?php
-            foreach ($environments as $env) {
-
-                $site_path_slug = "";
-
-                if (get_option('site_path_slug')) {
-                    $site_path_slug = get_option('site_path_slug');
-                }
-
-                switch ($env) {
-                    case "prod":
-                        $env_url = "https://websitebuilder.service.justice.gov.uk/$site_path_slug";
-                        break;
-                    case "local":
-                        $env_url = "https://hale.docker/$site_path_slug";
-                        break;
-                    default:
-                      $env_url = "https://$env.websitebuilder.service.justice.gov.uk/$site_path_slug";
-                }
-
-
-                ?>
-                <div class="website__environment">
-                    <?php
-                    if ($env == "prod") {
-
-                        if ($this_env == "Prod") {
-                            $env_url = $site_url;
-                        } elseif (isset($live_urls[trim($site_name)])) {
-                            // checks hard-coded list of URLs
-                            $env_url = $live_urls[trim($site_name)];
-                        }
-
-                        if ($site_name == $next_site_name && ($this_env=="Prod" || $this_env=="Local")) {
-                            // Plugin matches next site name.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--turquoise">Next</strong></span>';
-                        } elseif (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
-                            // Plugin is active on the specified site.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--grey">Private</strong></span>';
-                        } elseif ($this_env=="Prod" || $this_env=="Local") {
-                            // Plugin is inactive on the specified site & site is prod or local.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--blue hale-dash-better-tag--blue">Public</strong></span>';
-                        } else {
-                            // Plugin is inactive on the specified site & site is NOT prod or local.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red">Public</strong></span>';
-                        }
-
-                        if (strpos($env_url, "http") === false) {
-                            $env_url = "https://" . $env_url;
-                        }
-                    } else {
-                        if (!is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
-                            // Plugin is inactive on the specified site.
-                            // $warning .= ucfirst("$env environment is not password protected! <br />"); // This didn't work!
-                        }
-                    }
-
-                    // Add in the "login" link to prod
-                    $env_link = "<a href='$env_url' class='website__environment__link website__environment__link--$env govuk-link'>" . ucfirst($env) . "</a>";
-                    $login_link = "";
-
-                    if ($env == 'prod') {
-                    $login_link = " | <a href='$env_url/hale-wpms-2020'>Login</a>";
-                    echo $env_link . $login_link;
-                    } elseif ($site_path_slug == "" && $site_id != 1) {
-                        // No slug, so no useful link
-                        // Just write env name to keep alignment
-                        echo ucfirst($env) . "<!-- No slug, no link -->";
-                    } else {
-                        echo $env_link;
-                    }
-
-                    ?>
-                </div>
-                <?php
-            }
-            ?>
-        </div>
+        <?php if ($site_id != $dashboard_ID): ?>
+            <a class="website__domain govuk-link govuk-body-s" href="<?php echo $prod_url; ?>" title="<?php echo $prod_url; ?>"><?php echo $prod_domain; ?></a>
+        <?php endif; ?>
         <div class="website__users govuk-body-s govuk-!-margin-bottom-0">
             <?php
                 echo $status;
@@ -164,18 +115,38 @@ foreach ($sites as $site) {
                 }
             ?>
         </div>
-        <div class='website__technical govuk-body-s govuk-!-margin-bottom-0'>
-            <?php
-                if ($site_path_slug != "") echo "<h2 class='website__slug-title'>Slug</h2> <code class='website__slug'>$site_path_slug</code> <br /> ";
-                echo "<h2 class='website__id-title'>ID</h2> <span class='website_id'>$site_id</span>";
-            ?>
+        <div class="website__footer govuk-body-s">
+            <div class='website__technical govuk-!-margin-bottom-0'>
+                <?php
+                    if ($site_path_slug != "") echo "<h2 class='website__slug-title'>Slug</h2> <code class='website__slug'>$site_path_slug</code>";
+                    echo "<h2 class='website__id-title'>ID</h2> <span class='website_id'>$site_id</span>";
+                ?>
+            </div>
+            <div class="website__links govuk-!-margin-bottom-0">
+                <?php
+                foreach ($environments as $env) {
+                    switch ($env) {
+                        case "local":
+                            $env_url = "https://hale.docker/$site_path_slug";
+                            break;
+                        default:
+                            $env_url = "https://$env.websitebuilder.service.justice.gov.uk/$site_path_slug";
+                    }
+
+                    if ($site_path_slug == "" && $site_id != 1) {
+                        echo "<span class='website__environment website__environment--disabled website__environment--$env'>" . ucfirst($env) . "</span>";
+                    } else {
+                        echo "<a href='$env_url' class='website__environment website__environment--$env govuk-link'>" . ucfirst($env) . "</a>";
+                    }
+                }
+                ?>
+            </div>
         </div>
+    </article>
+    <?php if ($warning): ?>
+        <div class="website__warning"><?php echo $warning; ?></div>
+    <?php endif; ?>
     </div>
-    <?php
-        if ($warning) {
-            echo "<div class='website__warning'>$warning</div>";
-        }
-    ?>
 
     <?php
     restore_current_blog();
