@@ -176,6 +176,18 @@
 		display: inline-block;
 	}
 
+	&__online-count {
+		display: inline-block;
+		margin-top: 0.4rem;
+		padding: 2px 8px;
+		font-size: var(--hd-text-meta);
+		font-weight: 600;
+		color: #ffffff;
+		background-color: #00703c;
+		border-radius: 3px;
+		line-height: 1.4;
+	}
+
 	&__favicon {
 		border-radius: 3px;
 		width: 16px;
@@ -517,6 +529,10 @@ html[data-theme="dark"] {
 		}
 		&.govuk-tag--green,
 		&.govuk-tag--turquoise {
+			background-color: #1f6f3f;
+			color: #aff5b4;
+		}
+		.website__online-count {
 			background-color: #1f6f3f;
 			color: #aff5b4;
 		}

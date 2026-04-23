@@ -8,7 +8,6 @@ $environments = [
 $dashboard_ID = "59";
 
 if ($this_env == "Local") {
-    // set in feature-metrics.php
     $environments[] = "local";
 }
 
@@ -40,6 +39,50 @@ function get_live_urls() {
 $live_urls = get_live_urls();
 $this_url = get_bloginfo('url');
 
+global $wpdb;
+
+// Build a site_id => logged-in count map from the active user IDs already resolved
+// in feature-metrics.php — one batch query across all sites, no per-site loop needed.
+$site_active_counts = [];
+if (!empty($active_user_ids)) {
+    $placeholders = implode(',', array_fill(0, count($active_user_ids), '%d'));
+    $base         = $wpdb->base_prefix;
+    $rows = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT user_id, meta_key FROM {$wpdb->usermeta}
+             WHERE meta_key LIKE %s
+             AND user_id IN ($placeholders)",
+            array_merge([$wpdb->esc_like($base) . '%capabilities'], $active_user_ids)
+        )
+    );
+    foreach ($rows as $row) {
+        $key = $row->meta_key;
+        if ($key === $base . 'capabilities') {
+            $bid = 1;
+        } elseif (preg_match('/^' . preg_quote($base, '/') . '(\d+)_capabilities$/', $key, $m)) {
+            $bid = (int) $m[1];
+        } else {
+            continue;
+        }
+        $site_active_counts[$bid] = ($site_active_counts[$bid] ?? 0) + 1;
+    }
+}
+
+$transient_key = 'hale_dash_sites_' . sanitize_key($this_env);
+
+// Allow cache busting via URL param (admins only)
+if (isset($_GET['refresh_dash']) && current_user_can('manage_network')) {
+    delete_transient($transient_key);
+}
+
+$cached = get_transient($transient_key);
+if ($cached !== false) {
+    echo $cached;
+    return;
+}
+
+ob_start();
+
 foreach ($sites as $site) {
     $site_id = $site->blog_id;
     $site_url = get_site_url($site_id);
@@ -51,10 +94,10 @@ foreach ($sites as $site) {
     $main_lang = get_locale();
     $site_lang_attribute = "";
     $warning = "";
-    $theme = get_option( 'stylesheet' );
-    $deprecated = get_theme_mod( 'deprecated_paragraph_widths' );
+    $theme = get_option('stylesheet');
+    $deprecated = get_theme_mod('deprecated_paragraph_widths');
     if ($lang != $main_lang) $site_lang_attribute = "lang='$lang'";
-    if ($lang == "") $site_lang_attribute = "lang=en-US"; //WP uses "" to denote en-US
+    if ($lang == "") $site_lang_attribute = "lang=en-US";
 
     // Resolve the production URL / domain shown under the site title.
     $site_path_slug = get_option('site_path_slug') ?: "";
@@ -73,10 +116,25 @@ foreach ($sites as $site) {
         $prod_domain .= rtrim($path, '/');
     }
 
-    // Production status tag (was previously set inside the env loop).
+    // COUNT query is far cheaper than count_users() which fetches all rows
+    $blog_prefix = $wpdb->get_blog_prefix($site_id);
+    $user_count  = (int) $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->usermeta} WHERE meta_key = %s",
+            $blog_prefix . 'capabilities'
+        )
+    );
+
+    // Active plugins already loaded into WP option cache by the switch above
+    $active_plugins = (array) get_option('active_plugins');
+    $is_private = in_array('wp-force-login/wp-force-login.php', $active_plugins);
+
+    restore_current_blog();
+
+    // Production status tag
     if ($site_name == $next_site_name && ($this_env == "Prod" || $this_env == "Local")) {
         $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--turquoise">Next</strong></span>';
-    } elseif (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
+    } elseif ($is_private) {
         $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--grey">Private</strong></span>';
     } elseif ($this_env == "Prod" || $this_env == "Local") {
         $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--blue hale-dash-better-tag--blue">Public</strong></span>';
@@ -107,12 +165,13 @@ foreach ($sites as $site) {
         <div class="website__users govuk-body-s govuk-!-margin-bottom-0">
             <?php
                 echo $status;
-                $user_count = count_users()['total_users'];
                 if ($user_count && $user_count <= 1000) echo "<br />$user_count users";
                 if ($user_count && $user_count > 1000) {
                     $user_count_text = number_format((float)($user_count/1000), 1, '.', '').'k';
                     echo "<br />$user_count_text users";
                 }
+                $site_logged_in = $site_active_counts[$site_id] ?? 0;
+                if ($site_logged_in > 0) echo "<span class='website__online-count'>$site_logged_in online</span>";
             ?>
         </div>
         <div class="website__footer govuk-body-s">
@@ -149,5 +208,8 @@ foreach ($sites as $site) {
     </div>
 
     <?php
-    restore_current_blog();
 }
+
+$output = ob_get_clean();
+set_transient($transient_key, $output, 5 * MINUTE_IN_SECONDS);
+echo $output;
