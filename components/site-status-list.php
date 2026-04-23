@@ -84,7 +84,7 @@ foreach ($sites as $site) {
         $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red">Public</strong></span>';
     }
     ?>
-    <div class="hale-dash-site-item" data-site-name="<?php echo esc_attr(strtolower($site_name)); ?>" data-site-id="<?php echo esc_attr($site_id); ?>">
+    <div class="hale-dash-site-item" data-site-name="<?php echo esc_attr(strtolower($site_name)); ?>" data-site-id="<?php echo esc_attr($site_id); ?>" data-site-slug="<?php echo esc_attr(strtolower($site_path_slug)); ?>">
     <article class="website">
         <div class="website__heading">
             <?php

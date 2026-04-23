@@ -55,6 +55,9 @@
             <li>
                 <a href="https://cloud-platform-e218f50a4812967ba1215eaecede923f.s3.amazonaws.com/feed-parser/feeds.json">Job Feed Parser JSON</a>
             </li>
+            <li>
+                <a href="https://websitebuilder.service.justice.gov.uk/wp-json/hc-rest/v1/sites/domain">Platform site API</a>
+            </li>
         </ul>
     </div>
 </div>

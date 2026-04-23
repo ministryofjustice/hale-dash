@@ -107,7 +107,7 @@ function festiveGreeting($now) {
     }
     if ($greeting !="") {
         $greeting = '
-    <div class="govuk-grid-column-two-thirds govuk-!-margin-top-6">
+    <div class="govuk-grid-column-two-thirds">
         <div class="govuk-notification-banner govuk-notification-banner--success"
             aria-labelledby="govuk-notification-banner-title"
             data-module="govuk-notification-banner">
@@ -132,7 +132,7 @@ function getBrithday() {
     if (in_array(get_current_user_id(),[2,26,34,49]) && date("nd",time()) == 1011) {
         $greeting = "Happy Birthday Marc";
     return '
-        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-6">
+        <div class="govuk-grid-column-two-thirds">
             <div class="govuk-notification-banner govuk-notification-banner--success"
                 aria-labelledby="govuk-notification-banner-title"
                 data-module="govuk-notification-banner">

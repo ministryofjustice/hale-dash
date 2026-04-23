@@ -18,6 +18,30 @@ function hale_dash_setup() {}
 
 add_action('after_setup_theme', 'hale_dash_setup');
 
+/**
+ * Inherit parent theme mods so logo/header/footer settings carry through.
+ * Falls back to showing site name if logo_configuration is still unset.
+ */
+add_filter('get_theme_mods', function ($mods) {
+    $parent_slug = get_template();
+    $parent_mods = get_option('theme_mods_' . $parent_slug, []);
+
+    if (is_array($parent_mods)) {
+        foreach ($parent_mods as $key => $value) {
+            if (!array_key_exists($key, $mods) || $mods[$key] === '') {
+                $mods[$key] = $value;
+            }
+        }
+    }
+
+    // Hard fallback: if logo_configuration is still not set, show the site name.
+    if (empty($mods['logo_configuration'])) {
+        $mods['logo_configuration'] = 'name';
+    }
+
+    return $mods;
+});
+
 function hale_dash_enqueue_styles() {
 	wp_enqueue_style( 'hale-dash-style',
         hale_dash_mix_asset('/css/hale-dash-style.min.css'),

@@ -15,6 +15,12 @@
 	content: var(--govuk-frontend-version);
 }
 
+// Tighten main wrapper padding for the dashboard page
+.hale-page .govuk-main-wrapper {
+	padding-top: 20px;
+	padding-bottom: 40px;
+}
+
 // -------------------------------------------------------------
 // Two-column dashboard layout
 // -------------------------------------------------------------
@@ -279,23 +285,25 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-end;
+	justify-content: flex-start;
 	gap: 0.75rem 1rem;
 	margin-bottom: 1.25rem;
 
 	&__field {
-		flex: 1 1 180px;
-	}
+		flex: 0 1 180px;
+		min-width: 140px;
 
-	&__id-input {
-		max-width: 100px;
-
-		@media (max-width: 640px) {
-			max-width: 100%;
+		&--name {
+			flex-basis: 260px;
 		}
 	}
 
+	&__id-input {
+		width: 100%;
+	}
+
 	&__count {
-		flex: 1 1 100%;
+		flex: 0 0 100%;
 		margin: 0;
 	}
 
@@ -575,13 +583,13 @@ html[data-theme="dark"] {
 	// govuk-notification-banner (success variant used by greetings + birthday)
 	// -----------------------------------------------------------
 	.govuk-notification-banner {
-		background-color: #238636 !important;   // GH success emphasis
-		border: 5px solid #238636 !important;
+		background-color: #1f6feb !important;
+		border: 5px solid #1f6feb !important;
 		color: #ffffff !important;
 
 		&__header {
-			background-color: #238636 !important;
-			border-bottom: 1px solid #2ea043 !important;
+			background-color: #1f6feb !important;
+			border-bottom: 1px solid #388bfd !important;
 			padding: 2px 15px 5px;
 		}
 
