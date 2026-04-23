@@ -77,8 +77,8 @@ if (isset($_GET['refresh_dash']) && current_user_can('manage_network')) {
 
 $cached = get_transient($transient_key);
 if ($cached !== false) {
-    echo $cached;
-    return;
+    echo wp_kses_post($cached);
+    	return;
 }
 
 ob_start();
@@ -96,8 +96,8 @@ foreach ($sites as $site) {
     $warning = "";
     $theme = get_option('stylesheet');
     $deprecated = get_theme_mod('deprecated_paragraph_widths');
-    if ($lang != $main_lang) $site_lang_attribute = "lang='$lang'";
-    if ($lang == "") $site_lang_attribute = "lang=en-US";
+    if ($lang != $main_lang) $site_lang_attribute = "lang='" . esc_attr($lang) . "'";
+    if ($lang == "") $site_lang_attribute = "lang='en-US'";
 
     // Resolve the production URL / domain shown under the site title.
     $site_path_slug = get_option('site_path_slug') ?: "";
@@ -146,12 +146,11 @@ foreach ($sites as $site) {
     <article class="website">
         <div class="website__heading">
             <?php
-                echo $icon;
                 if ($site_id == $dashboard_ID) {
                     echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
                     echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
                 } else {
-                    echo "<h2 $site_lang_attribute class='website__heading__text govuk-heading-s'>$site_name</h2>";
+                    echo "<h2 " . $site_lang_attribute . " class='website__heading__text govuk-heading-s'>" . esc_html($site_name) . "</h2>";
                     $warning .= language_warning($lang);
                     $warning .= timezone_warning($timezone);
                     $warning .= theme_warning($theme);
@@ -160,25 +159,25 @@ foreach ($sites as $site) {
             ?>
         </div>
         <?php if ($site_id != $dashboard_ID): ?>
-            <a class="website__domain govuk-link govuk-body-s" href="<?php echo $prod_url; ?>" title="<?php echo $prod_url; ?>"><?php echo $prod_domain; ?></a>
+            <a class="website__domain govuk-link govuk-body-s" href="<?php echo esc_url($prod_url); ?>" title="<?php echo esc_attr($prod_url); ?>"><?php echo esc_html($prod_domain); ?></a>
         <?php endif; ?>
         <div class="website__users govuk-body-s govuk-!-margin-bottom-0">
             <?php
                 echo $status;
-                if ($user_count && $user_count <= 1000) echo "<br />$user_count users";
-                if ($user_count && $user_count > 1000) {
-                    $user_count_text = number_format((float)($user_count/1000), 1, '.', '').'k';
-                    echo "<br />$user_count_text users";
-                }
-                $site_logged_in = $site_active_counts[$site_id] ?? 0;
-                if ($site_logged_in > 0) echo "<span class='website__online-count'>$site_logged_in online</span>";
+                if ($user_count && $user_count <= 1000) echo "<br />" . intval($user_count) . " users";
+                				if ($user_count && $user_count > 1000) {
+                					$user_count_text = number_format((float)($user_count/1000), 1, '.', '').'k';
+                					echo "<br />" . esc_html($user_count_text) . " users";
+                				}
+                				$site_logged_in = (int) ($site_active_counts[$site_id] ?? 0);
+                				if ($site_logged_in > 0) echo "<span class='website__online-count'>" . intval($site_logged_in) . " online</span>";
             ?>
         </div>
         <div class="website__footer govuk-body-s">
             <div class='website__technical govuk-!-margin-bottom-0'>
                 <?php
-                    if ($site_path_slug != "") echo "<h2 class='website__slug-title'>Slug</h2> <code class='website__slug'>$site_path_slug</code>";
-                    echo "<h2 class='website__id-title'>ID</h2> <span class='website_id'>$site_id</span>";
+                    if ($site_path_slug != "") echo "<h2 class='website__slug-title'>Slug</h2> <code class='website__slug'>" . esc_html($site_path_slug) . "</code>";
+                    echo "<h2 class='website__id-title'>ID</h2> <span class='website_id'>" . intval($site_id) . "</span>";
                 ?>
             </div>
             <div class="website__links govuk-!-margin-bottom-0">
@@ -193,9 +192,9 @@ foreach ($sites as $site) {
                     }
 
                     if ($site_path_slug == "" && $site_id != 1) {
-                        echo "<span class='website__environment website__environment--disabled website__environment--$env'>" . ucfirst($env) . "</span>";
+                        echo "<span class='website__environment website__environment--disabled website__environment--" . esc_attr($env) . "'>" . esc_html(ucfirst($env)) . "</span>";
                     } else {
-                        echo "<a href='$env_url' class='website__environment website__environment--$env govuk-link'>" . ucfirst($env) . "</a>";
+                        echo "<a href='" . esc_url($env_url) . "' class='website__environment website__environment--" . esc_attr($env) . " govuk-link'>" . esc_html(ucfirst($env)) . "</a>";
                     }
                 }
                 ?>

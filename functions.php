@@ -124,7 +124,7 @@ function get_fav_icon($src) {
         </svg>';
     };
 
-    return '<img class="website__favicon" src="' . $src . '" alt=""/>';
+    return '<img class="website__favicon" src="' . esc_url($src) . '" alt=""/>';
 }
 
 /**
@@ -164,9 +164,9 @@ function language_warning($code) {
     } elseif ($code == "en_AU") {
         return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>Australian English</strong> 🇦🇺</p>";
     } elseif (!str_starts_with($code, "en")) {
-        return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red'>Language</strong></span> This website is set to <strong>$code</strong>.</p>";
+        return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red'>Language</strong></span> This website is set to <strong>" . esc_html($code) . "</strong>.</p>";
     } elseif ($code != "en_GB") {
-        return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>$code</strong>.</p>";
+        return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>" . esc_html($code) . "</strong>.</p>";
     }
 }
 
@@ -191,13 +191,13 @@ function timezone_warning($zone) {
     } elseif ($zone == "Atlantic/Canary") {
         return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--yellow'>Timezone</strong></span> This website is set to the <strong>Canarian</strong> timezone.</p>";
     } else {
-        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--red'>Timezone</strong></span> This website is set to the <strong>$zone</strong> timezone. <br />(Scheduling accuracy might be adversely affected.)</p>";
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--red'>Timezone</strong></span> This website is set to the <strong>" . esc_html($zone) . "</strong> timezone. <br />(Scheduling accuracy might be adversely affected.)</p>";
     }
 }
 
 function theme_warning($theme) {
     if ($theme == "hale")  return "";
-    return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--yellow'>Non-Hale</strong></span> This website is using the <strong>$theme</strong> theme.</p>";
+    return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--yellow'>Non-Hale</strong></span> This website is using the <strong>" . esc_html($theme) . "</strong> theme.</p>";
 }
 
 function deprecated_warning($deprecated) {

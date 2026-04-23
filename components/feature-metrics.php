@@ -21,7 +21,7 @@
 
     // Users with at least one active (non-expired) session; collect IDs for per-site lookup
     $session_rows = $wpdb->get_results(
-        "SELECT user_id, meta_value FROM {$wpdb->usermeta} WHERE meta_key = 'session_tokens'"
+        $wpdb->prepare("SELECT user_id, meta_value FROM {$wpdb->usermeta} WHERE meta_key = %s", 'session_tokens')
     );
     $now = time();
     $active_user_ids = [];
@@ -41,7 +41,7 @@
 <div class="hale-dash-metrics">
     <div class="hale-dash-metric">
         <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Current Environment</h2>
-        <span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo $this_env; ?></span>
+        <span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo esc_html($this_env); ?></span>
     </div>
     <div class="hale-dash-metric">
         <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Sites hosted</h2>
@@ -53,7 +53,7 @@
     </div>
     <div class="hale-dash-metric">
         <h2 class="govuk-heading-s govuk-!-margin-bottom-1">WordPress</h2>
-        <span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo $wp_version; ?></span>
+        <span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo esc_html($wp_version); ?></span>
     </div>
     <div class="hale-dash-metric">
         <h2 class="govuk-heading-s govuk-!-margin-bottom-1">GDS</h2>

@@ -142,11 +142,11 @@ function getBrithday() {
                     </h2>
                 </div>
                 <div class="govuk-notification-banner__content">
-                <div class="birthday-logo" style="background-image:url(https://hale.docker/wp-content/themes/hale-dash/assets/images/marc.png);"></div>
+                <div class="birthday-logo" style="background-image:url(' . esc_url(get_theme_file_uri('/assets/images/marc.png')) . ');"></div>
                     <h3 class="govuk-notification-banner__heading" style="display:inline-block;">
                         '.$greeting.'
                     </h3>
-                    <div class="birthday-logo" style="background-image:url(https://hale.docker/wp-content/themes/hale-dash/assets/images/marc.png);"></div>
+                    <div class="birthday-logo" style="background-image:url(' . esc_url(get_theme_file_uri('/assets/images/marc.png')) . ');"></div>
                 </div>
             </div>
         </div>
