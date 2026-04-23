@@ -17,8 +17,13 @@
 
 // Tighten main wrapper padding for the dashboard page
 .hale-page .govuk-main-wrapper {
-	padding-top: 20px;
+	padding-top: 10px !important;
 	padding-bottom: 40px;
+}
+
+// Reduce the 40px bottom margin govuk applies to notification banners
+.hale-page .govuk-notification-banner {
+	margin-bottom: 25px !important;
 }
 
 // -------------------------------------------------------------
@@ -27,7 +32,7 @@
 .hale-dash-metrics-col {
 	@media (min-width: 769px) {
 		position: sticky;
-		top: 1rem;
+		top: calc(32px + 1rem);
 		align-self: flex-start;
 	}
 }
