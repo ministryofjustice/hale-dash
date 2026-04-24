@@ -157,7 +157,6 @@ foreach ($sites as $site) {
                     echo "<h3 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h3>";
                     echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
                 } else {
-                    echo $icon;
                     echo "<h3 " . $site_lang_attribute . " class='website__heading__text govuk-heading-s'>" . esc_html($site_name) . "</h3>";
                     $warning .= language_warning($lang);
                     $warning .= timezone_warning($timezone);
@@ -169,26 +168,27 @@ foreach ($sites as $site) {
         <?php if ($site_id != $dashboard_ID): ?>
             <a class="website__domain govuk-link govuk-body-s" href="<?php echo esc_url($prod_url); ?>" title="<?php echo esc_attr($prod_url); ?>"><?php echo esc_html($prod_domain); ?></a>
         <?php endif; ?>
+        <div class="website__technical">
+            <?php
+                if ($site_path_slug != "") echo "<span class='website__slug-title'>Slug</span> <code class='website__slug'>" . esc_html($site_path_slug) . "</code>";
+                echo "<span class='website__id-title'>ID</span> <span class='website_id'>" . intval($site_id) . "</span>";
+                if ($user_count) {
+                    $display_count = $user_count > 1000
+                        ? number_format((float)($user_count / 1000), 1, '.', '') . 'k'
+                        : intval($user_count);
+                    echo "<span class='website__users-title'>Users</span> <span class='website__user-count'>" . esc_html($display_count) . "</span>";
+                }
+            ?>
+        </div>
         <div class="website__users govuk-body-s govuk-!-margin-bottom-0">
             <?php
                 echo $status;
-                if ($user_count && $user_count <= 1000) echo "<br />" . intval($user_count) . " users";
-                				if ($user_count && $user_count > 1000) {
-                					$user_count_text = number_format((float)($user_count/1000), 1, '.', '').'k';
-                					echo "<br />" . esc_html($user_count_text) . " users";
-                				}
-                				$site_logged_in = (int) ($site_active_counts[$site_id] ?? 0);
-                				if ($site_logged_in > 0) echo "<span class='website__online-count'>" . intval($site_logged_in) . " online</span>";
+                $site_logged_in = (int) ($site_active_counts[$site_id] ?? 0);
+                if ($site_logged_in > 0) echo "<span class='website__online-count'>" . intval($site_logged_in) . " online</span>";
             ?>
         </div>
         <div class="website__footer govuk-body-s">
-            <div class='website__technical govuk-!-margin-bottom-0'>
-                <?php
-                    if ($site_path_slug != "") echo "<span class='website__slug-title'>Slug</span> <code class='website__slug'>" . esc_html($site_path_slug) . "</code>";
-                    echo "<span class='website__id-title'>ID</span> <span class='website_id'>" . intval($site_id) . "</span>";
-                ?>
-            </div>
-            <div class="website__links govuk-!-margin-bottom-0">
+            <div class="website__links">
                 <?php
                 foreach ($environments as $env) {
                     switch ($env) {
