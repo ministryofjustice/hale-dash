@@ -4,7 +4,7 @@
 	var slugInput = document.getElementById('hd-search-slug');
 	var countEl   = document.getElementById('hd-search-count');
 
-	if (!nameInput || !idInput || !slugInput) return;
+	if (!nameInput || !idInput || !slugInput || !countEl) return;
 
 	var items = Array.from(document.querySelectorAll('.hale-dash-site-item'));
 
