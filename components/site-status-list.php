@@ -68,10 +68,17 @@ if (!empty($active_user_ids)) {
     }
 }
 
-$transient_key = 'hale_dash_sites_' . sanitize_key($this_env);
+$transient_key             = 'hale_dash_sites_' . sanitize_key($this_env);
+$refresh_dash_nonce_action = 'refresh_dash_' . $transient_key;
 
-// Allow cache busting via URL param (admins only)
-if (isset($_GET['refresh_dash']) && current_user_can('manage_network')) {
+// Allow cache busting for network admins only, but require POST + nonce to prevent CSRF.
+if (
+    isset($_SERVER['REQUEST_METHOD']) &&
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    isset($_POST['refresh_dash'], $_POST['refresh_dash_nonce']) &&
+    current_user_can('manage_network') &&
+    wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['refresh_dash_nonce'])), $refresh_dash_nonce_action)
+) {
     delete_transient($transient_key);
 }
 
