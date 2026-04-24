@@ -123,15 +123,26 @@
 	// Domain: aligned under site name, past the favicon
 	&__domain {
 		grid-area: domain;
-		display: block;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
 		font-size: var(--hd-text-meta);
 		color: var(--hd-fg-muted);
 		margin: 0;
 		min-width: 0;
 		max-width: 100%;
+	}
+
+	&__domain-text {
+		min-width: 0;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+	}
+
+	&__domain-icon {
+		flex-shrink: 0;
+		opacity: 0.7;
 	}
 
 	&__explanation {

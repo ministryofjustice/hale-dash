@@ -73,7 +73,7 @@
     </div>
 
     <div class="hale-dash-metric hale-dash-metric--wide">
-        <h2 class="govuk-heading-s">Site monitoring and performance</h2>
+        <h2 class="govuk-heading-s">Monitoring resources</h2>
         <ul class="govuk-list govuk-body-s">
             <li>
                 <a href="https://github.com/ministryofjustice/hale-platform">Hale Platform GitHub repository</a>

@@ -166,7 +166,7 @@ foreach ($sites as $site) {
             ?>
         </div>
         <?php if ($site_id != $dashboard_ID): ?>
-            <a class="website__domain govuk-link govuk-body-s" href="<?php echo esc_url($prod_url); ?>" title="<?php echo esc_attr($prod_url); ?>"><?php echo esc_html($prod_domain); ?></a>
+            <a class="website__domain govuk-link govuk-body-s" href="<?php echo esc_url($prod_url); ?>" title="<?php echo esc_attr($prod_url); ?>" target="_blank" rel="noopener noreferrer"><span class="website__domain-text"><?php echo esc_html($prod_domain); ?></span><svg class="website__domain-icon" aria-hidden="true" focusable="false" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
         <?php endif; ?>
         <div class="website__technical">
             <?php
