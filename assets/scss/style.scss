@@ -4,6 +4,11 @@
 	box-sizing: border-box;
 }
 
+#content.govuk-width-container {
+	padding-top: 0 !important;
+	margin-top: 0 !important;
+}
+
 @media (min-width: 769px) {
 	.hale-page .govuk-width-container {
 		max-width: 1400px;
@@ -304,13 +309,39 @@
 // -------------------------------------------------------------
 // Compact header — reduce vertical height to just above site title
 // -------------------------------------------------------------
-.hale-page .govuk-header__container {
-	padding-top: 6px;
-	padding-bottom: 4px;
+// Target: 50px total header height
+.hale-page .govuk-header {
+	margin-bottom: 0 !important;
+	border-bottom-width: 4px !important;
 }
 
-.hale-page .hale-header .govuk-header__logotype {
-	min-height: unset;
+// Fixed 46px container (+ 4px border = 50px). Flex centres logo vertically.
+.hale-page .govuk-header__container {
+	display: flex !important;
+	align-items: center !important;
+	height: 46px !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+// Strip all padding/margin from every govuk/hale element inside the header
+.hale-page .govuk-header__logo,
+.hale-page .govuk-header__logotype,
+.hale-page .govuk-header__link--homepage,
+.hale-page .hale-header__logo {
+	padding: 0 !important;
+	margin: 0 !important;
+	min-height: unset !important;
+	display: flex !important;
+	align-items: center !important;
+}
+
+.hale-page .govuk-header__logotype-text,
+.hale-page .hale-header__logotype-text--custom {
+	font-size: 1rem !important;
+	line-height: 1 !important;
+	margin: 0 !important;
+	padding: 0 !important;
 }
 
 .hale-page h2 {
@@ -370,7 +401,7 @@
 	--hd-fg: #0b0c0c;
 	--hd-fg-muted: #505a5f;
 	--hd-border: #b1b4b6;
-	--hd-link: #1d70b8;
+	--hd-link: #003078;
 	--hd-link-visited: #4c2c92;
 	--hd-link-hover: #003078;
 	--hd-slug-fg: #d13118;
@@ -417,8 +448,8 @@ html[data-theme="dark"] {
 	// -----------------------------------------------------------
 	.govuk-header,
 	.hale-header {
-		background-color: #0b0c0c !important;
-		border-bottom-color: #1f6feb !important;
+		background-color: var(--hd-bg) !important;
+		border-bottom-color: var(--hd-bg) !important;
 		color: #ffffff;
 
 		.govuk-header__link,
@@ -606,11 +637,10 @@ html[data-theme="dark"] {
 
 	.website__environment {
 		background-color: var(--hd-bg-subtle) !important;
-		border-color: var(--hd-border) !important;
 		color: var(--hd-fg) !important;
 
 		&:hover {
-			background-color: #30363d !important;
+			background-color: var(--hd-border) !important;
 		}
 	}
 

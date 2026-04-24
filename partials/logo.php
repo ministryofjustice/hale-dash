@@ -62,9 +62,9 @@ $show_sitename = in_array($logo_configuration, ['name', 'both']) ? 'yes' : 'yes'
             <?php endif; ?>
         <?php endif; ?>
 
-        <span class="govuk-header__logotype-text hale-header__logotype-text--custom">
+        <h1 class="govuk-header__logotype-text hale-header__logotype-text--custom">
             <?php echo esc_html($logo_line_1); ?>
-        </span>
+        </h1>
     </div>
 
     <?php if ($logo_has_link === 'yes'): ?>
