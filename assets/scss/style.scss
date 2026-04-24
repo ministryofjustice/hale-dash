@@ -62,7 +62,7 @@
 		padding: 0.5rem 0;
 	}
 
-	h2 {
+	h3 {
 		margin-top: 0;
 	}
 }
@@ -293,6 +293,30 @@
 		background-color: #d4351c;
 		color:white;
 	}
+}
+
+// -------------------------------------------------------------
+// Compact header — reduce vertical height to just above site title
+// -------------------------------------------------------------
+.hale-page .govuk-header__container {
+	padding-top: 6px;
+	padding-bottom: 4px;
+}
+
+.hale-page .hale-header .govuk-header__logotype {
+	min-height: unset;
+}
+
+.hale-page h2 {
+	font-size: 2rem;
+}
+
+.hale-page h3 {
+	font-size: 1.4rem;
+}
+
+.hale-dash-metric h3 {
+	font-size: 0.875rem;
 }
 
 // -------------------------------------------------------------

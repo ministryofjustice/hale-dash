@@ -40,35 +40,35 @@
 ?>
 <div class="hale-dash-metrics">
     <div class="hale-dash-metric">
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Current Environment</h2>
+        <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Current Environment</h3>
         <span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo esc_html($this_env); ?></span>
     </div>
     <div class="hale-dash-metric">
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Sites hosted</h2>
+        <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Sites hosted</h3>
         <span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo get_site_count(); ?></span>
     </div>
     <div class="hale-dash-metric">
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Public sites</h2>
+        <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Public sites</h3>
         <span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo $live_site_count; ?></span>
     </div>
     <div class="hale-dash-metric">
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">WordPress</h2>
+        <h3 class="govuk-heading-s govuk-!-margin-bottom-1">WordPress</h3>
         <span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo esc_html($wp_version); ?></span>
     </div>
     <div class="hale-dash-metric">
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">GDS</h2>
+        <h3 class="govuk-heading-s govuk-!-margin-bottom-1">GDS</h3>
         <span class="govuk-heading-l govuk-!-margin-bottom-0 gds-version"></span>
     </div>
     <div class="hale-dash-metric">
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">PHP</h2>
+        <h3 class="govuk-heading-s govuk-!-margin-bottom-1">PHP</h3>
         <span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo phpversion(); ?></span>
     </div>
     <div class="hale-dash-metric">
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Network users</h2>
+        <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Network users</h3>
         <span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo number_format($total_network_users); ?></span>
     </div>
     <div class="hale-dash-metric">
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Logged in now</h2>
+        <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Logged in now</h3>
         <span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo $active_sessions; ?></span>
     </div>
 

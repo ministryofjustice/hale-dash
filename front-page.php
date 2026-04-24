@@ -18,12 +18,12 @@ $sites = get_sites();
 <div class="govuk-grid-column-full">
     <div class="govuk-grid-row hale-dash-layout">
         <aside class="govuk-grid-column-one-third hale-dash-metrics-col">
-            <h1 class="govuk-heading-l">Platform metrics</h1>
+            <h2 class="govuk-heading-l">Platform metrics</h2>
             <?php include get_stylesheet_directory() . '/components/feature-metrics.php'; ?>
         </aside>
 
         <section class="govuk-grid-column-two-thirds hale-dash-sites-col">
-            <h1 class="govuk-heading-l">Sites</h1>
+            <h2 class="govuk-heading-l">Sites</h2>
             <div class="hale-dash-search">
                 <div class="hale-dash-search__field hale-dash-search__field--name">
                     <label class="govuk-label govuk-label--s" for="hd-search-name">Search by name</label>
