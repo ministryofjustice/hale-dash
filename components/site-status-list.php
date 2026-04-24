@@ -77,7 +77,7 @@ if (isset($_GET['refresh_dash']) && current_user_can('manage_network')) {
 
 $cached = get_transient($transient_key);
 if ($cached !== false) {
-    echo wp_kses_post($cached);
+    echo $cached;
     	return;
 }
 
