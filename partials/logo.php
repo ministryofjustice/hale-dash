@@ -41,7 +41,7 @@ $show_sitename = in_array($logo_configuration, ['name', 'both']) ? 'yes' : 'yes'
 <div class="govuk-header__logo">
     <?php if ($logo_has_link === 'yes'): ?>
     <a class="govuk-header__link govuk-header__link--homepage"
-       href="<?php echo esc_url_raw($logo_link); ?>"
+       href="<?php echo esc_url($logo_link); ?>"
        aria-label="<?php echo esc_attr($logo_aria_label); ?>">
     <?php endif; ?>
 
