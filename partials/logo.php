@@ -55,7 +55,7 @@ $show_sitename = in_array($logo_configuration, ['name', 'both']) ? 'yes' : 'yes'
                 <svg role="presentation" focusable="false" class="moj-header__logotype-crest"
                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 702.47 624.08" height="40" width="47">
                     <?php include get_template_directory() . '/partials/govuk-crest-svg-content.php'; ?>
-                    <image src="/assets/images/gov-crest-white.png" xlink:href=""
+                    <image src="<?php echo esc_url(get_theme_file_uri('/assets/images/gov-crest-white.png')); ?>" xlink:href=""
                            class="govuk-header__logotype-crown-fallback-image"
                            width="702.47" height="624.08"></image>
                 </svg>
