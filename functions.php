@@ -68,6 +68,7 @@ add_action( 'wp_enqueue_scripts', 'hale_dash_enqueue_styles' );
 
 /**
  * Inline script in <head> to set theme before first paint (avoids FOUC).
+ * The script must be inline in the <head> rather than loaded from an external file because external scripts require an extra network request, during which the browser would paint the page in its default (light) state first.
  */
 function hale_dash_dark_mode_inline() {
 	?>
