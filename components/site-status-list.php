@@ -150,6 +150,7 @@ foreach ($sites as $site) {
                     echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
                     echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
                 } else {
+                    echo $icon;
                     echo "<h2 " . $site_lang_attribute . " class='website__heading__text govuk-heading-s'>" . esc_html($site_name) . "</h2>";
                     $warning .= language_warning($lang);
                     $warning .= timezone_warning($timezone);
