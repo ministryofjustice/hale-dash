@@ -1,6 +1,5 @@
 <?php
 $environments = [
-    'prod',
     'staging',
     'dev',
     'demo'
@@ -9,7 +8,6 @@ $environments = [
 $dashboard_ID = "59";
 
 if ($this_env == "Local") {
-    // set in feature-metrics.php
     $environments[] = "local";
 }
 
@@ -41,6 +39,57 @@ function get_live_urls() {
 $live_urls = get_live_urls();
 $this_url = get_bloginfo('url');
 
+global $wpdb;
+
+// Build a site_id => logged-in count map from the active user IDs already resolved
+// in feature-metrics.php — one batch query across all sites, no per-site loop needed.
+$site_active_counts = [];
+if (!empty($active_user_ids)) {
+    $placeholders = implode(',', array_fill(0, count($active_user_ids), '%d'));
+    $base         = $wpdb->base_prefix;
+    $rows = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT user_id, meta_key FROM {$wpdb->usermeta}
+             WHERE meta_key LIKE %s
+             AND user_id IN ($placeholders)",
+            array_merge([$wpdb->esc_like($base) . '%capabilities'], $active_user_ids)
+        )
+    );
+    foreach ($rows as $row) {
+        $key = $row->meta_key;
+        if ($key === $base . 'capabilities') {
+            $bid = 1;
+        } elseif (preg_match('/^' . preg_quote($base, '/') . '(\d+)_capabilities$/', $key, $m)) {
+            $bid = (int) $m[1];
+        } else {
+            continue;
+        }
+        $site_active_counts[$bid] = ($site_active_counts[$bid] ?? 0) + 1;
+    }
+}
+
+$transient_key             = 'hale_dash_sites_' . sanitize_key($this_env);
+$refresh_dash_nonce_action = 'refresh_dash_' . $transient_key;
+
+// Allow cache busting for network admins only, but require POST + nonce to prevent CSRF.
+if (
+    isset($_SERVER['REQUEST_METHOD']) &&
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    isset($_POST['refresh_dash'], $_POST['refresh_dash_nonce']) &&
+    current_user_can('manage_network') &&
+    wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['refresh_dash_nonce'])), $refresh_dash_nonce_action)
+) {
+    delete_transient($transient_key);
+}
+
+$cached = get_transient($transient_key);
+if ($cached !== false) {
+    echo $cached;
+    	return;
+}
+
+ob_start();
+
 foreach ($sites as $site) {
     $site_id = $site->blog_id;
     $site_url = get_site_url($site_id);
@@ -52,131 +101,122 @@ foreach ($sites as $site) {
     $main_lang = get_locale();
     $site_lang_attribute = "";
     $warning = "";
-    $theme = get_option( 'stylesheet' );
-    $deprecated = get_theme_mod( 'deprecated_paragraph_widths' );
-    if ($lang != $main_lang) $site_lang_attribute = "lang='$lang'";
-    if ($lang == "") $site_lang_attribute = "lang=en-US"; //WP uses "" to denote en-US
+    $theme = get_option('stylesheet');
+    $deprecated = get_theme_mod('deprecated_paragraph_widths');
+    if ($lang != $main_lang) $site_lang_attribute = "lang='" . esc_attr($lang) . "'";
+    if ($lang == "") $site_lang_attribute = "lang='en-US'";
+
+    // Resolve the production URL / domain shown under the site title.
+    $site_path_slug = get_option('site_path_slug') ?: "";
+    if ($this_env == "Prod") {
+        $prod_url = $site_url;
+    } elseif (isset($live_urls[trim($site_name)])) {
+        $prod_url = $live_urls[trim($site_name)];
+    } else {
+        $prod_url = "https://websitebuilder.service.justice.gov.uk/$site_path_slug";
+    }
+    if (strpos($prod_url, "http") === false) {
+        $prod_url = "https://" . $prod_url;
+    }
+    $prod_domain = parse_url($prod_url, PHP_URL_HOST);
+    if ($path = parse_url($prod_url, PHP_URL_PATH)) {
+        $prod_domain .= rtrim($path, '/');
+    }
+
+    // COUNT query is far cheaper than count_users() which fetches all rows
+    $blog_prefix = $wpdb->get_blog_prefix($site_id);
+    $user_count  = (int) $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->usermeta} WHERE meta_key = %s",
+            $blog_prefix . 'capabilities'
+        )
+    );
+
+    // Active plugins already loaded into WP option cache by the switch above
+    $active_plugins = (array) get_option('active_plugins');
+    $is_private = in_array('wp-force-login/wp-force-login.php', $active_plugins);
+
+    restore_current_blog();
+
+    // Production status tag
+    if ($site_name == $next_site_name && ($this_env == "Prod" || $this_env == "Local")) {
+        $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--turquoise">Next</strong></span>';
+    } elseif ($is_private) {
+        $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--grey">Private</strong></span>';
+    } elseif ($this_env == "Prod" || $this_env == "Local") {
+        $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--blue hale-dash-better-tag--blue">Public</strong></span>';
+    } else {
+        $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red">Public</strong></span>';
+    }
     ?>
-    <div class="website">
+    <div class="hale-dash-site-item" data-site-name="<?php echo esc_attr(strtolower($site_name)); ?>" data-site-id="<?php echo esc_attr($site_id); ?>" data-site-slug="<?php echo esc_attr(strtolower($site_path_slug)); ?>">
+    <article class="website">
         <div class="website__heading">
             <?php
-                echo $icon;
                 if ($site_id == $dashboard_ID) {
-                    echo "<h2 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h2>";
+                    echo "<h3 class='website__heading__text govuk-heading-s'>Hale Platform Dashboard</h3>";
                     echo "<p class='govuk-body govuk-hint govuk-!-margin-bottom-0 website__explanation'>This dashboard</p>";
                 } else {
-                    echo "<h2 $site_lang_attribute class='website__heading__text govuk-heading-s'>$site_name</h2>";
+                    echo "<h3 " . $site_lang_attribute . " class='website__heading__text govuk-heading-s'>" . esc_html($site_name) . "</h3>";
                     $warning .= language_warning($lang);
                     $warning .= timezone_warning($timezone);
                     $warning .= theme_warning($theme);
                     $warning .= deprecated_warning($deprecated);
                 }
             ?>
-
         </div>
-        <div class="website__links govuk-body-s govuk-!-margin-bottom-0">
+        <?php if ($site_id != $dashboard_ID): ?>
+            <a class="website__domain govuk-link govuk-body-s" href="<?php echo esc_url($prod_url); ?>" title="<?php echo esc_attr($prod_url); ?>" target="_blank" rel="noopener noreferrer"><span class="website__domain-text"><?php echo esc_html($prod_domain); ?></span><svg class="website__domain-icon" aria-hidden="true" focusable="false" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+        <?php endif; ?>
+        <div class="website__technical">
             <?php
-            foreach ($environments as $env) {
-
-                $site_path_slug = "";
-
-                if (get_option('site_path_slug')) {
-                    $site_path_slug = get_option('site_path_slug');
+                if ($site_path_slug != "") echo "<span class='website__slug-title'>Slug</span> <code class='website__slug'>" . esc_html($site_path_slug) . "</code>";
+                echo "<span class='website__id-title'>ID</span> <span class='website_id'>" . intval($site_id) . "</span>";
+                if ($user_count) {
+                    $display_count = $user_count > 1000
+                        ? number_format((float)($user_count / 1000), 1, '.', '') . 'k'
+                        : intval($user_count);
+                    echo "<span class='website__users-title'>Users</span> <span class='website__user-count'>" . esc_html($display_count) . "</span>";
                 }
-
-                switch ($env) {
-                    case "prod":
-                        $env_url = "https://websitebuilder.service.justice.gov.uk/$site_path_slug";
-                        break;
-                    case "local":
-                        $env_url = "https://hale.docker/$site_path_slug";
-                        break;
-                    default:
-                      $env_url = "https://$env.websitebuilder.service.justice.gov.uk/$site_path_slug";
-                }
-
-
-                ?>
-                <div class="website__environment">
-                    <?php
-                    if ($env == "prod") {
-
-                        if ($this_env == "Prod") {
-                            $env_url = $site_url;
-                        } elseif (isset($live_urls[trim($site_name)])) {
-                            // checks hard-coded list of URLs
-                            $env_url = $live_urls[trim($site_name)];
-                        }
-
-                        if ($site_name == $next_site_name && ($this_env=="Prod" || $this_env=="Local")) {
-                            // Plugin matches next site name.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--turquoise">Next</strong></span>';
-                        } elseif (is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
-                            // Plugin is active on the specified site.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--grey">Private</strong></span>';
-                        } elseif ($this_env=="Prod" || $this_env=="Local") {
-                            // Plugin is inactive on the specified site & site is prod or local.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--blue hale-dash-better-tag--blue">Public</strong></span>';
-                        } else {
-                            // Plugin is inactive on the specified site & site is NOT prod or local.
-                            $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red">Public</strong></span>';
-                        }
-
-                        if (strpos($env_url, "http") === false) {
-                            $env_url = "https://" . $env_url;
-                        }
-                    } else {
-                        if (!is_plugin_active_on_site('wp-force-login/wp-force-login.php', $site_id)) {
-                            // Plugin is inactive on the specified site.
-                            // $warning .= ucfirst("$env environment is not password protected! <br />"); // This didn't work!
-                        }
-                    }
-
-                    // Add in the "login" link to prod
-                    $env_link = "<a href='$env_url' class='website__environment__link website__environment__link--$env govuk-link'>" . ucfirst($env) . "</a>";
-                    $login_link = "";
-
-                    if ($env == 'prod') {
-                    $login_link = " | <a href='$env_url/hale-wpms-2020'>Login</a>";
-                    echo $env_link . $login_link;
-                    } elseif ($site_path_slug == "" && $site_id != 1) {
-                        // No slug, so no useful link
-                        // Just write env name to keep alignment
-                        echo ucfirst($env) . "<!-- No slug, no link -->";
-                    } else {
-                        echo $env_link;
-                    }
-
-                    ?>
-                </div>
-                <?php
-            }
             ?>
         </div>
         <div class="website__users govuk-body-s govuk-!-margin-bottom-0">
             <?php
                 echo $status;
-                $user_count = count_users()['total_users'];
-                if ($user_count && $user_count <= 1000) echo "<br />$user_count users";
-                if ($user_count && $user_count > 1000) {
-                    $user_count_text = number_format((float)($user_count/1000), 1, '.', '').'k';
-                    echo "<br />$user_count_text users";
+                $site_logged_in = (int) ($site_active_counts[$site_id] ?? 0);
+                if ($site_logged_in > 0) echo "<span class='website__online-count'>" . intval($site_logged_in) . " online</span>";
+            ?>
+        </div>
+        <div class="website__footer govuk-body-s">
+            <div class="website__links">
+                <?php
+                foreach ($environments as $env) {
+                    switch ($env) {
+                        case "local":
+                            $env_url = "https://hale.docker/$site_path_slug";
+                            break;
+                        default:
+                            $env_url = "https://$env.websitebuilder.service.justice.gov.uk/$site_path_slug";
+                    }
+
+                    if ($site_path_slug == "" && $site_id != 1) {
+                        echo "<span class='website__environment website__environment--disabled website__environment--" . esc_attr($env) . "'>" . esc_html(ucfirst($env)) . "</span>";
+                    } else {
+                        echo "<a href='" . esc_url($env_url) . "' class='website__environment website__environment--" . esc_attr($env) . " govuk-link'>" . esc_html(ucfirst($env)) . "</a>";
+                    }
                 }
-            ?>
+                ?>
+            </div>
         </div>
-        <div class='website__technical govuk-body-s govuk-!-margin-bottom-0'>
-            <?php
-                if ($site_path_slug != "") echo "<h2 class='website__slug-title'>Slug</h2> <code class='website__slug'>$site_path_slug</code> <br /> ";
-                echo "<h2 class='website__id-title'>ID</h2> <span class='website_id'>$site_id</span>";
-            ?>
-        </div>
+    </article>
+    <?php if ($warning): ?>
+        <div class="website__warning"><?php echo $warning; ?></div>
+    <?php endif; ?>
     </div>
-    <?php
-        if ($warning) {
-            echo "<div class='website__warning'>$warning</div>";
-        }
-    ?>
 
     <?php
-    restore_current_blog();
 }
+
+$output = ob_get_clean();
+set_transient($transient_key, $output, 5 * MINUTE_IN_SECONDS);
+echo $output;

@@ -18,15 +18,84 @@ function hale_dash_setup() {}
 
 add_action('after_setup_theme', 'hale_dash_setup');
 
+/**
+ * Inherit parent theme mods so logo/header/footer settings carry through.
+ * Falls back to showing site name if logo_configuration is still unset.
+ */
+add_filter('get_theme_mods', function ($mods) {
+    $parent_slug = get_template();
+    $parent_mods = get_option('theme_mods_' . $parent_slug, []);
+
+    if (is_array($parent_mods)) {
+        foreach ($parent_mods as $key => $value) {
+            if (!array_key_exists($key, $mods) || $mods[$key] === '') {
+                $mods[$key] = $value;
+            }
+        }
+    }
+
+    // Hard fallback: if logo_configuration is still not set, show the site name.
+    if (empty($mods['logo_configuration'])) {
+        $mods['logo_configuration'] = 'name';
+    }
+
+    return $mods;
+});
+
 function hale_dash_enqueue_styles() {
 	wp_enqueue_style( 'hale-dash-style',
         hale_dash_mix_asset('/css/hale-dash-style.min.css'),
 		array( 'hale-style' ),
 		wp_get_theme()->get( 'Version' )
 	);
+
+	wp_enqueue_script( 'hale-dash-dark-mode',
+		get_theme_file_uri() . '/dist/js/dark-mode.js',
+		array(),
+		wp_get_theme()->get( 'Version' ),
+		false
+	);
+
+	wp_enqueue_script( 'hale-dash-search',
+		get_theme_file_uri() . '/dist/js/search.js',
+		array(),
+		wp_get_theme()->get( 'Version' ),
+		true
+	);
 }
 
 add_action( 'wp_enqueue_scripts', 'hale_dash_enqueue_styles' );
+
+/**
+ * Inline script in <head> to set theme before first paint (avoids FOUC).
+ * The script must be inline in the <head> rather than loaded from an external file because external scripts require an extra network request, during which the browser would paint the page in its default (light) state first.
+ */
+function hale_dash_dark_mode_inline() {
+	?>
+	<script>
+	(function(){try{var s=localStorage.getItem('hd-theme');var d=s==='dark'||(!s&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();
+	</script>
+	<?php
+}
+add_action( 'wp_head', 'hale_dash_dark_mode_inline', 1 );
+
+/**
+ * Render dark mode toggle — JS moves it into the header on load.
+ */
+function hale_dash_dark_mode_toggle() {
+	?>
+	<button type="button" class="hd-theme-toggle" role="switch" aria-checked="false" aria-label="Toggle dark mode">
+		<svg class="hd-theme-toggle__icon hd-theme-toggle__icon--sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+			<path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
+		</svg>
+		<span class="hd-theme-toggle__track"><span class="hd-theme-toggle__thumb"></span></span>
+		<svg class="hd-theme-toggle__icon hd-theme-toggle__icon--moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+			<path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"/>
+		</svg>
+	</button>
+	<?php
+}
+add_action( 'wp_footer', 'hale_dash_dark_mode_toggle' );
 
 /**
  * Gett asset path function
@@ -57,7 +126,7 @@ function get_fav_icon($src) {
         </svg>';
     };
 
-    return '<img class="website__favicon" src="' . $src . '" alt=""/>';
+    return '<img class="website__favicon" src="' . esc_url($src) . '" alt=""/>';
 }
 
 /**
@@ -97,9 +166,9 @@ function language_warning($code) {
     } elseif ($code == "en_AU") {
         return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>Australian English</strong> 🇦🇺</p>";
     } elseif (!str_starts_with($code, "en")) {
-        return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red'>Language</strong></span> This website is set to <strong>$code</strong>.</p>";
+        return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red'>Language</strong></span> This website is set to <strong>" . esc_html($code) . "</strong>.</p>";
     } elseif ($code != "en_GB") {
-        return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>$code</strong>.</p>";
+        return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>" . esc_html($code) . "</strong>.</p>";
     }
 }
 
@@ -124,13 +193,13 @@ function timezone_warning($zone) {
     } elseif ($zone == "Atlantic/Canary") {
         return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--yellow'>Timezone</strong></span> This website is set to the <strong>Canarian</strong> timezone.</p>";
     } else {
-        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--red'>Timezone</strong></span> This website is set to the <strong>$zone</strong> timezone. <br />(Scheduling accuracy might be adversely affected.)</p>";
+        return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--red'>Timezone</strong></span> This website is set to the <strong>" . esc_html($zone) . "</strong> timezone. <br />(Scheduling accuracy might be adversely affected.)</p>";
     }
 }
 
 function theme_warning($theme) {
     if ($theme == "hale")  return "";
-    return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--yellow'>Non-Hale</strong></span> This website is using the <strong>$theme</strong> theme.</p>";
+    return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--yellow'>Non-Hale</strong></span> This website is using the <strong>" . esc_html($theme) . "</strong> theme.</p>";
 }
 
 function deprecated_warning($deprecated) {
