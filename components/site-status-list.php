@@ -32,6 +32,12 @@ function get_live_urls() {
     $url["New Futures Network"] = "newfuturesnetwork.gov.uk";
     $url["Omagh Bombing Inquiry"] = "https://omagh.independent-inquiry.uk/";
     $url["Gwybodaeth i Ddioddefwyr a Thystion"] = "https://cym.victimandwitnessinformation.org.uk/";
+    $url["CJSM"] = "https://cjsm.justice.gov.uk/";
+    $url["Independent Public Advocate"] = "https://independentpublicadvocate.org.uk/";
+    $url["Criminal Justice Inspectorates"] = "https://justiceinspectorates.gov.uk/";
+    $url["Patrick Finucane Inquiry"] = "https://finucane.independent-inquiry.uk/";
+    $url["The Nottingham Inquiry"] = "https://nottingham.independent-inquiry.uk/";
+    $url["Judicial Appointments Commission"] = "https://judicialappointments.gov.uk/";
 
     return $url;
 }
@@ -44,14 +50,15 @@ global $wpdb;
 // Build a site_id => logged-in count map from the active user IDs already resolved
 // in feature-metrics.php — one batch query across all sites, no per-site loop needed.
 $site_active_counts = [];
+$site_active_users = [];
 if (!empty($active_user_ids)) {
     $placeholders = implode(',', array_fill(0, count($active_user_ids), '%d'));
     $base         = $wpdb->base_prefix;
     $rows = $wpdb->get_results(
         $wpdb->prepare(
             "SELECT user_id, meta_key FROM {$wpdb->usermeta}
-             WHERE meta_key LIKE %s
-             AND user_id IN ($placeholders)",
+            WHERE meta_key LIKE %s
+            AND user_id IN ($placeholders)",
             array_merge([$wpdb->esc_like($base) . '%capabilities'], $active_user_ids)
         )
     );
@@ -64,7 +71,9 @@ if (!empty($active_user_ids)) {
         } else {
             continue;
         }
+        if (!array_key_exists($bid,$site_active_users)) $site_active_users[$bid] = "";
         $site_active_counts[$bid] = ($site_active_counts[$bid] ?? 0) + 1;
+        $site_active_users[$bid] .= $row->user_id . "; ";
     }
 }
 
@@ -85,12 +94,16 @@ if (
 $cached = get_transient($transient_key);
 if ($cached !== false) {
     echo $cached;
-    	return;
+    return;
 }
 
 ob_start();
 
 foreach ($sites as $site) {
+    $current_user_logged_in = false;
+    $marc_logged_in = false;
+    $marc_user_id = 34;
+    $dev_user_ids = [2,26,49];
     $site_id = $site->blog_id;
     $site_url = get_site_url($site_id);
     switch_to_blog($site_id);
@@ -106,12 +119,21 @@ foreach ($sites as $site) {
     if ($lang != $main_lang) $site_lang_attribute = "lang='" . esc_attr($lang) . "'";
     if ($lang == "") $site_lang_attribute = "lang='en-US'";
 
+    if (str_contains($site_active_users[$site_id],$current_user_id.";")) {
+        $current_user_logged_in = true;
+    }
+    if ($current_user_id != $marc_user_id && in_array($current_user_id,$dev_user_ids) && str_contains($site_active_users[$site_id],$marc_user_id.";")) {
+        $marc_logged_in = true;
+    }
+
     // Resolve the production URL / domain shown under the site title.
     $site_path_slug = get_option('site_path_slug') ?: "";
     if ($this_env == "Prod") {
         $prod_url = $site_url;
     } elseif (isset($live_urls[trim($site_name)])) {
         $prod_url = $live_urls[trim($site_name)];
+    } elseif ($site_id == "1") {
+        $prod_url = "https://websitebuilder.service.justice.gov.uk/";
     } else {
         $prod_url = "https://websitebuilder.service.justice.gov.uk/$site_path_slug";
     }
@@ -122,6 +144,13 @@ foreach ($sites as $site) {
     if ($path = parse_url($prod_url, PHP_URL_PATH)) {
         $prod_domain .= rtrim($path, '/');
     }
+
+    $url_data_attr = "";
+    if (!str_contains($prod_domain, "websitebuilder.service.justice.gov.uk")) {
+        $url_data_attr = "data-site-url='$prod_domain' ";
+    }
+
+    $new_tab_svg = '<svg class="website__domain-icon" aria-hidden="true" focusable="false" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
 
     // COUNT query is far cheaper than count_users() which fetches all rows
     $blog_prefix = $wpdb->get_blog_prefix($site_id);
@@ -149,7 +178,7 @@ foreach ($sites as $site) {
         $status = '<span class="website__up-down"><strong class="govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red">Public</strong></span>';
     }
     ?>
-    <div class="hale-dash-site-item" data-site-name="<?php echo esc_attr(strtolower($site_name)); ?>" data-site-id="<?php echo esc_attr($site_id); ?>" data-site-slug="<?php echo esc_attr(strtolower($site_path_slug)); ?>">
+    <div class="hale-dash-site-item" data-site-name="<?php echo esc_attr(strtolower($site_name)); ?>" data-site-id="<?php echo esc_attr($site_id); ?>" data-site-slug="<?php echo esc_attr(strtolower($site_path_slug)); ?>" <?php echo $url_data_attr;?>>
     <article class="website">
         <div class="website__heading">
             <?php
@@ -163,10 +192,14 @@ foreach ($sites as $site) {
                     $warning .= theme_warning($theme);
                     $warning .= deprecated_warning($deprecated);
                 }
+                // if ($marc_logged_in) echo '<div class="birthday-logo" style="background-image:url(' . esc_url(get_theme_file_uri('/assets/images/marc.png')) . ');"></div>';
             ?>
         </div>
         <?php if ($site_id != $dashboard_ID): ?>
-            <a class="website__domain govuk-link govuk-body-s" href="<?php echo esc_url($prod_url); ?>" title="<?php echo esc_attr($prod_url); ?>" target="_blank" rel="noopener noreferrer"><span class="website__domain-text"><?php echo esc_html($prod_domain); ?></span><svg class="website__domain-icon" aria-hidden="true" focusable="false" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            <p class="website__domain govuk-body-s govuk-!-margin-0"><a class="govuk-link" href="<?php echo esc_url($prod_url); ?>" title="<?php echo esc_attr($prod_url); ?>" target="_blank" rel="noopener noreferrer"><span class="website__domain-text"><?php echo esc_html($prod_domain); ?></span><?php echo $new_tab_svg;?></a></p>
+            <?php if (!$is_private && !$current_user_logged_in): ?>
+                <p class="website__login govuk-body-s govuk-!-margin-0">Or, <a class="govuk-link" href="<?php echo esc_url($prod_url); ?>/hale-wpms-2020" target="_blank" rel="noopener noreferrer"><span class="website__domain-text">login here</span><?php echo $new_tab_svg;?></a></p>
+            <?php endif; ?>
         <?php endif; ?>
         <div class="website__technical">
             <?php
@@ -184,7 +217,10 @@ foreach ($sites as $site) {
             <?php
                 echo $status;
                 $site_logged_in = (int) ($site_active_counts[$site_id] ?? 0);
-                if ($site_logged_in > 0) echo "<span class='website__online-count'>" . intval($site_logged_in) . " online</span>";
+                $online_class = "";
+                if ($current_user_logged_in) $online_class .= "logged-in ";
+                if ($marc_logged_in) $online_class .= "marc-logged-in ";
+                if ($site_logged_in > 0) echo "<span class='website__online-count $online_class' data-users='{$site_active_users[$site_id]}'>" . intval($site_logged_in) . " online</span>";
             ?>
         </div>
         <div class="website__footer govuk-body-s">
@@ -193,16 +229,18 @@ foreach ($sites as $site) {
                 foreach ($environments as $env) {
                     switch ($env) {
                         case "local":
-                            $env_url = "https://hale.docker/$site_path_slug";
+                            $env_url = "https://hale.docker/";
                             break;
                         default:
-                            $env_url = "https://$env.websitebuilder.service.justice.gov.uk/$site_path_slug";
+                            $env_url = "https://$env.websitebuilder.service.justice.gov.uk/";
                     }
 
                     if ($site_path_slug == "" && $site_id != 1) {
                         echo "<span class='website__environment website__environment--disabled website__environment--" . esc_attr($env) . "'>" . esc_html(ucfirst($env)) . "</span>";
-                    } else {
+                    } elseif ($site_id == "1") {
                         echo "<a href='" . esc_url($env_url) . "' class='website__environment website__environment--" . esc_attr($env) . " govuk-link'>" . esc_html(ucfirst($env)) . "</a>";
+                    } else {
+                        echo "<a href='" . esc_url($env_url.$site_path_slug) . "' class='website__environment website__environment--" . esc_attr($env) . " govuk-link'>" . esc_html(ucfirst($env)) . "</a>";
                     }
                 }
                 ?>

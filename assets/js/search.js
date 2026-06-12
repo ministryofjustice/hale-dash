@@ -1,29 +1,27 @@
 (function () {
-	var nameInput = document.getElementById('hd-search-name');
-	var idInput   = document.getElementById('hd-search-id');
-	var slugInput = document.getElementById('hd-search-slug');
-	var countEl   = document.getElementById('hd-search-count');
+	var searchInput = document.getElementById('hd-search-name');
+	var idInput     = document.getElementById('hd-search-id');
+	var countEl     = document.getElementById('hd-search-count');
 
-	if (!nameInput || !idInput || !slugInput || !countEl) return;
+	if (!searchInput || !idInput || !countEl) return;
 
 	var items = Array.from(document.querySelectorAll('.hale-dash-site-item'));
 
 	function filter() {
-		var nameQuery = nameInput.value.trim().toLowerCase();
+		var searchQuery = searchInput.value.trim().toLowerCase();
 		var idQuery   = idInput.value.trim();
-		var slugQuery = slugInput.value.trim().toLowerCase();
 		var visible   = 0;
 
 		items.forEach(function (item) {
 			var name   = item.getAttribute('data-site-name') || '';
 			var siteId = item.getAttribute('data-site-id') || '';
+			var url    = item.getAttribute('data-site-url') || '';
 			var slug   = item.getAttribute('data-site-slug') || '';
 
-			var nameMatch = !nameQuery || name.indexOf(nameQuery) !== -1;
+			var searchMatch = !searchQuery || name.indexOf(searchQuery) !== -1 || url.indexOf(searchQuery) !== -1 || slug.indexOf(searchQuery) !== -1;
 			var idMatch   = !idQuery   || siteId === idQuery;
-			var slugMatch = !slugQuery || slug.indexOf(slugQuery) !== -1;
 
-			if (nameMatch && idMatch && slugMatch) {
+			if (searchMatch && idMatch) {
 				item.style.display = '';
 				visible++;
 			} else {
@@ -31,14 +29,13 @@
 			}
 		});
 
-		if (nameQuery || idQuery || slugQuery) {
+		if (searchQuery || idQuery) {
 			countEl.textContent = visible + ' of ' + items.length + ' sites shown';
 		} else {
 			countEl.textContent = '';
 		}
 	}
 
-	nameInput.addEventListener('input', filter);
+	searchInput.addEventListener('input', filter);
 	idInput.addEventListener('input', filter);
-	slugInput.addEventListener('input', filter);
 })();

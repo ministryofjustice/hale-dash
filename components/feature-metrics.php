@@ -25,6 +25,7 @@
     );
     $now = time();
     $active_user_ids = [];
+    $current_user_id = get_current_user_id();
     foreach ($session_rows as $row) {
         $tokens = maybe_unserialize($row->meta_value);
         if (is_array($tokens)) {
