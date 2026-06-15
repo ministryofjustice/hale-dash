@@ -102,8 +102,9 @@ ob_start();
 foreach ($sites as $site) {
 	$current_user_logged_in = false;
 	$marc_logged_in = false;
-	$marc_user_id = 34;
-	$dev_user_ids = [2,26,49];
+	$marc_user_ids = [34,3947];
+	$dev_user_ids = [2,26,49,3907,4244];
+	$login_suffix = "hale-wpms-2020";
 	$site_id = $site->blog_id;
 	$site_url = get_site_url($site_id);
 	switch_to_blog($site_id);
@@ -122,8 +123,10 @@ foreach ($sites as $site) {
 	if (str_contains($site_active_users[$site_id],$current_user_id.";")) {
 		$current_user_logged_in = true;
 	}
-	if ($current_user_id != $marc_user_id && in_array($current_user_id,$dev_user_ids) && str_contains($site_active_users[$site_id],$marc_user_id.";")) {
-		$marc_logged_in = true;
+	if (!in_array($current_user_id,$marc_user_ids) && in_array($current_user_id,$dev_user_ids)) {
+		foreach ($marc_user_ids as $marc_user_id) {
+			if (str_contains($site_active_users[$site_id],$marc_user_id.";")) $marc_logged_in = true;
+		}
 	}
 
 	// Resolve the production URL / domain shown under the site title.
@@ -143,6 +146,10 @@ foreach ($sites as $site) {
 	$prod_domain = parse_url($prod_url, PHP_URL_HOST);
 	if ($path = parse_url($prod_url, PHP_URL_PATH)) {
 		$prod_domain .= rtrim($path, '/');
+	}
+
+	if (substr($prod_url, -1) != "/") {
+		$login_suffix = "/".$login_suffix;
 	}
 
 	$url_data_attr = "";
@@ -192,13 +199,13 @@ foreach ($sites as $site) {
 					$warning .= theme_warning($theme);
 					$warning .= deprecated_warning($deprecated);
 				}
-				// if ($marc_logged_in) echo '<div class="birthday-logo" style="background-image:url(' . esc_url(get_theme_file_uri('/assets/images/marc.png')) . ');"></div>';
+				if ($marc_logged_in) echo '<div class="birthday-logo" style="background-image:url(' . esc_url(get_theme_file_uri('/assets/images/marc.png')) . ');"></div>';
 			?>
 		</div>
 		<?php if ($site_id != $dashboard_ID): ?>
 			<p class="website__domain govuk-body-s govuk-!-margin-0"><a class="govuk-link" href="<?php echo esc_url($prod_url); ?>" title="<?php echo esc_attr($prod_url); ?>" target="_blank" rel="noopener noreferrer"><span class="website__domain-text"><?php echo esc_html($prod_domain); ?></span><?php echo $new_tab_svg;?></a></p>
 			<?php if (!$is_private && !$current_user_logged_in): ?>
-				<p class="website__login govuk-body-s govuk-!-margin-0">Or, <a class="govuk-link" href="<?php echo esc_url($prod_url); ?>/hale-wpms-2020" target="_blank" rel="noopener noreferrer"><span class="website__domain-text">login here</span><?php echo $new_tab_svg;?></a></p>
+				<p class="website__login govuk-body-s govuk-!-margin-0">Or, <a class="govuk-link" href="<?php echo esc_url($prod_url) . $login_suffix; ?>" target="_blank" rel="noopener noreferrer"><span class="website__domain-text">login here</span><?php echo $new_tab_svg;?></a></p>
 			<?php endif; ?>
 		<?php endif; ?>
 		<div class="website__technical">
