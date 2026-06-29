@@ -1,6 +1,14 @@
 <?php
 
 function festiveGreeting($now) {
+	if (!empty($_GET) && array_key_exists("date",$_GET)) {
+		$date_from_param = preg_replace('/\D/', '', $_GET["date"]);
+		if (strlen($date_from_param) == 8) {
+			$now = strtotime($date_from_param);
+		} elseif (strlen($date_from_param) == 4) {
+			$now = strtotime(date('Y', $now).$date_from_param);
+		}
+	}
 	if (date('D d', $now) == "Fri 13")
 		$friday_13th = "🙂 Happy Friday 13<sup>th</sup> 🙂";
 	$date = date('nd', $now);
@@ -27,6 +35,9 @@ function festiveGreeting($now) {
 			break;
 		case 301:
 			$greeting = "🏴󠁧󠁢󠁷󠁬󠁳󠁿 Happy St David’s Day 🏴󠁧󠁢󠁷󠁬󠁳󠁿";
+			break;
+		case 306:
+			$greeting = "🚢 Remembering MS <i>Herald of Free Enterprise</i> 🚢";
 			break;
 		case 308:
 			$greeting = "♀️ Happy International Women’s Day ♀️";
@@ -84,14 +95,18 @@ function festiveGreeting($now) {
 		case 1105:
 			$greeting = "🔥 Happy Bonfire Night 🔥";
 			break;
-	case 1110;
-		$greeting = "🚢 Edmund Fitzgerald day 🚢";
-		break;
+		case 1110:
+			$greeting = "🚢 Remembering SS <i>Edmund Fitzgerald</i> 🚢";
+			break;
 		case 1130:
 			$greeting = "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Happy St Andrew’s Day 🏴󠁧󠁢󠁳󠁣󠁴󠁿";
 			break;
 		case 1224:
 		case 1225:
+		case 1227:
+		case 1228:
+		case 1229:
+		case 1230:
 			$greeting = "🎄 Happy Christmas 🎄";
 			break;
 		case 1226:
