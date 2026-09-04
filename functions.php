@@ -174,6 +174,12 @@ require get_stylesheet_directory() . '/inc/demo-sites.php';
  * Reserving demo sites from the dashboard site list
  */
 require get_stylesheet_directory() . '/inc/demo-reservations.php';
+/*
+ * Cost & time savings — settings page + helpers for the "Cost & Time Savings"
+ * page template (page-savings.php)
+ */
+require get_stylesheet_directory() . '/inc/savings-settings.php';
+
 
 function language_warning($code) {
 	if ($code == "cy" || $code == "cy_GB") {
