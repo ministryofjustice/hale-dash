@@ -41,7 +41,7 @@ add_action('wp_enqueue_scripts', static function () {
 
 /**
  * URL of the published Page using the "Cost & Time Savings" template, if any.
- * Resolved by template so it survives slug/title changes. Memoised per request.
+ * Resolved by template so it survives slug/title changes. 
  *
  * @return string Permalink, or '' when no such Page exists.
  */
