@@ -63,6 +63,11 @@
 	}
 }
 
+// -------------------------------------------------------------
+// Cost & time savings page (page-savings.php) + print
+// -------------------------------------------------------------
+@import "cost-savings";
+
 .hale-dash-metrics {
 	display: grid;
 	grid-template-columns: 1fr;

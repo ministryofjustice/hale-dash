@@ -1,0 +1,121 @@
+// Cost & Time Savings — settings screen styles.
+//
+// wp-admin only (no --hd-* custom properties there), so plain values.
+// Enqueued from inc/savings/settings-page.php on settings_page_hale-dash-savings.
+
+// -------------------------------------------------------------
+// Layout bits that were previously inline style="" attributes
+// -------------------------------------------------------------
+.hale-dash-savings-admin {
+	.hd-rescan-form {
+		margin-bottom: 1.5em;
+	}
+
+	.hd-excluded-table {
+		max-width: 640px;
+		margin-bottom: 12px;
+
+		thead th:first-child {
+			width: 7em;
+		}
+	}
+
+	#hale-dash-site-list {
+		max-height: 260px;
+		overflow: auto;
+		padding: 8px 12px;
+		background: #fff;
+		border: 1px solid #c3c4c7;
+		border-radius: 4px;
+	}
+
+	.hale-dash-site-row {
+		display: block;
+		margin: 3px 0;
+
+		// Beats the UA [hidden] rule, so JS can just toggle the attribute.
+		&[hidden] {
+			display: none;
+		}
+	}
+
+	#hale-dash-block-search-count {
+		margin-left: 0.5em;
+	}
+
+	// Block table column widths (Sites using / Cost / Time / Note).
+	#hale-dash-block-table thead th {
+		&:nth-child(3) { width: 7em; }
+		&:nth-child(4),
+		&:nth-child(5) { width: 12em; }
+		&:nth-child(6) { width: 16em; }
+	}
+}
+
+// -------------------------------------------------------------
+// Excluded-sites <details> editor — button-styled <summary>
+// -------------------------------------------------------------
+.hale-dash-excluded-editor {
+	max-width: 640px;
+
+	> summary {
+		list-style: none;
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+	}
+
+	.hd-label--open {
+		display: none;
+	}
+
+	&[open] {
+		.hd-label--closed {
+			display: none;
+		}
+
+		.hd-label--open {
+			display: inline;
+		}
+
+		> summary {
+			margin-bottom: 10px;
+		}
+	}
+}
+
+// -------------------------------------------------------------
+// Block table — "sites using" drill-down
+// -------------------------------------------------------------
+.hale-dash-sites-toggle {
+	text-decoration: none;
+
+	&__caret {
+		display: inline-block;
+		font-size: 10px;
+		transition: transform 0.15s;
+	}
+
+	&[aria-expanded="true"] .hale-dash-sites-toggle__caret {
+		transform: rotate(90deg);
+	}
+}
+
+tr.hale-dash-sites-detail > td {
+	background: #f6f7f7;
+	padding: 10px 12px;
+}
+
+.hale-dash-sites-detail__head {
+	margin: 0 0 6px;
+}
+
+.hale-dash-sites-detail__table {
+	max-width: 460px;
+	background: #fff;
+
+	thead th:first-child {
+		width: 7em;
+	}
+}

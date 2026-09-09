@@ -96,4 +96,16 @@
 			</li>
 		</ul>
 	</div>
+
+	<?php $savings_url = function_exists('hale_dash_savings_page_url') ? hale_dash_savings_page_url() : ''; ?>
+	<?php if ($savings_url) : ?>
+		<div class="hale-dash-metric hale-dash-metric--wide">
+			<h2 class="govuk-heading-s">Platform value</h2>
+			<ul class="govuk-list govuk-body-s">
+				<li>
+					<a href="<?php echo esc_url($savings_url); ?>">Cost &amp; time savings</a>
+				</li>
+			</ul>
+		</div>
+	<?php endif; ?>
 </div>
