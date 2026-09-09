@@ -10,13 +10,13 @@
  * Assign this template to a Page (Page Attributes > Template). Set the per-block
  * figures under Settings > Cost & time savings.
  *
- * TODO: scaffold. Block detection is a content scan of published post/page/
- * wp_block content (see inc/savings-settings.php). Confirm the method, the post
- * types and which sites count before relying on the figures.
+ * The logic lives in inc/savings/ — this template is just the outer shell around
+ * hale_dash_render_savings_content(). TODO: scaffold; confirm the detection
+ * method, which sites and which post types count before relying on the figures.
  *
  * @package   Hale Dash
  * @copyright Ministry of Justice
- * @version   1.0
+ * @version   1.1
  */
 
 get_header();

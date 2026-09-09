@@ -175,10 +175,10 @@ require get_stylesheet_directory() . '/inc/demo-sites.php';
  */
 require get_stylesheet_directory() . '/inc/demo-reservations.php';
 /*
- * Cost & time savings — settings page + helpers for the "Cost & Time Savings"
- * page template (page-savings.php)
+ * Cost & time savings — Settings screen, the network scan, and the public
+ * "Cost & Time Savings" report (page-savings.php). Split under inc/savings/.
  */
-require get_stylesheet_directory() . '/inc/savings-settings.php';
+require get_stylesheet_directory() . '/inc/savings.php';
 
 
 function language_warning($code) {
