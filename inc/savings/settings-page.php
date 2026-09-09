@@ -106,7 +106,7 @@ function hale_dash_savings_settings_page() {
 
 	$opt = HALE_DASH_SAVINGS_OPTION;
 	?>
-	<div class="wrap">
+	<div class="wrap hale-dash-savings-admin">
 		<h1><?php esc_html_e('Cost & time savings', 'hale-dash'); ?></h1>
 		<p>
 			<?php esc_html_e(
@@ -137,7 +137,7 @@ function hale_dash_savings_settings_page() {
 			}
 			?>
 		</p>
-		<form method="post" style="margin-bottom:1.5em">
+		<form method="post" class="hd-rescan-form">
 			<?php wp_nonce_field('hale_dash_rescan', 'hale_dash_rescan_nonce'); ?>
 			<button type="submit" name="hale_dash_rescan" value="1" class="button button-secondary">
 				<?php echo $scan ? esc_html__('Rescan network blocks', 'hale-dash') : esc_html__('Scan network blocks', 'hale-dash'); ?>
@@ -171,10 +171,10 @@ function hale_dash_savings_settings_page() {
 				<p><?php esc_html_e('No sites found.', 'hale-dash'); ?></p>
 			<?php else : ?>
 				<?php if ($excluded) : ?>
-					<table class="widefat striped" style="max-width:640px;margin-bottom:12px;">
+					<table class="widefat striped hd-excluded-table">
 						<thead>
 							<tr>
-								<th scope="col" style="width:7em"><?php esc_html_e('Site ID', 'hale-dash'); ?></th>
+								<th scope="col"><?php esc_html_e("Site ID", "hale-dash"); ?></th>
 								<th scope="col"><?php esc_html_e('Name', 'hale-dash'); ?></th>
 							</tr>
 						</thead>
@@ -191,7 +191,7 @@ function hale_dash_savings_settings_page() {
 					<p><em><?php esc_html_e('No sites are excluded.', 'hale-dash'); ?></em></p>
 				<?php endif; ?>
 
-				<details class="hale-dash-excluded-editor" style="max-width:640px;">
+				<details class="hale-dash-excluded-editor">
 					<summary class="button">
 						<span class="hd-label--closed"><?php esc_html_e('Edit excluded sites', 'hale-dash'); ?></span>
 						<span class="hd-label--open"><?php esc_html_e('Done', 'hale-dash'); ?></span>
@@ -201,12 +201,12 @@ function hale_dash_savings_settings_page() {
 							placeholder="<?php esc_attr_e('Filter sites…', 'hale-dash'); ?>"
 							autocomplete="off" onkeydown="return event.key !== 'Enter';">
 					</p>
-					<div id="hale-dash-site-list" style="max-height:260px;overflow:auto;border:1px solid #c3c4c7;border-radius:4px;padding:8px 12px;background:#fff;">
+					<div id="hale-dash-site-list">
 						<?php foreach ($all_sites as $site) :
 							$sid = (int) $site->blog_id;
 							$hay = strtolower($hale_dash_site_names[$sid] . ' ' . $site->path . ' #' . $sid);
 							?>
-							<label class="hale-dash-site-row" data-search="<?php echo esc_attr($hay); ?>" style="display:block;margin:3px 0;">
+							<label class="hale-dash-site-row" data-search="<?php echo esc_attr($hay); ?>">
 								<input type="checkbox"
 									name="<?php echo esc_attr($opt); ?>[excluded_sites][]"
 									value="<?php echo esc_attr($sid); ?>"
@@ -226,7 +226,7 @@ function hale_dash_savings_settings_page() {
 				<input type="search" id="hale-dash-block-search" class="regular-text"
 					placeholder="<?php esc_attr_e('Filter by block title or name…', 'hale-dash'); ?>"
 					autocomplete="off" onkeydown="return event.key !== 'Enter';">
-				<span id="hale-dash-block-search-count" class="description" aria-live="polite" style="margin-left:.5em"></span>
+				<span id="hale-dash-block-search-count" class="description" aria-live="polite"></span>
 			</p>
 
 			<table class="widefat striped" id="hale-dash-block-table">
@@ -234,10 +234,10 @@ function hale_dash_savings_settings_page() {
 					<tr>
 						<th scope="col"><?php esc_html_e('Block', 'hale-dash'); ?></th>
 						<th scope="col"><?php esc_html_e('Block name', 'hale-dash'); ?></th>
-						<th scope="col" style="width:7em"><?php esc_html_e('Sites using', 'hale-dash'); ?></th>
-						<th scope="col" style="width:12em"><?php esc_html_e('Cost saving per site (£)', 'hale-dash'); ?></th>
-						<th scope="col" style="width:12em"><?php esc_html_e('Time saving per site (hours)', 'hale-dash'); ?></th>
-						<th scope="col" style="width:16em"><?php esc_html_e('Note (shown as a footnote)', 'hale-dash'); ?></th>
+						<th scope="col"><?php esc_html_e("Sites using", "hale-dash"); ?></th>
+						<th scope="col"><?php esc_html_e("Cost saving per site (£)", "hale-dash"); ?></th>
+						<th scope="col"><?php esc_html_e("Time saving per site (hours)", "hale-dash"); ?></th>
+						<th scope="col"><?php esc_html_e("Note (shown as a footnote)", "hale-dash"); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -302,7 +302,7 @@ function hale_dash_savings_settings_page() {
 								<table class="widefat striped hale-dash-sites-detail__table">
 									<thead>
 										<tr>
-											<th scope="col" style="width:7em"><?php esc_html_e('Site ID', 'hale-dash'); ?></th>
+											<th scope="col"><?php esc_html_e("Site ID", "hale-dash"); ?></th>
 											<th scope="col"><?php esc_html_e('Name', 'hale-dash'); ?></th>
 										</tr>
 									</thead>

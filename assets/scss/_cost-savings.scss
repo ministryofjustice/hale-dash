@@ -101,6 +101,10 @@
 			font-size: var(--hd-text-meta);
 			padding: 0.35rem 0.75rem 0.35rem 0;
 		}
+
+		thead th:first-child {
+			width: 6em;
+		}
 	}
 
 	&__actions {

@@ -155,7 +155,7 @@ function hale_dash_render_savings_content($savings) {
 									<table class="govuk-table govuk-table--sites">
 										<thead class="govuk-table__head">
 											<tr class="govuk-table__row">
-												<th scope="col" class="govuk-table__header" style="width:6em">Site ID</th>
+												<th scope="col" class="govuk-table__header">Site ID</th>
 												<th scope="col" class="govuk-table__header">Name</th>
 											</tr>
 										</thead>

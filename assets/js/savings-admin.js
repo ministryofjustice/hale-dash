@@ -79,9 +79,7 @@
 		var q = input.value.trim().toLowerCase();
 		rows.forEach(function (row) {
 			var hay = row.getAttribute('data-search') || '';
-			// The rows carry inline display:block, which would beat [hidden] —
-			// toggle the inline value directly.
-			row.style.display = (q === '' || hay.indexOf(q) !== -1) ? 'block' : 'none';
+			row.hidden = q !== '' && hay.indexOf(q) === -1;
 		});
 	}
 

@@ -8,9 +8,6 @@
  * Cost & time savings configures a £/hours saving per block; the published
  * "Cost & Time Savings" page template (page-savings.php) shows the totals.
  *
- * NOTE: scaffolding — no figures are set by default, and the "flat rate x
- * number of sites, once per site" model is deliberately simple. See the TODO
- * markers in the split files.
  *
  * @package Hale Dash
  */
