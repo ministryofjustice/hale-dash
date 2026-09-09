@@ -1,0 +1,66 @@
+// Cost & Time Savings — settings screen styles.
+//
+// wp-admin only (no --hd-* custom properties there), so plain values.
+// Enqueued from inc/savings-settings.php on settings_page_hale-dash-savings.
+
+// -------------------------------------------------------------
+// Excluded-sites <details> editor — button-styled <summary>
+// -------------------------------------------------------------
+.hale-dash-excluded-editor {
+	> summary {
+		list-style: none;
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+	}
+
+	.hd-label--open {
+		display: none;
+	}
+
+	&[open] {
+		.hd-label--closed {
+			display: none;
+		}
+
+		.hd-label--open {
+			display: inline;
+		}
+
+		> summary {
+			margin-bottom: 10px;
+		}
+	}
+}
+
+// -------------------------------------------------------------
+// Block table — "sites using" drill-down
+// -------------------------------------------------------------
+.hale-dash-sites-toggle {
+	text-decoration: none;
+
+	&__caret {
+		display: inline-block;
+		font-size: 10px;
+		transition: transform 0.15s;
+	}
+
+	&[aria-expanded="true"] .hale-dash-sites-toggle__caret {
+		transform: rotate(90deg);
+	}
+}
+
+tr.hale-dash-sites-detail > td {
+	background: #f6f7f7;
+	padding: 10px 12px;
+}
+
+.hale-dash-sites-detail__head {
+	margin: 0 0 6px;
+}
+
+.hale-dash-sites-detail__table {
+	max-width: 460px;
+	background: #fff;
+}

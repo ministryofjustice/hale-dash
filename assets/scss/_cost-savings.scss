@@ -1,0 +1,429 @@
+// Cost & Time Savings — front-end page + print styles.
+// Extracted from style.scss; imported back in via @import at the same spot.
+// Uses the --hd-* custom properties defined in style.scss (:root / dark).
+
+.hale-dash-savings {
+	max-width: 1000px;
+
+	&__metrics {
+		@media (min-width: 480px) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	&__table-wrap {
+		overflow-x: auto;
+		margin-top: 1rem;
+	}
+
+	.govuk-table {
+		min-width: 640px;
+	}
+
+	&__block-name {
+		display: block;
+		font-size: var(--hd-text-meta);
+		font-weight: 400;
+		color: var(--hd-fg-muted);
+	}
+
+	// Per-block rationale — a superscript ref next to the block title, linking
+	// down to the footnote list under the table.
+	&__fn-ref {
+		margin-left: 0.15em;
+		font-size: 0.75em;
+
+		a {
+			color: var(--hd-link);
+		}
+	}
+
+	&__footnotes {
+		margin: 0.75rem 0 2rem;
+		padding-left: 1.4rem;
+		font-size: var(--hd-text-meta);
+		color: var(--hd-fg-muted);
+
+		li {
+			margin-bottom: 0.35rem;
+		}
+	}
+
+	&__fn-back {
+		margin-left: 0.3em;
+		text-decoration: none;
+	}
+
+	// "Sites using" drill-down in the breakdown table
+	&__sites-toggle {
+		padding: 0;
+		border: 0;
+		background: none;
+		font: inherit;
+		color: var(--hd-link);
+		cursor: pointer;
+		text-decoration: underline;
+
+		&:hover {
+			color: var(--hd-link-hover);
+		}
+
+		&:focus-visible {
+			outline: 3px solid #ffdd00;
+			outline-offset: 0;
+		}
+	}
+
+	&__sites-caret {
+		display: inline-block;
+		margin-left: 0.35em;
+		font-size: 0.7em;
+		text-decoration: none;
+		transition: transform 0.15s;
+
+		.hale-dash-savings__sites-toggle[aria-expanded="true"] & {
+			transform: rotate(90deg);
+		}
+	}
+
+	&__sites-detail > td {
+		background: var(--hd-bg-subtle);
+		padding: 0.75rem 1rem;
+	}
+
+	.govuk-table--sites {
+		min-width: 0;
+		width: 100%;
+		margin: 0;
+
+		.govuk-table__cell,
+		.govuk-table__header {
+			font-size: var(--hd-text-meta);
+			padding: 0.35rem 0.75rem 0.35rem 0;
+		}
+	}
+
+	&__actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem;
+		margin: 0 0 1.75rem;
+	}
+
+	&__refresh {
+		margin: 0;
+	}
+
+	&__calculated {
+		margin: -1rem 0 1.75rem;
+		color: var(--hd-fg-muted);
+	}
+
+	// Print-only document masthead + footer — hidden on screen.
+	&__doc-head,
+	&__doc-foot {
+		display: none;
+	}
+
+	&__button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 8px 16px;
+		font-family: inherit;
+		font-size: var(--hd-text-body);
+		font-weight: 600;
+		line-height: 1.2;
+		color: var(--hd-fg);
+		background-color: var(--hd-bg-subtle);
+		border: 1px solid var(--hd-border);
+		border-radius: 4px;
+		cursor: pointer;
+		transition: background-color 0.15s;
+
+		&:hover {
+			background-color: var(--hd-border);
+		}
+
+		&:focus-visible {
+			outline: 3px solid #ffdd00;
+			outline-offset: 0;
+		}
+
+		&:active {
+			transform: translateY(1px);
+		}
+	}
+
+	&__button-icon {
+		width: 14px;
+		height: 14px;
+		flex-shrink: 0;
+		opacity: 0.7;
+	}
+
+	// Dim + block interaction while a recalculation is in flight.
+	#hale-dash-savings-content[aria-busy="true"] {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	// Lives inline in the actions row, next to the Recalculate button.
+	&__progress {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+
+		// display:inline-flex above would otherwise beat the [hidden] attribute
+		// (equal specificity, author styles win) and show it on every load.
+		&[hidden] {
+			display: none;
+		}
+	}
+
+	&__progress-track {
+		position: relative;
+		flex: 0 0 100px;
+		height: 6px;
+		overflow: hidden;
+		background-color: var(--hd-bg-subtle);
+		border: 1px solid var(--hd-border);
+		border-radius: 999px;
+	}
+
+	&__progress-fill {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: 40%;
+		background-color: var(--hd-link);
+		border-radius: 999px;
+		animation: hale-dash-progress-slide 1.1s ease-in-out infinite;
+	}
+
+	&__progress-text {
+		font-size: var(--hd-text-meta);
+		color: var(--hd-fg-muted);
+	}
+}
+
+@keyframes hale-dash-progress-slide {
+	0% {
+		left: -40%;
+	}
+	100% {
+		left: 100%;
+	}
+}
+
+// -------------------------------------------------------------
+// Cost & time savings — print
+// Renders the page as a plain document: masthead, summary figures,
+// breakdown table, provenance footer. No site chrome, no dark mode.
+// -------------------------------------------------------------
+@media print {
+	@page {
+		size: A4;
+		margin: 18mm 16mm;
+	}
+
+	.hale-dash-savings-page {
+
+		// Hide everything that isn't the document.
+		#wpadminbar,
+		.govuk-header,
+		.govuk-footer,
+		.govuk-phase-banner,
+		.govuk-breadcrumbs,
+		.hale-secondary-top-nav,
+		.hale-information-banner,
+		.hd-theme-toggle,
+		.hale-dash-savings__actions,
+		.hale-dash-savings__progress,
+		.hale-dash-savings__sites-detail {
+			display: none !important;
+		}
+
+		// The "sites using" count stays, as plain text.
+		.hale-dash-savings__sites-toggle {
+			color: #000 !important;
+			text-decoration: none;
+			cursor: default;
+		}
+
+		.hale-dash-savings__sites-caret {
+			display: none;
+		}
+
+		// Full printable width.
+		.govuk-width-container,
+		.govuk-main-wrapper,
+		.govuk-grid-row,
+		.govuk-grid-column-full,
+		.hale-dash-savings {
+			width: auto !important;
+			max-width: none !important;
+			margin: 0 !important;
+			padding: 0 !important;
+		}
+
+		// Black-on-white, even from dark mode.
+		&,
+		.hale-dash-savings,
+		.hale-dash-savings * {
+			color: #000 !important;
+			background: transparent !important;
+			box-shadow: none !important;
+		}
+
+		.hale-dash-savings {
+			font-size: 10pt;
+			line-height: 1.45;
+		}
+
+		// --- Masthead / footer (print-only, revealed here) ---
+		.hale-dash-savings__doc-head {
+			display: flex !important;
+			justify-content: space-between;
+			align-items: baseline;
+			gap: 12pt;
+			margin: 0 0 12pt;
+			padding-bottom: 6pt;
+			border-bottom: 1.5pt solid #000;
+			font-size: 8pt;
+			letter-spacing: 0.09em;
+			text-transform: uppercase;
+		}
+
+		.hale-dash-savings__doc-foot {
+			display: block !important;
+			margin-top: 18pt;
+			padding-top: 6pt;
+			border-top: 0.75pt solid #000;
+			font-size: 8pt;
+			font-style: italic;
+		}
+
+		// --- Headings ---
+		h1 {
+			margin: 0 0 6pt;
+			font-size: 19pt;
+			letter-spacing: -0.01em;
+		}
+
+		h2 {
+			margin: 16pt 0 6pt;
+			padding-bottom: 3pt;
+			border-bottom: 0.75pt solid #000;
+			font-size: 11pt;
+			break-after: avoid;
+		}
+
+		.govuk-body-l {
+			margin: 0 0 12pt;
+			font-size: 10pt;
+		}
+
+		.hale-dash-savings__calculated {
+			margin: 0 0 4pt;
+			font-size: 8pt;
+			font-style: italic;
+		}
+
+		.hale-dash-savings__footnotes {
+			margin: 6pt 0 12pt;
+			padding-left: 12pt;
+			font-size: 8pt;
+		}
+
+		.hale-dash-savings__fn-back {
+			display: none;
+		}
+
+		// --- Summary figures (borderless, report style) ---
+		.hale-dash-savings__metrics {
+			display: grid !important;
+			grid-template-columns: 1fr 1fr !important;
+			gap: 0 28pt !important;
+			margin: 0 0 4pt !important;
+		}
+
+		.hale-dash-metric {
+			padding: 8pt 0 0 !important;
+			border: 0 !important;
+			border-top: 1pt solid #000 !important;
+			border-radius: 0 !important;
+			break-inside: avoid;
+
+			h2 {
+				margin: 0 0 3pt;
+				padding: 0;
+				border: 0;
+				font-size: 8pt;
+				font-weight: 700;
+				letter-spacing: 0.06em;
+				text-transform: uppercase;
+			}
+
+			.govuk-heading-l {
+				font-size: 16pt;
+			}
+
+			.govuk-hint {
+				font-size: 8pt;
+			}
+		}
+
+		// --- Breakdown table ---
+		.hale-dash-savings__table-wrap {
+			overflow: visible !important;
+		}
+
+		.govuk-table {
+			min-width: 0 !important;
+			font-size: 9pt;
+			border-collapse: collapse;
+		}
+
+		thead {
+			display: table-header-group;
+		}
+
+		.govuk-table__header,
+		.govuk-table__cell {
+			padding: 3.5pt 0 3.5pt 8pt !important;
+			border-bottom: 0.5pt solid #666 !important;
+			vertical-align: top;
+		}
+
+		.govuk-table__row > *:first-child {
+			padding-left: 0 !important;
+		}
+
+		.govuk-table__head .govuk-table__header {
+			border-bottom: 1pt solid #000 !important;
+			font-size: 8pt;
+			letter-spacing: 0.04em;
+			text-transform: uppercase;
+		}
+
+		tfoot .govuk-table__header,
+		tfoot .govuk-table__cell {
+			border-top: 1pt solid #000 !important;
+			border-bottom: 0 !important;
+			font-weight: 700;
+		}
+
+		.hale-dash-savings__block-name {
+			font-size: 7.5pt;
+			font-style: italic;
+		}
+
+		.govuk-table__row {
+			break-inside: avoid;
+		}
+	}
+}
+

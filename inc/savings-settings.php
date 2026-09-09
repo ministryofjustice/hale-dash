@@ -875,6 +875,46 @@ add_filter('body_class', static function ($classes) {
 });
 
 /**
+ * Front-end page behaviour (print / drill-down / AJAX recalculate).
+ * Only on the Cost & Time Savings template.
+ */
+add_action('wp_enqueue_scripts', static function () {
+	if (!is_page_template('page-savings.php')) {
+		return;
+	}
+	wp_enqueue_script(
+		'hale-dash-savings-frontend',
+		get_theme_file_uri() . '/dist/js/savings-frontend.js',
+		[],
+		hale_dash_asset_version('/js/savings-frontend.js'),
+		true
+	);
+});
+
+/**
+ * Settings screen assets (block filter / drill-down / excluded-sites filter,
+ * plus the small amount of screen-specific CSS).
+ */
+add_action('admin_enqueue_scripts', static function ($hook) {
+	if ($hook !== 'settings_page_hale-dash-savings') {
+		return;
+	}
+	wp_enqueue_style(
+		'hale-dash-savings-admin',
+		get_theme_file_uri() . '/dist/css/savings-admin.min.css',
+		[],
+		hale_dash_asset_version('/css/savings-admin.min.css')
+	);
+	wp_enqueue_script(
+		'hale-dash-savings-admin',
+		get_theme_file_uri() . '/dist/js/savings-admin.js',
+		[],
+		hale_dash_asset_version('/js/savings-admin.js'),
+		true
+	);
+});
+
+/**
  * URL of the published Page using the "Cost & Time Savings" template, if any.
  * Resolved by template so it survives slug/title changes. Result is cached for
  * the request.
@@ -1089,15 +1129,6 @@ function hale_dash_savings_settings_page() {
 			<?php if (!$all_sites) : ?>
 				<p><?php esc_html_e('No sites found.', 'hale-dash'); ?></p>
 			<?php else : ?>
-				<style>
-				.hale-dash-excluded-editor > summary { list-style: none; }
-				.hale-dash-excluded-editor > summary::-webkit-details-marker { display: none; }
-				.hale-dash-excluded-editor .hd-label--open { display: none; }
-				.hale-dash-excluded-editor[open] .hd-label--closed { display: none; }
-				.hale-dash-excluded-editor[open] .hd-label--open { display: inline; }
-				.hale-dash-excluded-editor[open] > summary { margin-bottom: 10px; }
-				</style>
-
 				<?php if ($excluded) : ?>
 					<table class="widefat striped" style="max-width:640px;margin-bottom:12px;">
 						<thead>
@@ -1263,98 +1294,5 @@ function hale_dash_savings_settings_page() {
 			<?php submit_button(); ?>
 		</form>
 	</div>
-
-	<style>
-	.hale-dash-sites-toggle { text-decoration: none; }
-	.hale-dash-sites-toggle__caret { display: inline-block; font-size: 10px; transition: transform .15s; }
-	.hale-dash-sites-toggle[aria-expanded="true"] .hale-dash-sites-toggle__caret { transform: rotate(90deg); }
-	tr.hale-dash-sites-detail > td { background: #f6f7f7; padding: 10px 12px; }
-	.hale-dash-sites-detail__head { margin: 0 0 6px; }
-	.hale-dash-sites-detail__table { max-width: 460px; background: #fff; }
-	</style>
-
-	<script>
-	(function () {
-		var input = document.getElementById('hale-dash-block-search');
-		var table = document.getElementById('hale-dash-block-table');
-		if (!input || !table) {
-			return;
-		}
-		var rows  = Array.prototype.slice.call(table.querySelectorAll('tbody tr[data-search]'));
-		var count = document.getElementById('hale-dash-block-search-count');
-
-		function apply() {
-			var q = input.value.trim().toLowerCase();
-			var shown = 0;
-			rows.forEach(function (row) {
-				var hay = row.getAttribute('data-search') || '';
-				var match = q === '' || hay.indexOf(q) !== -1;
-				row.hidden = !match;
-				// Keep each block's detail row in step with its main row.
-				var detail = row.nextElementSibling;
-				if (detail && detail.classList.contains('hale-dash-sites-detail')) {
-					if (!match) {
-						detail.hidden = true;
-						var btn = row.querySelector('.hale-dash-sites-toggle');
-						if (btn) { btn.setAttribute('aria-expanded', 'false'); }
-					}
-				}
-				if (match) {
-					shown++;
-				}
-			});
-			if (count) {
-				count.textContent = q === '' ? '' : shown + ' of ' + rows.length + ' blocks';
-			}
-		}
-
-		input.addEventListener('input', apply);
-		input.addEventListener('search', apply);
-	})();
-
-	// Expand/collapse the per-block "sites using" detail row.
-	(function () {
-		var table = document.getElementById('hale-dash-block-table');
-		if (!table) {
-			return;
-		}
-		table.addEventListener('click', function (e) {
-			var btn = e.target.closest('.hale-dash-sites-toggle');
-			if (!btn) {
-				return;
-			}
-			var detail = document.getElementById(btn.getAttribute('aria-controls'));
-			if (!detail) {
-				return;
-			}
-			var open = detail.hidden;
-			detail.hidden = !open;
-			btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-		});
-	})();
-
-	// Filter the excluded-sites checkbox list.
-	(function () {
-		var input = document.getElementById('hale-dash-site-search');
-		var list  = document.getElementById('hale-dash-site-list');
-		if (!input || !list) {
-			return;
-		}
-		var rows = Array.prototype.slice.call(list.querySelectorAll('.hale-dash-site-row'));
-
-		function apply() {
-			var q = input.value.trim().toLowerCase();
-			rows.forEach(function (row) {
-				var hay = row.getAttribute('data-search') || '';
-				// The rows carry inline display:block, which would beat [hidden] —
-				// toggle the inline value directly.
-				row.style.display = (q === '' || hay.indexOf(q) !== -1) ? 'block' : 'none';
-			});
-		}
-
-		input.addEventListener('input', apply);
-		input.addEventListener('search', apply);
-	})();
-	</script>
 	<?php
 }

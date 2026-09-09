@@ -5,6 +5,7 @@ mix_.setPublicPath('./dist')
   .copy('./assets/images/*', 'dist/images/')
   .copy('./assets/webfonts/*', 'dist/webfonts/')
   .sass('./assets/scss/style.scss', 'css/hale-dash-style.min.css')
+  .sass('./assets/scss/savings-admin.scss', 'css/savings-admin.min.css')
   .copy('./assets/js/*', 'dist/js/')
   .options({
     processCssUrls: false
