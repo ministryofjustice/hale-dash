@@ -211,7 +211,7 @@ foreach ($sites as $site) {
 		</div>
 		<?php if ($site_id != $dashboard_ID): ?>
 			<p class="website__domain govuk-body-s govuk-!-margin-0"><a class="govuk-link" href="<?php echo esc_url($prod_url); ?>" title="<?php echo esc_attr($prod_url); ?>" target="_blank" rel="noopener noreferrer"><span class="website__domain-text"><?php echo esc_html($prod_domain); ?></span><?php echo $new_tab_svg;?></a></p>
-			<?php if (!$is_private && !$current_user_logged_in): ?>
+			<?php if (!$is_private): ?>
 				<p class="website__login govuk-body-s govuk-!-margin-0">Or, <a class="govuk-link" href="<?php echo esc_url($prod_url) . $login_suffix; ?>" target="_blank" rel="noopener noreferrer"><span class="website__domain-text">login here</span><?php echo $new_tab_svg;?></a></p>
 			<?php endif; ?>
 		<?php endif; ?>
