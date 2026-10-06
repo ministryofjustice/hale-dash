@@ -73,39 +73,10 @@
 		<span class="govuk-heading-l govuk-!-margin-bottom-0"><?php echo $active_sessions; ?></span>
 	</div>
 
-	<div class="hale-dash-metric hale-dash-metric--wide">
-		<h2 class="govuk-heading-s">Monitoring resources</h2>
-		<ul class="govuk-list govuk-body-s">
-			<li>
-				<a href="https://github.com/ministryofjustice/hale-platform">Hale Platform GitHub repository</a>
-			</li>
-			<li>
-				<a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/85a562078cdf77779eaa1add43ccec1e/kubernetes-compute-resources-namespace-pods?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=hale-platform-prod">Grafana dashboard (prod)</a>
-			</li>
-			<li>
-				<a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/k8s-nginx-ingress-prometheus-ng2/b89fb7c?orgId=1&refresh=1m&var-controller_class=$__all&var-pod=$__all&var-datasource=default&from=now-3h&to=now&var-namespace=$__all&var-ingress=hale-platform-ingress&timezone=browser">Grafana Nginx Ingress</a>
-			</li>
-			<li>
-				<a href="https://logs.cloud-platform.service.justice.gov.uk/_dashboards/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:b95d8900-dd15-11ed-87c8-170407f57c9c,interval:auto,query:(language:kuery,query:''),sort:!())">Ingress logs</a>
-			</li>
-			<li>
-				<a href="https://cloud-platform-e218f50a4812967ba1215eaecede923f.s3.amazonaws.com/feed-parser/feeds.json">Job Feed Parser JSON</a>
-			</li>
-			<li>
-				<a href="https://websitebuilder.service.justice.gov.uk/wp-json/hc-rest/v1/sites/domain">Platform site API</a>
-			</li>
-		</ul>
-	</div>
-
-	<?php $savings_url = function_exists('hale_dash_savings_page_url') ? hale_dash_savings_page_url() : ''; ?>
-	<?php if ($savings_url) : ?>
-		<div class="hale-dash-metric hale-dash-metric--wide">
-			<h2 class="govuk-heading-s">Platform value</h2>
-			<ul class="govuk-list govuk-body-s">
-				<li>
-					<a href="<?php echo esc_url($savings_url); ?>">Cost &amp; time savings</a>
-				</li>
-			</ul>
+	<?php $page_content = hale_dash_page_content_html(); ?>
+	<?php if ($page_content) : ?>
+		<div class="hale-dash-metric hale-dash-metric--wide hale-dash-page-content">
+			<?php echo $page_content; ?>
 		</div>
 	<?php endif; ?>
 </div>

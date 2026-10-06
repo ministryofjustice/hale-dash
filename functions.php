@@ -161,6 +161,11 @@ function is_plugin_active_on_site($plugin, $site_id = 1) {
 require get_stylesheet_directory() . '/inc/dashboard-metrics.php';
 
 /**
+ * Link lists under the metrics ("Monitoring resources" etc.), taken from the page content
+ */
+require get_stylesheet_directory() . '/inc/dashboard-links.php';
+
+/**
  * All functions needed for the various notification banners we add ie birthday, events etc
  */
 require get_stylesheet_directory() . '/inc/notification-banner.php';

@@ -53,17 +53,6 @@
 }
 
 // -------------------------------------------------------------
-// Two-column dashboard layout
-// -------------------------------------------------------------
-.hale-dash-metrics-col {
-	@media (min-width: 769px) {
-		position: sticky;
-		top: calc(32px + 1rem);
-		align-self: flex-start;
-	}
-}
-
-// -------------------------------------------------------------
 // Cost & time savings page (page-savings.php) + print
 // -------------------------------------------------------------
 @import "cost-savings";
@@ -95,6 +84,21 @@
 
 	h3 {
 		margin-top: 0;
+	}
+}
+
+// Links from the page content. Hale's `.govuk-main-wrapper ul.wp-block-list`
+// outranks .govuk-body-s, so restate the body-s sizes.
+.hale-dash-metric.hale-dash-page-content {
+	ul,
+	ol {
+		font-size: 0.875rem;
+		line-height: 1.1428571429;
+
+		@media (min-width: 641px) {
+			font-size: 1rem;
+			line-height: 1.25;
+		}
 	}
 }
 
