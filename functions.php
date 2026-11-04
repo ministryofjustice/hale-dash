@@ -231,6 +231,7 @@ function timezone_warning($zone) {
 
 function theme_warning($theme) {
 	if ($theme == "hale")  return "";
+	if ($theme == "govwind")  return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--green'>Govwind</strong></span> This website is using FSE.</p>";
 	return "<p><strong class='govuk-tag hale-dash-better-tag govuk-tag--yellow'>Non-Hale</strong></span> This website is using the <strong>" . esc_html($theme) . "</strong> theme.</p>";
 }
 
