@@ -188,19 +188,19 @@ require get_stylesheet_directory() . '/inc/savings.php';
 
 function language_warning($code) {
 	if ($code == "cy" || $code == "cy_GB") {
-		return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--green'>Welsh</strong></span> This website is in <strong>Welsh</strong> 🏴󠁧󠁢󠁷󠁬󠁳󠁿</p>";
+		return "<p class='govuk-body'><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--green'>Welsh</strong></span> This website is in <strong>Welsh</strong> 🏴󠁧󠁢󠁷󠁬󠁳󠁿</p>";
 	} elseif ($code == "en_US" || empty($code)) { //WP uses "" to denote en-US
-		return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>US English</strong> 🇺🇸</p>";
+		return "<p class='govuk-body'><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>US English</strong> 🇺🇸</p>";
 	} elseif ($code == "en_CA") {
-		return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>Canadian English</strong> 🇨🇦</p>";
+		return "<p class='govuk-body'><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>Canadian English</strong> 🇨🇦</p>";
 	} elseif ($code == "en_NZ") {
-		return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>New Zealand English</strong> 🇳🇿</p>";
+		return "<p class='govuk-body'><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>New Zealand English</strong> 🇳🇿</p>";
 	} elseif ($code == "en_AU") {
-		return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>Australian English</strong> 🇦🇺</p>";
+		return "<p class='govuk-body'><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>Australian English</strong> 🇦🇺</p>";
 	} elseif (!str_starts_with($code, "en")) {
-		return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red'>Language</strong></span> This website is set to <strong>" . esc_html($code) . "</strong>.</p>";
+		return "<p class='govuk-body'><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--red hale-dash-better-tag--red'>Language</strong></span> This website is set to <strong>" . esc_html($code) . "</strong>.</p>";
 	} elseif ($code != "en_GB") {
-		return "<p><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>" . esc_html($code) . "</strong>.</p>";
+		return "<p class='govuk-body'><span><strong class='govuk-tag hale-dash-better-tag govuk-tag--orange'>Localization</strong></span> This website is set to <strong>" . esc_html($code) . "</strong>.</p>";
 	}
 }
 
